@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { NavLink } from 'react-router-dom'
 export default function Home() {
     return (
         <div id="wrapper">
@@ -32,7 +32,7 @@ export default function Home() {
                                             <option>Events</option>
                                         </select>
                                     </div>
-                                    <button className="button" >Search</button>
+                                    <NavLink to="/roomlist" className="button" >Search</NavLink>
                                 </div>
                             </div>
                         </div>

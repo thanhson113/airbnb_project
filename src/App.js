@@ -12,6 +12,8 @@ import Register from './pages/Register/Register';
 import RoomDetailTemplate from './templates/RoomDetailTemplate/RoomDetailTemplate'
 import AdminTemplate from './templates/AdminTemplate/AdminTemplate';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
+import Booking from './pages/Booking/Booking';
+import Profile from './pages/Profile/Profile';
 
 export const history = createBrowserHistory();
 function App() {
@@ -20,6 +22,8 @@ function App() {
       <Switch>
           <HomeTemplate path="/home" component={Home}/>
           <HomeTemplate path="/roomdetail" component={RoomDetail}/>
+          <HomeTemplate path="/booking" component={Booking}/>
+          <HomeTemplate path="/profile" component={Profile}/>
           <RoomDetailTemplate path="/roomlist" component={RoomList}/>
           <UserTemplate path="/login" component={Login}/>
           <UserTemplate path="/register" component={Register}/>

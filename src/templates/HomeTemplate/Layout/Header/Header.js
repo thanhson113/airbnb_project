@@ -11,7 +11,7 @@ export default function Header() {
                         <div className="left-side">
                             {/* Logo */}
                             <div id="logo">
-                                <a href="index.html"><img src="images/logo.png" /></a>
+                                <NavLink  to="/home"><img src="images/logo.png" /></NavLink>
                             </div>
                             {/* Mobile Navigation */}
                             <div className="mmenu-trigger">
@@ -25,7 +25,7 @@ export default function Header() {
                             <nav id="navigation" className="style-1">
                                 <ul id="responsive">
                                     <li>
-                                        <a className="current" href="#">Home</a>
+                                        <NavLink  className="current" to="/home">Home</NavLink>
                                     </li>
                                     <li>
                                         <a href="#">Blog</a>
@@ -33,7 +33,7 @@ export default function Header() {
                                     <li><a href="#">Contact</a>
                                     </li>
                                     <li>
-                                        <a href="#">Profile</a>
+                                        <NavLink  className="" to="/profile">Profile</NavLink>
                                     </li>
                                 </ul>
                             </nav>
