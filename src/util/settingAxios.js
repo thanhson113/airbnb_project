@@ -8,7 +8,7 @@ export const http = axios.create({
 http.interceptors.request.use((config) => {
     config.headers = {
         ...config.headers,
-        'TokenCybersoft': TOKEN_MOVIE,
+        'TokenCybersoft': TOKEN_CYBERSOFT,
         'Authorization':  localStorage.getItem(ACCESS_TOKEN)
     }
     return config

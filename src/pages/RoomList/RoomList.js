@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {NavLink} from 'react-router-dom'
 export default function RoomList() {
     return (
         <div id="wrapper">
@@ -131,10 +131,10 @@ export default function RoomList() {
                                 {/* Listing Item */}
                                 <div className="col-lg-12 col-md-12">
                                     <div className="listing-item-container list-layout" data-marker-id={1}>
-                                        <a href="listings-single-page.html" className="listing-item">
+                                        <NavLink to="/roomdetail/1" className="listing-item">
                                             {/* Image */}
                                             <div className="listing-item-image">
-                                                <img src="images/listing-item-01.jpg"  />
+                                                <img src="./images/listing-item-01.jpg"  />
                                                 <span className="tag">Eat &amp; Drink</span>
                                             </div>
                                             {/* Content */}
@@ -149,7 +149,7 @@ export default function RoomList() {
                                                 </div>
                                                 <span className="like-icon" />
                                             </div>
-                                        </a>
+                                        </NavLink>
                                     </div>
                                 </div>
                                 {/* Listing Item / End */}

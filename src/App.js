@@ -1,5 +1,7 @@
+
 import logo from './logo.svg';
 import './App.css';
+import './assets/css/main-color.css'
 import {Router,Route,Switch} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import HomeTemplate from './templates/HomeTemplate/HomeTemplate';
@@ -20,10 +22,12 @@ function App() {
   return (
     <Router history={history}>
       <Switch>
+          {/* <HomeTemplate path="/roomdetail" component={RoomDetail}/> */}
+          <HomeTemplate path="/roomdetail/:id" component={RoomDetail}/>
           <HomeTemplate path="/home" component={Home}/>
-          <HomeTemplate path="/roomdetail" component={RoomDetail}/>
           <HomeTemplate path="/booking" component={Booking}/>
           <HomeTemplate path="/profile" component={Profile}/>
+          <RoomDetailTemplate path="/roomlist/:id" component={RoomList}/>
           <RoomDetailTemplate path="/roomlist" component={RoomList}/>
           <UserTemplate path="/login" component={Login}/>
           <UserTemplate path="/register" component={Register}/>

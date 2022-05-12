@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 export default function RoomDetail() {
   return (
-    <div id="wrapper">
+    <div >
       {/* Header Container
 ================================================== */}
       {/* Gradient*/}
@@ -155,7 +155,7 @@ export default function RoomDetail() {
               <section className="comments listing-reviews">
                 <ul>
                   <li>
-                    <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /></div>
+                    <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70"  /></div>
                     <div className="comment-content"><div className="arrow-comment" />
                       <div className="comment-by">Kathy Brown <i className="tip" data-tip-content="Person who left this review actually was a customer" /> <span className="date">June 2019</span>
                         <div className="star-rating" data-rating={5} />
@@ -165,7 +165,7 @@ export default function RoomDetail() {
                     </div>
                   </li>
                   <li>
-                    <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /> </div>
+                    <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70"  /> </div>
                     <div className="comment-content"><div className="arrow-comment" />
                       <div className="comment-by">John Doe<span className="date">May 2019</span>
                         <div className="star-rating" data-rating={4} />
@@ -175,7 +175,7 @@ export default function RoomDetail() {
                     </div>
                   </li>
                   <li>
-                    <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /> </div>
+                    <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70"  /> </div>
                     <div className="comment-content"><div className="arrow-comment" />
                       <div className="comment-by">John Doe<span className="date">May 2019</span>
                         <div className="star-rating" data-rating={5} />
@@ -372,7 +372,7 @@ export default function RoomDetail() {
             <div className="boxed-widget margin-top-35">
               <div className="hosted-by-title">
                 <h4><span>Hosted by</span> <a href="pages-user-profile.html">Tom Perrin</a></h4>
-                <a href="pages-user-profile.html" className="hosted-by-avatar"><img src="images/dashboard-avatar.jpg" alt /></a>
+                <a href="pages-user-profile.html" className="hosted-by-avatar"><img src="images/dashboard-avatar.jpg"  /></a>
               </div>
               <ul className="listing-details-sidebar">
                 <li><i className="sl sl-icon-phone" /> (123) 123-456</li>

@@ -12,13 +12,13 @@ export default function Login() {
                     {/* Login */}
                     <div className="tab-content" id="tab1" >
                         <form method="post" className="login">
-                            <p className="form-row form-row-wide">
+                            <p className=" form-row-wide">
                                 <label htmlFor="username">Username:
                                     <i className="im im-icon-Male" />
-                                    <input type="text" className="input-text" name="username" id="username" defaultValue />
+                                    <input type="text" className="input-text" name="username" id="username"  />
                                 </label>
                             </p>
-                            <p className="form-row form-row-wide">
+                            <p className=" form-row-wide">
                                 <label htmlFor="password">Password:
                                     <i className="im im-icon-Lock-2" />
                                     <input className="input-text" type="password" name="password" id="password" />
@@ -27,7 +27,7 @@ export default function Login() {
                                     <a href="#">Lost Your Password?</a>
                                 </span>
                             </p>
-                            <div className="form-row">
+                            <div className="">
                                 <input type="submit" className="button border margin-top-5" name="login" defaultValue="Login" />
                                 <div className="checkboxes margin-top-10">
                                     <input id="remember-me" type="checkbox" name="check" />

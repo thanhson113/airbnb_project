@@ -22024,6 +22024,7 @@ button.mfp-close {
 
 #sign-in-dialog {
 	max-width: 500px;
+	border: 1px solid #eee;
 }
 
 

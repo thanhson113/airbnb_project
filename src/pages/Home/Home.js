@@ -1,5 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { history } from '../../App'
+
 export default function Home() {
     return (
         <div id="wrapper">
@@ -32,7 +34,9 @@ export default function Home() {
                                             <option>Events</option>
                                         </select>
                                     </div>
-                                    <NavLink to="/roomlist" className="button" >Search</NavLink>
+                                    <button className="button" onClick={() => {
+                                        history.push('/roomlist/123')
+                                    }}>Search</button>
                                 </div>
                             </div>
                         </div>

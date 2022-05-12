@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import logo from '../../../../assets/images/logo.png'
 export default function Header() {
     return (
         <div>
@@ -11,7 +12,7 @@ export default function Header() {
                         <div className="left-side">
                             {/* Logo */}
                             <div id="logo">
-                                <NavLink  to="/home"><img src="images/logo.png" /></NavLink>
+                                <NavLink  to="/home"><img src={logo} /></NavLink>
                             </div>
                             {/* Mobile Navigation */}
                             <div className="mmenu-trigger">
