@@ -1,45 +1,98 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import "../../asset/css/login.css";
+import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
+
 
 export default function Login() {
-    return (
-        <div id="sign-in-dialog" className="zoom-anim-dialog ">
-            <div className="small-dialog-header">
-                <h3>Sign In</h3>
-            </div>
-            {/*Tabs */}
-            <div className="sign-in-form style-1">
-                <div className="tabs-container alt">
-                    {/* Login */}
-                    <div className="tab-content" id="tab1" >
-                        <form method="post" className="login">
-                            <p className=" form-row-wide">
-                                <label htmlFor="username">Username:
-                                    <i className="im im-icon-Male" />
-                                    <input type="text" className="input-text" name="username" id="username"  />
-                                </label>
-                            </p>
-                            <p className=" form-row-wide">
-                                <label htmlFor="password">Password:
-                                    <i className="im im-icon-Lock-2" />
-                                    <input className="input-text" type="password" name="password" id="password" />
-                                </label>
-                                <span className="lost_password">
-                                    <a href="#">Lost Your Password?</a>
-                                </span>
-                            </p>
-                            <div className="">
-                                <input type="submit" className="button border margin-top-5" name="login" defaultValue="Login" />
-                                <div className="checkboxes margin-top-10">
-                                    <input id="remember-me" type="checkbox" name="check" />
-                                    <label htmlFor="remember-me">Remember Me</label>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+  const [width, setWidth] = useState(window.innerWidth);
+  let [user, setUserAccount] = useState({
+    email: "",
+    password: "",
+  });
+  let wbg = "";
+  if (width < 600) wbg = "90%";
+  else wbg = "450px";
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
 
-    )
+  const hanleInput = (event) => {
+    let { value, name } = event.target;
+
+    setUserAccount({
+      ...user,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (values) => {
+    values.preventDefault();
+
+    const { email, password } = values;
+    setUserAccount({
+        email: email,
+        password: password,
+    });
+    dispatch(LoginAction(user));
+  };
+
+  return (
+    <div className="container-fluid">
+      <div className="login-box" style={{ width: wbg }}>
+        {console.log(user)}
+        <h2>SIGN IN</h2>
+        <form onSubmit={(values)=>{
+            handleSubmit(values)
+        }} style={{ witdh: "100%" }}>
+          <div className="user-box">
+            <input defaultValue=""
+              onChange={(event) => {
+                hanleInput(event);
+              }}
+              type="email"
+              name="email"
+              required
+            />
+            <label>Username</label>
+          </div>
+          <div className="user-box">
+            <input defaultValue=""
+              onChange={(event) => {
+                hanleInput(event);
+              }}
+              type="password"
+              name="password"
+              required
+            />
+            <label>Password</label>
+          </div>
+          <div className="d-flex justify-content-between">
+            <div className="btn_login">
+              <button type="submit">
+                <span />
+                <span />
+                <span />
+                <span />
+                Login
+              </button>
+            </div>
+            <div className="btn_register">
+              <button className="btn-outline-danger" type="button">
+                <span />
+                <span />
+                <span />
+                <span />
+                Register
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
