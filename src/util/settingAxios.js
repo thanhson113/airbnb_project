@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ACCESS_TOKEN, TOKEN_MOVIE, DOMAIN } from './Setting.js'
+import { ACCESS_TOKEN, TOKEN_CYBERSOFT, DOMAIN } from './Setting.js'
 // Cấu hình interceptor (Cấu hình những tham số mặc định cho api)
 export const http = axios.create({
     baseURL: DOMAIN,
