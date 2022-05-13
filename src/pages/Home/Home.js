@@ -1,8 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { history } from '../../App'
-
+import './home.css'
+import { layDanhSachViTri } from '../../redux/Actions/ViTriActon'
 export default function Home() {
+    const dispatch = useDispatch();
+    const { danhSachViTri } = useSelector(state => state.viTriReducer)
+    const [ketQua, setKetQua] = useState(false)
+    const [keyWord, setKeyword] = useState('')
+
+    const renderDSViTri = () => {
+        return danhSachViTri.map((viTri, index) => {
+            return (
+                <li key={viTri._id} onClick={() => { history.push(`/roomlist/${viTri._id}`) }}>
+                    <i className="fa fa-map-marker" />
+                    <span>{viTri.name}</span>
+                </li>
+            )
+        })
+    }
+    const handleInput = async (event) => {
+        let value = event.target.value;
+        setKeyword(value)
+        dispatch(layDanhSachViTri(value))
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch(layDanhSachViTri(keyWord))
+    }
     return (
         <div id="wrapper">
             {/* Banner
@@ -14,30 +40,23 @@ export default function Home() {
                             <div className="col-md-12">
                                 <h2>Find Nearby Attractions</h2>
                                 <h4>Expolore top-rated attractions, activities and more</h4>
-                                <div className="main-search-input">
-                                    <div className="main-search-input-item">
-                                        <input type="text" placeholder="What are you looking for?" defaultValue />
-                                    </div>
-                                    <div className="main-search-input-item location">
-                                        <div id="autocomplete-container">
-                                            <input id="autocomplete-input" type="text" placeholder="Location" />
+                                <form onSubmit={handleSubmit}>
+                                    <div className="main-search-input">
+                                        <div className="main-search-input-item location">
+                                            <div id="autocomplete-container">
+                                                <input id="autocomplete-input" type="text" placeholder="Location" onChange={handleInput} />
+                                            </div>
+                                            <a href="#"><i className="fa fa-map-marker" /></a>
+                                            <ul className={`main-search-input-result `} style={{
+                                                display: danhSachViTri.length > 0 && keyWord !== '' ? 'block' : 'none'
+                                            }}>
+                                                {renderDSViTri()}
+                                            </ul>
                                         </div>
-                                        <a href="#"><i className="fa fa-map-marker" /></a>
+
+                                        <button className="button" type="submit">Search</button>
                                     </div>
-                                    <div className="main-search-input-item">
-                                        <select data-placeholder="All Categories" className="chosen-select">
-                                            <option>All Categories</option>
-                                            <option>Shops</option>
-                                            <option>Hotels</option>
-                                            <option>Restaurants</option>
-                                            <option>Fitness</option>
-                                            <option>Events</option>
-                                        </select>
-                                    </div>
-                                    <button className="button" onClick={() => {
-                                        history.push('/roomlist/123')
-                                    }}>Search</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -108,7 +127,7 @@ export default function Home() {
             {/* Category Boxes / End */}
             {/* Fullwidth Section */}
             <section className="fullwidth margin-top-65 padding-top-75 padding-bottom-70" data-background-color="#f8f8f8">
-                <div className="container">
+                <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12">
                             <h3 className="headline centered margin-bottom-45">
@@ -116,114 +135,97 @@ export default function Home() {
                                 <span>Discover top-rated local businesses</span>
                             </h3>
                         </div>
+                        <div className="col-md-12">
+                            {/* Listing Item */}
+                            <div className="col-md-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/listing-item-01.jpg" />
+                                            <div className="listing-badge now-open">Now Open</div>
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating mid" data-rating="3.5" />
+                                                <h3>Tom's Restaurant</h3>
+                                                <span>964 School Street, New York</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+                            <div className="col-md-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/listing-item-02.jpg" />
+                                            <div className="listing-item-details">
+                                                <ul>
+                                                    <li>Friday, August 10</li>
+                                                </ul>
+                                            </div>
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating high" data-rating={5.0} />
+                                                <h3>Sticky Band</h3>
+                                                <span>Bishop Avenue, New York</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+                            <div className="col-md-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/listing-item-03.jpg" />
+                                            <div className="listing-item-details">
+                                                <ul>
+                                                    <li>Starting from $59 per night</li>
+                                                </ul>
+                                            </div>
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating low" data-rating={2.0} />
+                                                <h3>Hotel Govendor</h3>
+                                                <span>778 Country Street, New York</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+                            <div className="col-md-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/listing-item-04.jpg" />
+                                            <div className="listing-badge now-open">Now Open</div>
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating high" data-rating={5.0} />
+                                                <h3>Burger House</h3>
+                                                <span>2726 Shinn Street, New York</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+
+                        </div>
                     </div>
                 </div>
                 {/* Carousel / Start */}
-                <div className="simple-fw-slick-carousel dots-nav">
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-01.jpg"  />
-                                <div className="listing-badge now-open">Now Open</div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating="3.5" />
-                                    <h3>Tom's Restaurant</h3>
-                                    <span>964 School Street, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-02.jpg"  />
-                                <div className="listing-item-details">
-                                    <ul>
-                                        <li>Friday, August 10</li>
-                                    </ul>
-                                </div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating={5.0} />
-                                    <h3>Sticky Band</h3>
-                                    <span>Bishop Avenue, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-03.jpg"  />
-                                <div className="listing-item-details">
-                                    <ul>
-                                        <li>Starting from $59 per night</li>
-                                    </ul>
-                                </div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating={2.0} />
-                                    <h3>Hotel Govendor</h3>
-                                    <span>778 Country Street, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-04.jpg"  />
-                                <div className="listing-badge now-open">Now Open</div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating={5.0} />
-                                    <h3>Burger House</h3>
-                                    <span>2726 Shinn Street, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-05.jpg"  />
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating="3.5" />
-                                    <h3>Airport</h3>
-                                    <span>1512 Duncan Avenue, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-06.jpg"  />
-                                <div className="listing-badge now-closed">Now Closed</div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating="4.5" />
-                                    <h3>Think Coffee</h3>
-                                    <span>215 Terry Lane, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                </div>
+
                 {/* Carousel / End */}
             </section>
             {/* Fullwidth Section / End */}
@@ -235,45 +237,57 @@ export default function Home() {
                     </div>
                     <div className="col-md-4">
                         {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-01.jpg">
-                            <div className="img-box-content visible">
-                                <h4>New York </h4>
-                                <span>14 Listings</span>
-                            </div>
-                        </a>
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-01.jpg")' }}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>New York </h4>
+                                    <span>14 Listings</span>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div className="col-md-8">
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-02.jpg")'}}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>Los Angeles </h4>
+                                    <span>24 Listings</span>
+                                </div>
+
+                        </div>
                     </div>
                     <div className="col-md-8">
                         {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-02.jpg">
-                            <div className="img-box-content visible">
-                                <h4>Los Angeles</h4>
-                                <span>24 Listings</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div className="col-md-8">
-                        {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-03.jpg">
-                            <div className="img-box-content visible">
-                                <h4>San Francisco </h4>
-                                <span>12 Listings</span>
-                            </div>
-                        </a>
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-03.jpg")' }}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>San Francisco  </h4>
+                                    <span>12 Listings</span>
+                                </div>
+
+                        </div>
                     </div>
                     <div className="col-md-4">
                         {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-04.jpg">
-                            <div className="img-box-content visible">
-                                <h4>Miami</h4>
-                                <span>9 Listings</span>
-                            </div>
-                        </a>
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-04.jpg")' }}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>Miami</h4>
+                                    <span>9 Listings</span>
+                                </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
             {/* Container / End */}
             {/* Flip banner */}
-            <a href="listings-half-screen-map-list.html" className="flip-banner parallax margin-top-65" data-background="images/slider-bg-02.jpg" data-color="#f91942" data-color-opacity="0.85" data-img-width={2500} data-img-height={1666}>
+            <a href="" className="flip-banner parallax margin-top-65" style={{backgroundImage:'url("images/slider-bg-02.jpg")'}} >
+            <div className="parallax-overlay" style={{backgroundColor: 'rgb(249, 25, 66)', opacity: 0.85}}></div>
                 <div className="flip-banner-content">
                     <h2 className="flip-visible">Expolore top-rated attractions nearby</h2>
                     <h2 className="flip-hidden">Browse Listings <i className="sl sl-icon-arrow-right" /></h2>

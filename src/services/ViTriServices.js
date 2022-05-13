@@ -1,6 +1,13 @@
-import { http } from "../util/SettingAxios";
+import { http } from "../util/settingAxios";
 
 class QuanLyViTri {
+    layDanhSachViTri = (keyWord) => {
+        // if(keyWord === ''){
+        //     return http.get(`/api/locations`)
+        // }else{
 
+        // }
+        return http.get(`/api/locations?location=${keyWord}`)
+    }
 }
 export const quanLyViTri = new QuanLyViTri()

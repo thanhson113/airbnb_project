@@ -268,11 +268,15 @@ img.footer-logo {
 }
 
 #header {
-	position: relative;
-	z-index: 999;
-	padding: 18px 0 8px 0;
-	box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.12);
-	font-size: 16px;
+	position: fixed;
+    z-index: 999;
+    padding: 18px 0 8px 0;
+    box-shadow: 0 0 12px 0 rgb(0 0 0 / 12%);
+    font-size: 16px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
 }
 
 /* Header Widget */
@@ -13519,15 +13523,22 @@ body .notification strong {
 ------------------------------------- */
 .img-box {
 	height: 350px;
-	display: inline-block;
-	position: relative;
 	width: 100%;
+	transition: all .5s;
+}
+.img-div{
+	position: relative;
 	overflow: hidden;
 	z-index: 90;
 	margin: 10px 0;
 	border-radius: 3px;
-}
+	
 
+
+}
+.img-div:hover .img-box{
+	transform: scale(1.07);
+}
 .img-box-background {
 	background-size: cover;
 	background-position: 50%;
@@ -13563,12 +13574,13 @@ body .notification strong {
 
 .img-box-content {
 	position: absolute;
-	z-index: 101;
-	top: 50%;
-	margin: 0 auto;
-	text-align: center;
-	width: 100%;
-	transform: translate(0, -50.5%);
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    transform: translate(-50%,-50%);
 }
 
 .img-box-content h4 {
@@ -15894,7 +15906,7 @@ body .notification strong {
 .listing-item-container.list-layout .listing-item {
 	display: flex;
 	background-color: transparent;
-	height: 220px;
+	height: 240px;
 }
 
 .listing-item-container.list-layout .listing-item:before {
@@ -15957,7 +15969,12 @@ body .notification strong {
 	left: 35px;
 	padding-right: 120px;
 }
-
+.listing-item-container.list-layout .listing-item-inner p{
+	margin: 0;
+}
+.listing-item-container.list-layout .listing-item-inner span{
+	margin: 0 0 10px;
+}
 .listing-item-container.list-layout .listing-item-inner h3 {
 	color: #333;
 }

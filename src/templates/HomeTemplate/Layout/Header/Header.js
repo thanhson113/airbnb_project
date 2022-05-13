@@ -46,7 +46,7 @@ export default function Header() {
                         <div className="right-side">
                             <div className="header-widget">
                                 <NavLink to="/login" className="sign-in">
-                                    <i className="sl sl-icon-login" /> Sign In
+                                <i className="fa-solid fa-arrow-right-to-bracket"></i>Sign In
                                 </NavLink>
                                 <NavLink to="/register" className="sign-in">
                                     <i className="sl sl-icon-login" /> Register
