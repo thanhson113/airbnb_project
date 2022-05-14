@@ -32,6 +32,8 @@ function App() {
           <UserTemplate path="/login" component={Login}/>
           <UserTemplate path="/register" component={Register}/>
           <AdminTemplate path="/admin" component={Dashboard}/>
+
+          
           <HomeTemplate path="/" component={Home}/>
       </Switch>
     </Router>
