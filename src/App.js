@@ -1,8 +1,6 @@
 
-import logo from './logo.svg';
-import './App.css';
-import './assets/css/main-color.css'
-import {Router,Route,Switch} from 'react-router-dom'
+
+import {Router,Switch} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import HomeTemplate from './templates/HomeTemplate/HomeTemplate';
 import Home from './pages/Home/Home';
@@ -16,6 +14,9 @@ import AdminTemplate from './templates/AdminTemplate/AdminTemplate';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import Booking from './pages/Booking/Booking';
 import Profile from './pages/Profile/Profile';
+
+
+import './App.css';
 
 export const history = createBrowserHistory();
 function App() {

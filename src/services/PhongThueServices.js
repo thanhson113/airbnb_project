@@ -1,6 +1,11 @@
-import { http } from "../util/SettingAxios";
+import { http } from "../util/settingAxios";
 
-class QuanLyPhongChoThue{
-    
+
+class QuanLyPhongChoThue {
+    //nhat head
+  ThongTinChiTietPhong = (id) => {
+    return http.get(`/api/rooms/${id}`);
+  };
+  // nhat final
 }
-export const quanLyPhongChoThue = new QuanLyPhongChoThue()
+export const quanLyPhongChoThue = new QuanLyPhongChoThue();
