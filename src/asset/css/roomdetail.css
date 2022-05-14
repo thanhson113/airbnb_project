@@ -1,0 +1,31 @@
+.cursor {
+  cursor: pointer;
+}
+/* Responsive */
+/* Iphone*/
+@media screen and (min-width: 375px) {
+  .roomDetail {
+    font-size: 12px;
+  }
+  .flex_direction {
+    flex-direction: column;
+  }
+}
+/*Ipad*/
+@media screen and (min-width: 768px) {
+  .roomDetail {
+    font-size: 13px;
+  }
+}
+/* Iphone ngang Ipad ngang*/
+@media screen and (min-width: 1024px) {
+  .roomDetail {
+    font-size: 15px;
+  }
+}
+/*destop*/
+@media screen and (min-width: 1199px) {
+    .roomDetail {
+        font-size: 16px;
+      }
+}
