@@ -52,6 +52,7 @@ export default function RoomDetail(props) {
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
 
   const [width, setWidth] = useState(window.innerWidth);
+  const [more,setMore] = useState(6)
 
   //Form setting
 
@@ -64,32 +65,21 @@ export default function RoomDetail(props) {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  const renderDanhGia = () => {
-    return dsDanhGia?.map((danhGia, index) => {
+  const renderDanhGia = (more) => {
+    return dsDanhGia?.slice(0,more)?.map((danhGia, index) => {
       return (
-        <li key={index}>
-          <div className="avatar">
-            <img src={danhGia.userId.avatar} />
-          </div>
-          <div className="comment-content">
-            <div className="arrow-comment" />
-            <div className="comment-by">
-              {danhGia.userId.name}{" "}
-              <i
-                className="tip"
-                data-tip-content="Person who left this review actually was a customer"
-              />{" "}
-              <span className="date">
-                {moment(danhGia.created_at).format("DD-MM-YYYY")}
+        <div className="col-6">
+          <div className="d-flex">
+            <Avatar src={danhGia.userId.avatar} style={{ width: "30px" }} />
+            <div className="m-2">
+              <h5>{danhGia.userId.name}</h5>
+              <span className="text text-secondary">
+                {moment(danhGia.updatedAt).format("DD-MM-YYYY")}
               </span>
-              <div className="star-rating" data-rating={5} />
             </div>
-            <p>{danhGia.content}</p>
-            <a href="#" className="rate-review">
-              <i className="sl sl-icon-like" /> Helpful Review <span>12</span>
-            </a>
           </div>
-        </li>
+          <span>{danhGia.content}</span>
+        </div>
       );
     });
   };
@@ -131,7 +121,7 @@ export default function RoomDetail(props) {
           </div>
         </div>
         <div className="roomDetail_head_photos py-4">
-          <img src={chiTietPhong.image} className={`img-fluid`} alt="photos" />
+          <Image src={chiTietPhong.image} className={`img-fluid`} alt="photos" />
         </div>
       </div>
 
@@ -237,8 +227,9 @@ export default function RoomDetail(props) {
           </div>
         </div>
         <div className={width <= 1024 ? "col-12" : "col-5"}>
-          <div className="roomDetail_book_booking px-2 py-4">
-            <Form style={{maxWidth:400}}
+          <div className="roomDetail_book_booking py-4">
+            <Form
+              style={{ maxWidth: 400 }}
               layout="vertical"
               size={width <= 400 ? "small" : width <= 800 ? "default" : "large"}
             >
@@ -264,19 +255,18 @@ export default function RoomDetail(props) {
                 </div>
                 <div className="col-12">
                   <Form.Item label="Select">
-                <Select>
-                  <Select.Option value="1">1 Khách</Select.Option>
-                  <Select.Option value="2">2 Khách</Select.Option>
-                  <Select.Option value="3">3 Khách</Select.Option>
-                  <Select.Option value="4">4 Khách</Select.Option>
-                </Select>
-              </Form.Item>
+                    <Select>
+                      <Select.Option value="1">1 Khách</Select.Option>
+                      <Select.Option value="2">2 Khách</Select.Option>
+                      <Select.Option value="3">3 Khách</Select.Option>
+                      <Select.Option value="4">4 Khách</Select.Option>
+                    </Select>
+                  </Form.Item>
                 </div>
-                <div className="col-6">
-                  <Button style={{backgroundImage:"red"}} type="submit">Submit</Button>
+                <div className="col-12 text-center">
+                  <Button className="w-100 btn_submit">Submit</Button>
                 </div>
               </div>
-              
             </Form>
           </div>
         </div>
@@ -385,75 +375,7 @@ export default function RoomDetail(props) {
                 </div>
               </div>
               <span>Host thân hiện và check in nhà nhanh</span>
-            </div>{" "}
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>{" "}
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>{" "}
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>{" "}
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>{" "}
+            </div>
             <div className="col-6">
               <div className="d-flex">
                 <Avatar
@@ -471,8 +393,81 @@ export default function RoomDetail(props) {
               </div>
               <span>Host thân hiện và check in nhà nhanh</span>
             </div>
+            <div className="col-6">
+              <div className="d-flex">
+                <Avatar
+                  src={
+                    <Image
+                      src="https://joeschmoe.io/api/v1/random"
+                      style={{ width: 32 }}
+                    />
+                  }
+                />
+                <div>
+                  <h5>My Nương</h5>
+                  <span>Tháng 7 năm 2020</span>
+                </div>
+              </div>
+              <span>Host thân hiện và check in nhà nhanh</span>
+            </div>
+            <div className="col-6">
+              <div className="d-flex">
+                <Avatar
+                  src={
+                    <Image
+                      src="https://joeschmoe.io/api/v1/random"
+                      style={{ width: 32 }}
+                    />
+                  }
+                />
+                <div>
+                  <h5>My Nương</h5>
+                  <span>Tháng 7 năm 2020</span>
+                </div>
+              </div>
+              <span>Host thân hiện và check in nhà nhanh</span>
+            </div>
+            <div className="col-6">
+              <div className="d-flex">
+                <Avatar
+                  src={
+                    <Image
+                      src="https://joeschmoe.io/api/v1/random"
+                      style={{ width: 32 }}
+                    />
+                  }
+                />
+                <div>
+                  <h5>My Nương</h5>
+                  <span>Tháng 7 năm 2020</span>
+                </div>
+              </div>
+              <span>Host thân hiện và check in nhà nhanh</span>
+            </div>
+            <div className="col-6">
+              <div className="d-flex">
+                <Avatar
+                  src={
+                    <Image
+                      src="https://joeschmoe.io/api/v1/random"
+                      style={{ width: 32 }}
+                    />
+                  }
+                />
+                <div>
+                  <h5>My Nương</h5>
+                  <span>Tháng 7 năm 2020</span>
+                </div>
+              </div>
+              <span>Host thân hiện và check in nhà nhanh</span>
+            </div>
+            {renderDanhGia(more)}
           </div>
-          <button>Hiển Thị Tất Cả</button>
+          <button onClick={()=>{
+            setMore(more+6)
+          }}
+          className="btn btn-outline-secondary" style={{padding:5,boderRadius:5}}
+          >Hiển Thị Thêm Đánh Giá</button>
         </div>
       </div>
     </div>
