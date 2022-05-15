@@ -1,5 +1,5 @@
 import { xacThucNguoiDung } from "../../services/XacThucNguoiDungService";
-
+//nhat
 export const LoginAction = (nd) => {
   return async (dispatch) => {
     try {
@@ -17,3 +17,4 @@ export const LoginAction = (nd) => {
     }
   };
 };
+//nhat

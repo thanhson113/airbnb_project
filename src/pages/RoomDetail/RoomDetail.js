@@ -52,7 +52,8 @@ export default function RoomDetail(props) {
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
 
   const [width, setWidth] = useState(window.innerWidth);
-  const [more,setMore] = useState(6)
+  const [more, setMore] = useState(6);
+  const [add, setAdd] = useState(6);
 
   //Form setting
 
@@ -66,9 +67,9 @@ export default function RoomDetail(props) {
   }, []);
 
   const renderDanhGia = (more) => {
-    return dsDanhGia?.slice(0,more)?.map((danhGia, index) => {
+    return dsDanhGia?.slice(0, more)?.map((danhGia, index) => {
       return (
-        <div className="col-6">
+        <div className="col-6" key={index}>
           <div className="d-flex">
             <Avatar src={danhGia.userId.avatar} style={{ width: "30px" }} />
             <div className="m-2">
@@ -82,6 +83,74 @@ export default function RoomDetail(props) {
         </div>
       );
     });
+  };
+  const renderTienNghi = (add) => {
+    const tienNghi = [];
+    if (chiTietPhong.kitchen)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={1}>
+          <Restaurant /> <p>Bếp</p>
+        </div>
+      );
+    if (chiTietPhong.cableTV)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={2}>
+          <TvOutlined /> <p>TV với truyền hình cáp tiêu chuẩn</p>
+        </div>
+      );
+
+    if (chiTietPhong.heating)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={3}>
+          <AcUnit /> <p>Điều Hòa Nhiệt Độ</p>
+        </div>
+      );
+    if (chiTietPhong.indoorFireplace)
+      tienNghi.push(
+        <div className="col-6 d-flex " key={4}>
+          <Hvac /> <p>Lò Sưởi trong nhà</p>
+        </div>
+      );
+
+    if (chiTietPhong.wifi)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={5}>
+          <WifiOutlined /> <p>Wifi</p>
+        </div>
+      );
+    if (chiTietPhong.elevator)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={6}>
+          <Elevator /> <p>Thang máy</p>
+        </div>
+      );
+    if (chiTietPhong.pool)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={7}>
+          <i className="fa fa-swimming-pool"></i> <p>Bể bơi sạch đẹp</p>
+        </div>
+      );
+    if (chiTietPhong.hotTub)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={8}>
+          <i className="fa fa-hot-tub"></i> <p>Có bồn nước nóng để thư giản</p>
+        </div>
+      );
+    if (chiTietPhong.dryer)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={9}>
+          <i className="fa fa-wind"></i> <p>Có máy sấy để làm khô tóc</p>
+        </div>
+      );
+    if (chiTietPhong.gym)
+      tienNghi.push(
+        <div className="col-6 d-flex" key={10}>
+          <i className="fa fa-dumbbell"></i>{" "}
+          <p>Có phòng tập hoặc khu tập gym</p>
+        </div>
+      );
+
+    return tienNghi.slice(0, add);
   };
 
   return (
@@ -98,7 +167,7 @@ export default function RoomDetail(props) {
               <div className={`${width <= 768 ? "" : "d-flex"}`}>
                 <div className="d-flex">
                   <StarOutlined />
-                  4,83 ((18) đánh giá)
+                  4,83 {dsDanhGia.length===0?"":` ${dsDanhGia.length} đánh giá`} 
                 </div>
                 <div className="d-flex mx-2">
                   <UserOutlined />
@@ -121,7 +190,11 @@ export default function RoomDetail(props) {
           </div>
         </div>
         <div className="roomDetail_head_photos py-4">
-          <Image src={chiTietPhong.image} className={`img-fluid`} alt="photos" />
+          <Image
+            src={chiTietPhong.image}
+            className={`img-fluid`}
+            alt="photos"
+          />
         </div>
       </div>
 
@@ -131,7 +204,13 @@ export default function RoomDetail(props) {
             <div className="roomDetail_book_detail_head d-flex py-4">
               <div>
                 <h5>Toàn Bộ Căn Hộ Chung Cư . Chủ nhà Phong</h5>
-                <span>6 khách - 2 phòng ngủ - 2 giường - 2 phòng tắm</span>
+                <span className="text-secondary">
+                  {chiTietPhong.guests ? `${chiTietPhong.guests} khách` : ""}{" "}
+                  {chiTietPhong.bedRoom
+                    ? `${chiTietPhong.bedRoom} phòng ngủ`
+                    : ""}{" "}
+                  {chiTietPhong.bath ? `${chiTietPhong.bath} phòng tắm` : ""}
+                </span>
               </div>
               <Avatar
                 src={
@@ -181,47 +260,26 @@ export default function RoomDetail(props) {
               </div>
             </div>
             <div className="roomDetail_book_detail_bot py-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              corrupti sunt ullam quam error nisi cumque accusantium dolorem
-              minus, nihil delectus. Magnam nisi distinctio tenetur sed
-              exercitationem blanditiis minus rerum!
+            {chiTietPhong.description}
             </div>
             <div className="roomDetail_book_detail_last py-4 border-top border-bottom">
               <h4>Tiện Nghi</h4>
               <div className="row">
-                <div className="col-6 d-flex">
-                  <Restaurant /> <p>Bếp</p>
+                {renderTienNghi(add)}
+                <div className="col-12 text-center">
+                  {renderTienNghi(add).length >= add ? (
+                    <button
+                      onClick={() => {
+                        setAdd(10);
+                      }}
+                      className="btn-outline-dark w-50 my-2"
+                    >
+                      Hiển Thị Tất Cả Tiện Ích
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
-                <div className="col-6 d-flex">
-                  <TvOutlined /> <p>TV với truyền hình cáp tiêu chuẩn</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <AcUnit /> <p>Điều Hòa Nhiệt Độ</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <Hvac /> <p>Lò Sưởi trong nhà</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <LocalParking /> <p>Bãi đổ xe thu phí nằm ngoài khuôn viên</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <WifiOutlined /> <p>Wifi</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <Elevator /> <p>Thang máy</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <Yard /> <p>Sân hoặc ban công</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <KitchenIcon /> <p>Tủ Lạnh</p>
-                </div>
-                <div className="col-6 d-flex">
-                  <CalendarOutlined /> <p>Cho phép ở dài hạn</p>
-                </div>
-                <button className="col-8 btn-outline-dark">
-                  Hiển Thị Tất Cả Tiện Ích
-                </button>
               </div>
             </div>
           </div>
@@ -235,7 +293,7 @@ export default function RoomDetail(props) {
             >
               <div className=" d-flex justify-content-between">
                 <span>
-                  <span>$44</span> / đêm
+                  <span>${chiTietPhong.price}</span> / đêm
                 </span>
                 <span className="d-flex">
                   <StarOutlined style={{ color: "pink" }} />{" "}
@@ -272,7 +330,7 @@ export default function RoomDetail(props) {
         </div>
       </div>
 
-      <div className="roomDetail_reviews">
+      <div className="roomDetail_reviews py-4">
         <div className="roomDetail_reviews_rank">
           <div className="d-flex">
             <Icon style={{ color: "hotpink" }} component={HeartOutlined} />{" "}
@@ -357,117 +415,29 @@ export default function RoomDetail(props) {
             </div>
           </div>
         </div>
-        <div className="roomDetail_reviews_comment">
+        <div className="roomDetail_reviews_comment py-4">
           <div className="row">
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>
-            <div className="col-6">
-              <div className="d-flex">
-                <Avatar
-                  src={
-                    <Image
-                      src="https://joeschmoe.io/api/v1/random"
-                      style={{ width: 32 }}
-                    />
-                  }
-                />
-                <div>
-                  <h5>My Nương</h5>
-                  <span>Tháng 7 năm 2020</span>
-                </div>
-              </div>
-              <span>Host thân hiện và check in nhà nhanh</span>
-            </div>
-            {renderDanhGia(more)}
+            {dsDanhGia?.length !== 0 ? (
+              renderDanhGia(more)
+            ) : (
+              <span className="col-12 py-3 text-center text-success">
+                Hiện Tại Chưa Có Đánh Giá
+              </span>
+            )}
           </div>
-          <button onClick={()=>{
-            setMore(more+6)
-          }}
-          className="btn btn-outline-secondary" style={{padding:5,boderRadius:5}}
-          >Hiển Thị Thêm Đánh Giá</button>
+          {dsDanhGia?.length !== 0 && dsDanhGia.length > more ? (
+            <button
+              onClick={() => {
+                setMore(more + 6);
+              }}
+              className="btn btn-outline-secondary"
+              style={{ padding: 5, boderRadius: 5 }}
+            >
+              Hiển Thị Thêm Đánh Giá
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

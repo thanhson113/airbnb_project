@@ -1,4 +1,4 @@
-import { http } from "../util/SettingAxios";
+
 
 class QuanLyViTri {
 
