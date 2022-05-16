@@ -13,7 +13,7 @@ export default function Home() {
     const renderDSViTri = () => {
         return danhSachViTri.map((viTri, index) => {
             return (
-                <li key={viTri._id} onClick={() => { history.push(`/roomlist/${viTri._id}`) }}>
+                <li key={viTri._id} onClick={() => { history.push(`/roomlist/${viTri._id}`) }} style={{cursor:'pointer'}}>
                     <i className="fa fa-map-marker" />
                     <span>{viTri.name}</span>
                 </li>
@@ -38,13 +38,13 @@ export default function Home() {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                <h2>Find Nearby Attractions</h2>
-                                <h4>Expolore top-rated attractions, activities and more</h4>
+                                <h2>Tìm các địa điểm tham quan</h2>
+                                <h4>Khám phá các điểm tham quan, hoạt động được xếp hạng hàng đầu và hơn thế nữa</h4>
                                 <form onSubmit={handleSubmit}>
                                     <div className="main-search-input">
                                         <div className="main-search-input-item location">
                                             <div id="autocomplete-container">
-                                                <input id="autocomplete-input" type="text" placeholder="Location" onChange={handleInput} />
+                                                <input id="autocomplete-input" type="text" placeholder="Địa điểm" onChange={handleInput} />
                                             </div>
                                             <a href="#"><i className="fa fa-map-marker" /></a>
                                             <ul className={`main-search-input-result `} style={{
@@ -54,7 +54,7 @@ export default function Home() {
                                             </ul>
                                         </div>
 
-                                        <button className="button" type="submit">Search</button>
+                                        <button className="button" type="submit">Tìm kiếm</button>
                                     </div>
                                 </form>
                             </div>
@@ -62,10 +62,12 @@ export default function Home() {
                     </div>
                 </div>
                 {/* Video */}
-                <div className="video-container">
-                    <video poster="images/main-search-video-poster.jpg" loop autoPlay muted>
-                        <source src="images/main-search-video.mp4" type="video/mp4" />
-                    </video>
+                <div className="video-container" style={{
+                    backgroundImage: 'url("./images/banner_img.jpg")', 
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    }}>
+                    
                 </div>
             </div>
             {/* Content
@@ -74,7 +76,7 @@ export default function Home() {
                 <div className="row">
                     <div className="col-md-12">
                         <h3 className="headline centered margin-top-75">
-                            Browse Categories
+                           Danh mục
                         </h3>
                     </div>
                 </div>
@@ -131,22 +133,22 @@ export default function Home() {
                     <div className="row">
                         <div className="col-md-12">
                             <h3 className="headline centered margin-bottom-45">
-                                Most Visited Places
-                                <span>Discover top-rated local businesses</span>
+                               Các địa điểm ghé thăm nhiều nhất
+                                <span>Khám phá các địa điểm được xếp hạng cao </span>
                             </h3>
                         </div>
                         <div className="col-md-12">
                             {/* Listing Item */}
-                            <div className="col-md-3">
+                            <div className="col-sm-12 col-md-6 col-lg-3">
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/listing-item-01.jpg" />
-                                            <div className="listing-badge now-open">Now Open</div>
+                                            <img src="images/caurong.jpg" />
+                                            {/* <div className="listing-badge now-open">Now Open</div> */}
                                             <div className="listing-item-content">
-                                                <div className="numerical-rating mid" data-rating="3.5" />
-                                                <h3>Tom's Restaurant</h3>
-                                                <span>964 School Street, New York</span>
+                                                <div className="numerical-rating mid" data-rating="9" />
+                                                <h3>Đà Nẵng</h3>
+                                                <span>Cầu Rồng</span>
                                             </div>
                                             <span className="like-icon" />
                                         </div>
@@ -155,20 +157,20 @@ export default function Home() {
                             </div>
                             {/* Listing Item / End */}
                             {/* Listing Item */}
-                            <div className="col-md-3">
+                            <div className="col-sm-12 col-md-6 col-lg-3">
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/listing-item-02.jpg" />
+                                            <img src="images/hoian.jpg" />
                                             <div className="listing-item-details">
                                                 <ul>
-                                                    <li>Friday, August 10</li>
+                                                    <li>Di tích văn hóa thế giới</li>
                                                 </ul>
                                             </div>
                                             <div className="listing-item-content">
-                                                <div className="numerical-rating high" data-rating={5.0} />
-                                                <h3>Sticky Band</h3>
-                                                <span>Bishop Avenue, New York</span>
+                                                <div className="numerical-rating high" data-rating={9.0} />
+                                                <h3>Hội An</h3>
+                                                <span>Phố cổ Hội An</span>
                                             </div>
                                             <span className="like-icon" />
                                         </div>
@@ -178,20 +180,20 @@ export default function Home() {
                             </div>
                             {/* Listing Item / End */}
                             {/* Listing Item */}
-                            <div className="col-md-3">
+                            <div className="col-sm-12 col-md-6 col-lg-3">
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/listing-item-03.jpg" />
+                                            <img src="images/halong.jpg" />
                                             <div className="listing-item-details">
                                                 <ul>
-                                                    <li>Starting from $59 per night</li>
+                                                    <li>Di sản thiên nhiên thế giới</li>
                                                 </ul>
                                             </div>
                                             <div className="listing-item-content">
-                                                <div className="numerical-rating low" data-rating={2.0} />
-                                                <h3>Hotel Govendor</h3>
-                                                <span>778 Country Street, New York</span>
+                                                <div className="numerical-rating low" data-rating={10.0} />
+                                                <h3>Thành phố Hạ Long</h3>
+                                                <span>Vịnh Hạ Long</span>
                                             </div>
                                             <span className="like-icon" />
                                         </div>
@@ -201,16 +203,16 @@ export default function Home() {
                             </div>
                             {/* Listing Item / End */}
                             {/* Listing Item */}
-                            <div className="col-md-3">
+                            <div className="col-sm-12 col-md-6 col-lg-3">
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/listing-item-04.jpg" />
-                                            <div className="listing-badge now-open">Now Open</div>
+                                            <img src="images/nhatrang.jpg" />
+                                            {/* <div className="listing-badge now-open">Now Open</div> */}
                                             <div className="listing-item-content">
-                                                <div className="numerical-rating high" data-rating={5.0} />
-                                                <h3>Burger House</h3>
-                                                <span>2726 Shinn Street, New York</span>
+                                                <div className="numerical-rating high" data-rating={9.0} />
+                                                <h3>Nha Trang</h3>
+                                                <span>Biển Nha Trang</span>
                                             </div>
                                             <span className="like-icon" />
                                         </div>
@@ -233,7 +235,7 @@ export default function Home() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <h3 className="headline centered margin-bottom-35 margin-top-70">Popular Cities <span>Browse listings in popular places</span></h3>
+                        <h3 className="headline centered margin-bottom-35 margin-top-70">Các thành phố nổi tiếng<span>Danh sách các địa điểm nổi tiếng</span></h3>
                     </div>
                     <div className="col-md-4">
                         {/* Image Box */}
@@ -242,7 +244,7 @@ export default function Home() {
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>New York </h4>
-                                    <span>14 Listings</span>
+                                    <span>14 địa điểm</span>
                                 </div>
 
                         </div>
@@ -253,7 +255,7 @@ export default function Home() {
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>Los Angeles </h4>
-                                    <span>24 Listings</span>
+                                    <span>24 địa điểm</span>
                                 </div>
 
                         </div>
@@ -265,7 +267,7 @@ export default function Home() {
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>San Francisco  </h4>
-                                    <span>12 Listings</span>
+                                    <span>12 địa điểm</span>
                                 </div>
 
                         </div>
@@ -277,7 +279,7 @@ export default function Home() {
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>Miami</h4>
-                                    <span>9 Listings</span>
+                                    <span>9 địa điểm</span>
                                 </div>
 
                         </div>
@@ -289,8 +291,8 @@ export default function Home() {
             <a href="" className="flip-banner parallax margin-top-65" style={{backgroundImage:'url("images/slider-bg-02.jpg")'}} >
             <div className="parallax-overlay" style={{backgroundColor: 'rgb(249, 25, 66)', opacity: 0.85}}></div>
                 <div className="flip-banner-content">
-                    <h2 className="flip-visible">Expolore top-rated attractions nearby</h2>
-                    <h2 className="flip-hidden">Browse Listings <i className="sl sl-icon-arrow-right" /></h2>
+                    <h2 className="flip-visible">Khám phá các điểm tham quan được xếp hạng hàng đầu lân cận</h2>
+                    <h2 className="flip-hidden">Danh sách <i className="sl sl-icon-arrow-right" /></h2>
                 </div>
             </a>
         </div>

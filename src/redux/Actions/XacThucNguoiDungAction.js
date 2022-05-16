@@ -6,7 +6,7 @@ export const LoginAction = (nd) => {
       const result = await xacThucNguoiDung.Login(nd);
       if (result.status === 200){
           console.log(result.data.message);
-          localStorage.setItem("accessToken",result.data.token)
+          localStorage.setItem("accessToken",JSON.stringify(result.data.token))
       }
       
 
