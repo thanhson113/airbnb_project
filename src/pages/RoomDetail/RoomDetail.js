@@ -1,5 +1,8 @@
+/** @format */
+
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Map from "./Map";
 
 import {
   Avatar,
@@ -50,10 +53,17 @@ export default function RoomDetail(props) {
   const dispatch = useDispatch();
   const { dsDanhGia } = useSelector((state) => state.danhGiaReducer);
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
+  const { locationId } = chiTietPhong;
+
+  const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY";
 
   const [width, setWidth] = useState(window.innerWidth);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
+
+  const [ngayDen, setNgayDen] = useState(new Date());
+  const [ngayDi, setNgayDi] = useState(new Date());
+
 
   //Form setting
 
@@ -152,6 +162,47 @@ export default function RoomDetail(props) {
 
     return tienNghi.slice(0, add);
   };
+  const handleInput = (e) => {
+    setNgayDen(new Date(e._d));
+    console.log(e);
+  };
+  const handleInput2 = (e) => {
+    setNgayDi(new Date(e._d));
+    console.log(e);
+  };
+  console.log("ngayden", ngayDen);
+  console.log("ngaydi", ngayDi);
+
+  
+
+  const renderReducer=()=>{
+    const start = new Date(ngayDen); //clone
+    const end = new Date(ngayDi); //clone
+    let dayCount = 0;
+    console.log(end > start);
+    while (end > start) {
+      dayCount++;
+      start.setDate(start.getDate() + 1);
+    }
+
+
+    return <div className="col-12 text-center py-2">
+    <div className="d-flex justify-content-between">
+      <p>
+        {chiTietPhong.price} x {dayCount} đêm
+      </p>{" "}
+      <span>${chiTietPhong.price * dayCount}</span>
+    </div>
+    <div className="d-flex justify-content-between  py-3 border-bottom">
+      <p>Phí dịch vụ</p>{" "}
+      <span>${(chiTietPhong.price * dayCount) / 20}</span>
+    </div>
+    <div className="d-flex justify-content-between py-2">
+      <p>Tổng</p>{" "}
+      <span>${(chiTietPhong.price * dayCount * 95) / 100}</span>
+    </div>
+  </div>
+  }
 
   return (
     <div className="container roomDetail ">
@@ -166,14 +217,19 @@ export default function RoomDetail(props) {
             <div>
               <div className={`${width <= 768 ? "" : "d-flex"}`}>
                 <div className="d-flex">
-                  <StarOutlined />
-                  4,83 {dsDanhGia.length===0?"":` ${dsDanhGia.length} đánh giá`} 
+                  <StarOutlined /> {locationId?.valueate}
+                  {dsDanhGia.length === 0
+                    ? ""
+                    : ` ${dsDanhGia.length} đánh giá`}
                 </div>
                 <div className="d-flex mx-2">
                   <UserOutlined />
                   Chủ nhà siêu cấp
                 </div>
-                <a>Thành Phố Vũng Tàu, Bà Rịa- Vũng Tàu, Việt Nam</a>
+                <a>
+                  {locationId?.name}, {locationId?.province},{" "}
+                  {locationId?.country}
+                </a>
               </div>
             </div>
 
@@ -190,11 +246,7 @@ export default function RoomDetail(props) {
           </div>
         </div>
         <div className="roomDetail_head_photos py-4">
-          <Image
-            src={chiTietPhong.image}
-            className={`img-fluid`}
-            alt="photos"
-          />
+          <Image src={locationId?.image} className={`img-fluid`} alt="photos" />
         </div>
       </div>
 
@@ -260,7 +312,7 @@ export default function RoomDetail(props) {
               </div>
             </div>
             <div className="roomDetail_book_detail_bot py-4">
-            {chiTietPhong.description}
+              {chiTietPhong.description}
             </div>
             <div className="roomDetail_book_detail_last py-4 border-top border-bottom">
               <h4>Tiện Nghi</h4>
@@ -297,23 +349,42 @@ export default function RoomDetail(props) {
                 </span>
                 <span className="d-flex">
                   <StarOutlined style={{ color: "pink" }} />{" "}
-                  <span style={{ color: "black" }}>4,83 đánh giá</span>
+                  <span style={{ color: "black" }}>
+                    {locationId?.valueate}{" "}
+                    {dsDanhGia.length === 0
+                      ? ""
+                      : ` ${dsDanhGia.length} đánh giá`}
+                  </span>
                 </span>
               </div>
               <div className="row">
                 <div className="col-6">
                   <Form.Item label="Ngày Đến">
-                    <DatePicker name="from" />
+                    <DatePicker
+                      placeholder="Ngày đến"
+                      name="form"
+                      id="ngayDen"
+                      onChange={(e) => {
+                        handleInput(e);
+                      }}
+                    />
                   </Form.Item>
                 </div>
                 <div className="col-6">
                   <Form.Item label="Ngày Đi">
-                    <DatePicker name="to" />
+                    <DatePicker
+                      placeholder="Ngày đi"
+                      id="ngayDi"
+                      name="to"
+                      onChange={(e) => {
+                        handleInput2(e);
+                      }}
+                    />
                   </Form.Item>
                 </div>
                 <div className="col-12">
                   <Form.Item label="Select">
-                    <Select>
+                    <Select onChange={(a) => {}}>
                       <Select.Option value="1">1 Khách</Select.Option>
                       <Select.Option value="2">2 Khách</Select.Option>
                       <Select.Option value="3">3 Khách</Select.Option>
@@ -321,20 +392,40 @@ export default function RoomDetail(props) {
                     </Select>
                   </Form.Item>
                 </div>
-                <div className="col-12 text-center">
+                <div className="col-12 text-center py-2">
                   <Button className="w-100 btn_submit">Submit</Button>
                 </div>
+                {renderReducer()}
               </div>
             </Form>
           </div>
         </div>
       </div>
-
+      <div className="roomdetail_map">
+        {/* TODO: */}
+        <Map
+          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={
+            <div
+              style={{
+                height: `90vh`,
+                margin: `auto`,
+                border: "2px solid black",
+              }}
+            />
+          }
+          mapElement={<div style={{ height: `100%` }} />}
+        />
+      </div>
       <div className="roomDetail_reviews py-4">
         <div className="roomDetail_reviews_rank">
           <div className="d-flex">
             <Icon style={{ color: "hotpink" }} component={HeartOutlined} />{" "}
-            <h4>4,83(18 Đánh Giá)</h4>
+            <h4>
+              {locationId?.valueate}{" "}
+              {dsDanhGia.length === 0 ? "" : ` ${dsDanhGia.length} đánh giá`}
+            </h4>
           </div>
           <div className="row">
             <div className="col-6">
