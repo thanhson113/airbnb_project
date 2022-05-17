@@ -1,5 +1,6 @@
 
 import logo from './logo.svg';
+import 'antd/dist/antd.css';
 import './App.css';
 import './assets/css/main-color.css'
 import {Router,Route,Switch} from 'react-router-dom'
@@ -16,6 +17,8 @@ import AdminTemplate from './templates/AdminTemplate/AdminTemplate';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import Booking from './pages/Booking/Booking';
 import Profile from './pages/Profile/Profile';
+import User from './pages/Admin/User/User';
+
 
 export const history = createBrowserHistory();
 function App() {
@@ -32,7 +35,7 @@ function App() {
           <UserTemplate path="/login" component={Login}/>
           <UserTemplate path="/register" component={Register}/>
           <AdminTemplate path="/admin" component={Dashboard}/>
-
+          <AdminTemplate path="/userad" component={User}/>
           
           <HomeTemplate path="/" component={Home}/>
       </Switch>
