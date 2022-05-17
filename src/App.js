@@ -20,6 +20,9 @@ import Profile from './pages/Profile/Profile';
 import User from './pages/Admin/User/User';
 
 
+
+import './App.css';
+
 export const history = createBrowserHistory();
 function App() {
   return (
