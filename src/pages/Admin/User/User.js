@@ -96,6 +96,8 @@ export default function User() {
                 enterButton={<SearchOutlined />}
                 size="large"
                 onSearch={onSearch}
+
+                
             />
             <Table columns={columns} dataSource={data} onChange={onSearch} />
         </div>
