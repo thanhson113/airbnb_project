@@ -35,39 +35,84 @@ import {
 } from "@mui/icons-material";
 
 import { DSDanhGiaTheoPhongAction } from "../../redux/Actions/DanhGiaAction";
-import { ThongTinChiTietPhongAction } from "../../redux/Actions/PhongThueAction";
+import { DatPhongAction, ThongTinChiTietPhongAction } from "../../redux/Actions/PhongThueAction";
+import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
+
 
 import moment from "moment";
 
 import "../../asset/css/roomdetail.css";
+
 
 export default function RoomDetail(props) {
   const dispatch = useDispatch();
   const { dsDanhGia } = useSelector((state) => state.danhGiaReducer);
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { locationId } = chiTietPhong;
+  const { dsVeIdroom } = useSelector((state) => state.VeReducer);
+  console.log(dsVeIdroom);
 
-  const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY";
+  const { RangePicker } = DatePicker;
+  const [dates, setDates] = useState([]);
+  const [hackValue, setHackValue] = useState();
+  const [value, setValue] = useState();
+  let countDate = 0;
+
+  const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY"; //map
 
   const [width, setWidth] = useState(window.innerWidth);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
 
-  const [ngayDen, setNgayDen] = useState();
-  const [ngayDi, setNgayDi] = useState();
-  let dayCount = 0;
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   //Form setting
+  console.log(value, "value");
 
   useEffect(() => {
     dispatch(ThongTinChiTietPhongAction(props.match.params.id));
     dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
+    dispatch(layDSVeTheoPhongAction(props.match.params.id));
 
     const handleWindowResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
+  //datepicker
+  // const disableDateRanges = (range = { startDate: false, endDate: false }) => {
+  //   const { startDate, endDate } = range;
+  //   return function disabledDate(current) {
+  //     let startCheck = true;
+  //     let endCheck = true;
+  //     if (startDate) {
+  //       startCheck = current && current > moment(startDate, "YYYY-MM-DD");
+  //     }
+  //     if (endDate) {
+  //       endCheck = current && current < moment(endDate, "YYYY-MM-DD");
+  //     }
+  //     return startDate && startCheck && endDate && endCheck;
+  //   };
+  // };
+  const disableDate = (current) => {
+    if (!dates || dates.length === 0) {
+      return current && current < moment().endOf("day");
+    }
+    //Số ngày đat it nhat 3 ngay
+    const tooLate = dates[0] && current.diff(dates[0], "days") < 3;
+    const tooEarly =
+      (current && current < moment().endOf("day")) ||
+      (dates[1] && dates[1].diff(current, "days") < 3);
+    return tooEarly || tooLate;
+  };
+  const onOpenChange = (open) => {
+    if (open) {
+      console.log("onOpenChange");
+      setHackValue([]);
+      setDates([]);
+    } else {
+      setHackValue(undefined);
+    }
+  };
 
   const renderDanhGia = (more) => {
     return dsDanhGia?.slice(0, more)?.map((danhGia, index) => {
@@ -92,39 +137,57 @@ export default function RoomDetail(props) {
     if (chiTietPhong.kitchen)
       tienNghi.push(
         <div className="col-6 d-flex" key={1}>
-         <i><Restaurant /></i>  <p>Bếp</p>
+          <i>
+            <Restaurant />
+          </i>{" "}
+          <p>Bếp</p>
         </div>
       );
     if (chiTietPhong.cableTV)
       tienNghi.push(
         <div className="col-6 d-flex" key={2}>
-        <i><TvOutlined /></i>   <p>TV với truyền hình cáp tiêu chuẩn</p>
+          <i>
+            <TvOutlined />
+          </i>{" "}
+          <p>TV với truyền hình cáp tiêu chuẩn</p>
         </div>
       );
 
     if (chiTietPhong.heating)
       tienNghi.push(
         <div className="col-6 d-flex" key={3}>
-         <i><AcUnit /></i>  <p>Điều Hòa Nhiệt Độ</p>
+          <i>
+            <AcUnit />
+          </i>{" "}
+          <p>Điều Hòa Nhiệt Độ</p>
         </div>
       );
     if (chiTietPhong.indoorFireplace)
       tienNghi.push(
         <div className="col-6 d-flex " key={4}>
-        <i><Hvac /></i>   <p>Lò Sưởi trong nhà</p>
+          <i>
+            <Hvac />
+          </i>{" "}
+          <p>Lò Sưởi trong nhà</p>
         </div>
       );
 
     if (chiTietPhong.wifi)
       tienNghi.push(
         <div className="col-6 d-flex" key={5}>
-        <i><WifiOutlined /></i>   <p>Wifi</p>
+          <i>
+            <WifiOutlined />
+          </i>{" "}
+          <p>Wifi</p>
         </div>
       );
     if (chiTietPhong.elevator)
       tienNghi.push(
         <div className="col-6 d-flex" key={6}>
-         <i><Elevator /></i>  <p>Thang máy</p>
+          <i>
+            <Elevator />
+          </i>{" "}
+          <p>Thang máy</p>
         </div>
       );
     if (chiTietPhong.pool)
@@ -155,42 +218,40 @@ export default function RoomDetail(props) {
 
     return tienNghi.slice(0, add);
   };
-  const handleInput = (e) => {
-    setNgayDen(new Date(e._d));
-    console.log(e);
-  };
-  const handleInput2 = (e) => {
-    setNgayDi(new Date(e._d));
-    console.log(e);
-  };
+  // const checkIn = "2022-05-23T05:00:00.000Z";
+  // const checkOut = "2022-05-26T05:00:00.000Z";
 
   const renderReducer = () => {
-    const start = new Date(ngayDen); //clone
-    const end = new Date(ngayDi); //clone
+    if (value?.length === 0 || !value)
+      return <div>Vui lòng thực hiện hết thao tác đặt phòng</div>;
+    else {
+      
+      const endDay = new Date(value[1]);
+      const startDay = new Date(value[0]);
+      while (endDay > startDay) {
+        countDate++;
+        startDay.setDate(startDay.getDate() + 1);
+      }
 
-    console.log(end > start);
-    while (end > start) {
-      dayCount++;
-      start.setDate(start.getDate() + 1);
+      return (
+        <div className="col-12 text-center py-2">
+          <div className="d-flex justify-content-between">
+            <p>
+              {chiTietPhong.price} x {countDate} đêm
+            </p>{" "}
+            <span>${chiTietPhong.price * countDate}</span>
+          </div>
+          <div className="d-flex justify-content-between  py-3 border-bottom">
+            <p>Phí dịch vụ</p>{" "}
+            <span>${(chiTietPhong.price * countDate) / 20}</span>
+          </div>
+          <div className="d-flex justify-content-between py-2">
+            <p>Tổng</p>{" "}
+            <span>${(chiTietPhong.price * countDate * 95) / 100}</span>
+          </div>
+        </div>
+      );
     }
-
-    return (
-      <div className="col-12 text-center py-2">
-        <div className="d-flex justify-content-between">
-          <p>
-            {chiTietPhong.price} x {dayCount} đêm
-          </p>{" "}
-          <span>${chiTietPhong.price * dayCount}</span>
-        </div>
-        <div className="d-flex justify-content-between  py-3 border-bottom">
-          <p>Phí dịch vụ</p>{" "}
-          <span>${(chiTietPhong.price * dayCount) / 20}</span>
-        </div>
-        <div className="d-flex justify-content-between py-2">
-          <p>Tổng</p> <span>${(chiTietPhong.price * dayCount * 95) / 100}</span>
-        </div>
-      </div>
-    );
   };
   const showModal = () => {
     setIsModalVisible(true);
@@ -204,17 +265,26 @@ export default function RoomDetail(props) {
     setIsModalVisible(false);
   };
 
-  function confirm() {
+  const confirm = () => {
     Modal.confirm({
       title: "Bạn Muốn Đặt Vé Chứ",
       icon: <ExclamationCircleOutlined />,
       content: (
-        <p>Tổng Chi phí là: {(chiTietPhong.price * dayCount * 95) / 100}</p>
+        <p>Tổng Chi phí là: {(chiTietPhong.price * countDate * 95) / 100}</p>
       ),
       okText: "Vâng",
+      onOk() {
+        const ve ={
+          roomId:props.match.params.id,
+          checkIn:moment(value[0]).format(),
+          checkOut:moment(value[1]).format()
+        }
+        console.log(ve);
+        dispatch(DatPhongAction(ve))
+      },
       cancelText: "Để Suy Nghĩ Lại",
     });
-  }
+  };
 
   return (
     <div className="container roomDetail ">
@@ -377,34 +447,29 @@ export default function RoomDetail(props) {
                 </div>
               </div>
               <div className="row">
-                <div className="col-6">
-                  <Form.Item label="Ngày Đến">
-                    <DatePicker
-                      placeholder="Ngày đến"
-                      name="form"
-                      id="ngayDen"
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-                <div className="col-6">
-                  <Form.Item label="Ngày Đi">
-                    <DatePicker
-                      placeholder="Ngày đi"
-                      id="ngayDi"
-                      name="to"
-                      onChange={(e) => {
-                        handleInput2(e);
-                      }}
-                    />
-                  </Form.Item>
-                </div>
                 <div className="col-12">
+                  <Form.Item>
+                    <label className="w-100 text-center">
+                      Ngày Đến Và Ngày Đi
+                    </label>
+                    <RangePicker
+                      value={hackValue || value}
+                      format="YYYY-MM-DD"
+                      disabledDate={disableDate}
+                      onCalendarChange={(val) => setDates(val)}
+                      onChange={(val) => setValue(val)}
+                      onOpenChange={onOpenChange}
+                    />
+                    {/* <RangePicker
+                      format="YYYY-MM-DD"
+                      disabledDate={disableDateRanges({
+                        endDate: checkOut,
+                        startDate: checkIn,
+                      })}
+                    /> */}
+                  </Form.Item>
                   <Form.Item label="Select">
                     <Select onChange={(a) => {}} defaultValue={{ value: "1" }}>
-                      {}
                       <Select.Option value="1">1 Khách</Select.Option>
                       <Select.Option value="2">2 Khách</Select.Option>
                       <Select.Option value="3">3 Khách</Select.Option>
@@ -413,11 +478,13 @@ export default function RoomDetail(props) {
                   </Form.Item>
                 </div>
                 <div className="col-12 text-center py-2">
-                  <Button onClick={()=>{
-                    if(dayCount!==0)confirm()
-                    else
-                    alert("Chưa Chọn Ngày")
-                  }} className="w-100 btn_submit">
+                  <Button
+                    onClick={() => {
+                      if (value?.length === 2) confirm();
+                      else alert("Chưa Chọn Ngày");
+                    }}
+                    className="w-100 btn_submit"
+                  >
                     Submit
                   </Button>
                 </div>
@@ -562,7 +629,7 @@ export default function RoomDetail(props) {
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Wellcome"
-        cancelText={<i class="fab fa-angellist"></i>}
+        cancelText={<i className="fab fa-angellist"></i>}
       >
         <Image
           src={locationId?.image}
