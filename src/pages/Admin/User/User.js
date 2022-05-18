@@ -1,23 +1,53 @@
-import React from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Table, Button, Input, Tag, Space } from 'antd';
 import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
+import { useDispatch, useSelector } from 'react-redux';
+import { layDanhSachNguoiDungAction } from '../../../redux/Actions/NguoiDungAction';
+import { NavLink } from 'react-router-dom';
 
 const { Search } = Input;
 
 export default function User() {
+    let { mangNguoiDung } = useSelector(state => state.nguoiDungReducer)
+    console.log(mangNguoiDung);
+
+    let dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(layDanhSachNguoiDungAction())
+    }, [])
 
     const columns = [
+        {
+            title: 'ID',
+            dataIndex: '_id',
+            key: 'id',
+        },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: text => <a>{text}</a>,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (text, user) => {
+                return <Fragment>
+                    <img src={user.avatar} alt={user.name} width={50} height={50} onError={(e) => { e.target.onError = null; e.target.src = 'https://i.pravatar.cc/50' }} />
+                </Fragment>
+            }
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone',
+            key: 'phone',
         },
         {
             title: 'Address',
@@ -25,81 +55,40 @@ export default function User() {
             key: 'address',
         },
         {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: tags => (
-                <>
-                    {tags.map(tag => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
             title: 'Action',
-            key: 'action',
-            render: (text, record) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
-                </Space>
-            ),
+            dataIndex: 'action',
+            render:(text, user) => {
+                return <Fragment>
+                    <NavLink key={1} to={`/admin/user/edit/${user._id}`} style={{ color: 'blue', fontSize: 25, paddingRight: 10 }}><EditOutlined /></NavLink>
+                </Fragment>
+            }
         },
     ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
+    const data = mangNguoiDung;
 
     const onSearch = () => {
 
     }
 
+    function onChange(pagination, filters, sorter, extra) {
+        console.log("params", pagination, filters, sorter, extra);
+    }
+
     return (
         <div className="dashboard-content">
-            <h2>Quản lý người dùng</h2>
+            <h2>Admin/User</h2>
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
-                history.push('/admin/films/addnew')
-            }}>Thêm phim</Button>
+                // history.push('/admin/films/addnew')
+            }}>Add new</Button>
             <Search
                 className='mb-4'
-                placeholder="Tìm kiếm phim"
+                placeholder="Search"
                 enterButton={<SearchOutlined />}
                 size="large"
                 onSearch={onSearch}
-
-                
             />
-            <Table columns={columns} dataSource={data} onChange={onSearch} />
+            <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )
 }
