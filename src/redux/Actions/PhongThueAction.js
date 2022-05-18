@@ -20,4 +20,21 @@ export const ThongTinChiTietPhongAction = (id) => {
     }
   };
 };
+
+export const DatPhongAction = (ve) => {
+  return  async (dispatch) => {
+    try {
+      const result = await quanLyPhongChoThue.DatVe(ve)
+      if (result.status === 200) {
+        console.log("dat ve thanh cong");
+        console.log(result);
+        console.log(result.data);
+        console.log(result.data.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
 //Nhat final

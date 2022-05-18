@@ -44,7 +44,6 @@ export default function Login() {
   return (
     <div className="container-fluid">
       <div className="login-box" style={{ width: wbg }}>
-        {console.log(user)}
         <h2>SIGN IN</h2>
         <form onSubmit={(values)=>{
             handleSubmit(values)

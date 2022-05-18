@@ -8,14 +8,75 @@
 }
 .btn_submit{
   background-image: linear-gradient(to right,  #E233FF , #FF6B00);
+  border-radius: 5px;
   color: white;
   transition: all 0.5s;
 }
+.btn_submit:focus{
+  background-image: linear-gradient(to right,  #F14658 , #DC2537);
+  color: white;
+}
 .btn_submit:hover{
   background-image: linear-gradient(to right,  #F14658 , #DC2537);
-  color: wheat;
-  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.381);
+  color: #fff;
+  /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.381); */
 }
+
+/* Button thêm chi tiet  */
+.custom-btn {
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+} 
+
+.btn_Add {
+  border: none;
+  color: #000;
+}
+.btn_Add:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  left: 0;
+  direction: rtl;
+  z-index: -1;
+  box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+  transition: all 0.3s ease;
+}
+.btn_Add:hover {
+  color: #000;
+}
+.btn_Add:hover:after {
+  left: auto;
+  right: 0;
+  width: 100%;
+}
+.btn_Add:active {
+  top: 2px;
+}
+
+
+
+
+
 /* Responsive */
 /* Iphone*/
 @media screen and (min-width: 375px) {

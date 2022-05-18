@@ -1,24 +1,18 @@
 /** @format */
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Map from "./Map";
 
 import {
   Avatar,
   Button,
-  Cascader,
   DatePicker,
   Form,
   Image,
-  Input,
-  InputNumber,
+  Modal,
   Progress,
-  Radio,
-  Row,
   Select,
-  Switch,
-  TreeSelect,
 } from "antd";
 import Icon, {
   CalendarOutlined,
@@ -28,53 +22,97 @@ import Icon, {
   ShareAltOutlined,
   StarOutlined,
   TrophyOutlined,
-  UserOutlined,
   WifiOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import KitchenIcon from "@mui/icons-material/Kitchen";
+
 import {
   TvOutlined,
   AcUnit,
   Hvac,
-  LocalParking,
   Elevator,
-  Yard,
   Restaurant,
 } from "@mui/icons-material";
 
 import { DSDanhGiaTheoPhongAction } from "../../redux/Actions/DanhGiaAction";
-import { ThongTinChiTietPhongAction } from "../../redux/Actions/PhongThueAction";
+import { DatPhongAction, ThongTinChiTietPhongAction } from "../../redux/Actions/PhongThueAction";
+import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
+
 
 import moment from "moment";
 
 import "../../asset/css/roomdetail.css";
+
 
 export default function RoomDetail(props) {
   const dispatch = useDispatch();
   const { dsDanhGia } = useSelector((state) => state.danhGiaReducer);
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { locationId } = chiTietPhong;
+  const { dsVeIdroom } = useSelector((state) => state.VeReducer);
+  console.log(dsVeIdroom);
 
-  const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY";
+  const { RangePicker } = DatePicker;
+  const [dates, setDates] = useState([]);
+  const [hackValue, setHackValue] = useState();
+  const [value, setValue] = useState();
+  let countDate = 0;
+
+  const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY"; //map
 
   const [width, setWidth] = useState(window.innerWidth);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
 
-  const [ngayDen, setNgayDen] = useState(new Date());
-  const [ngayDi, setNgayDi] = useState(new Date());
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   //Form setting
+  console.log(value, "value");
 
   useEffect(() => {
     dispatch(ThongTinChiTietPhongAction(props.match.params.id));
     dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
+    dispatch(layDSVeTheoPhongAction(props.match.params.id));
 
     const handleWindowResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
+  //datepicker
+  // const disableDateRanges = (range = { startDate: false, endDate: false }) => {
+  //   const { startDate, endDate } = range;
+  //   return function disabledDate(current) {
+  //     let startCheck = true;
+  //     let endCheck = true;
+  //     if (startDate) {
+  //       startCheck = current && current > moment(startDate, "YYYY-MM-DD");
+  //     }
+  //     if (endDate) {
+  //       endCheck = current && current < moment(endDate, "YYYY-MM-DD");
+  //     }
+  //     return startDate && startCheck && endDate && endCheck;
+  //   };
+  // };
+  const disableDate = (current) => {
+    if (!dates || dates.length === 0) {
+      return current && current < moment().endOf("day");
+    }
+    //Số ngày đat it nhat 3 ngay
+    const tooLate = dates[0] && current.diff(dates[0], "days") < 3;
+    const tooEarly =
+      (current && current < moment().endOf("day")) ||
+      (dates[1] && dates[1].diff(current, "days") < 3);
+    return tooEarly || tooLate;
+  };
+  const onOpenChange = (open) => {
+    if (open) {
+      console.log("onOpenChange");
+      setHackValue([]);
+      setDates([]);
+    } else {
+      setHackValue(undefined);
+    }
+  };
 
   const renderDanhGia = (more) => {
     return dsDanhGia?.slice(0, more)?.map((danhGia, index) => {
@@ -99,39 +137,57 @@ export default function RoomDetail(props) {
     if (chiTietPhong.kitchen)
       tienNghi.push(
         <div className="col-6 d-flex" key={1}>
-          <Restaurant /> <p>Bếp</p>
+          <i>
+            <Restaurant />
+          </i>{" "}
+          <p>Bếp</p>
         </div>
       );
     if (chiTietPhong.cableTV)
       tienNghi.push(
         <div className="col-6 d-flex" key={2}>
-          <TvOutlined /> <p>TV với truyền hình cáp tiêu chuẩn</p>
+          <i>
+            <TvOutlined />
+          </i>{" "}
+          <p>TV với truyền hình cáp tiêu chuẩn</p>
         </div>
       );
 
     if (chiTietPhong.heating)
       tienNghi.push(
         <div className="col-6 d-flex" key={3}>
-          <AcUnit /> <p>Điều Hòa Nhiệt Độ</p>
+          <i>
+            <AcUnit />
+          </i>{" "}
+          <p>Điều Hòa Nhiệt Độ</p>
         </div>
       );
     if (chiTietPhong.indoorFireplace)
       tienNghi.push(
         <div className="col-6 d-flex " key={4}>
-          <Hvac /> <p>Lò Sưởi trong nhà</p>
+          <i>
+            <Hvac />
+          </i>{" "}
+          <p>Lò Sưởi trong nhà</p>
         </div>
       );
 
     if (chiTietPhong.wifi)
       tienNghi.push(
         <div className="col-6 d-flex" key={5}>
-          <WifiOutlined /> <p>Wifi</p>
+          <i>
+            <WifiOutlined />
+          </i>{" "}
+          <p>Wifi</p>
         </div>
       );
     if (chiTietPhong.elevator)
       tienNghi.push(
         <div className="col-6 d-flex" key={6}>
-          <Elevator /> <p>Thang máy</p>
+          <i>
+            <Elevator />
+          </i>{" "}
+          <p>Thang máy</p>
         </div>
       );
     if (chiTietPhong.pool)
@@ -162,53 +218,79 @@ export default function RoomDetail(props) {
 
     return tienNghi.slice(0, add);
   };
-  const handleInput = (e) => {
-    setNgayDen(new Date(e._d));
-    console.log(e);
-  };
-  const handleInput2 = (e) => {
-    setNgayDi(new Date(e._d));
-    console.log(e);
-  };
-  console.log("ngayden", ngayDen);
-  console.log("ngaydi", ngayDi);
+  // const checkIn = "2022-05-23T05:00:00.000Z";
+  // const checkOut = "2022-05-26T05:00:00.000Z";
 
-  
+  const renderReducer = () => {
+    if (value?.length === 0 || !value)
+      return <div>Vui lòng thực hiện hết thao tác đặt phòng</div>;
+    else {
+      
+      const endDay = new Date(value[1]);
+      const startDay = new Date(value[0]);
+      while (endDay > startDay) {
+        countDate++;
+        startDay.setDate(startDay.getDate() + 1);
+      }
 
-  const renderReducer=()=>{
-    const start = new Date(ngayDen); //clone
-    const end = new Date(ngayDi); //clone
-    let dayCount = 0;
-    console.log(end > start);
-    while (end > start) {
-      dayCount++;
-      start.setDate(start.getDate() + 1);
+      return (
+        <div className="col-12 text-center py-2">
+          <div className="d-flex justify-content-between">
+            <p>
+              {chiTietPhong.price} x {countDate} đêm
+            </p>{" "}
+            <span>${chiTietPhong.price * countDate}</span>
+          </div>
+          <div className="d-flex justify-content-between  py-3 border-bottom">
+            <p>Phí dịch vụ</p>{" "}
+            <span>${(chiTietPhong.price * countDate) / 20}</span>
+          </div>
+          <div className="d-flex justify-content-between py-2">
+            <p>Tổng</p>{" "}
+            <span>${(chiTietPhong.price * countDate * 95) / 100}</span>
+          </div>
+        </div>
+      );
     }
+  };
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
 
-    return <div className="col-12 text-center py-2">
-    <div className="d-flex justify-content-between">
-      <p>
-        {chiTietPhong.price} x {dayCount} đêm
-      </p>{" "}
-      <span>${chiTietPhong.price * dayCount}</span>
-    </div>
-    <div className="d-flex justify-content-between  py-3 border-bottom">
-      <p>Phí dịch vụ</p>{" "}
-      <span>${(chiTietPhong.price * dayCount) / 20}</span>
-    </div>
-    <div className="d-flex justify-content-between py-2">
-      <p>Tổng</p>{" "}
-      <span>${(chiTietPhong.price * dayCount * 95) / 100}</span>
-    </div>
-  </div>
-  }
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const confirm = () => {
+    Modal.confirm({
+      title: "Bạn Muốn Đặt Vé Chứ",
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <p>Tổng Chi phí là: {(chiTietPhong.price * countDate * 95) / 100}</p>
+      ),
+      okText: "Vâng",
+      onOk() {
+        const ve ={
+          roomId:props.match.params.id,
+          checkIn:moment(value[0]).format(),
+          checkOut:moment(value[1]).format()
+        }
+        console.log(ve);
+        dispatch(DatPhongAction(ve))
+      },
+      cancelText: "Để Suy Nghĩ Lại",
+    });
+  };
 
   return (
     <div className="container roomDetail ">
       <div className="roomDetail_head">
         <div className="roomDetail_head_tittle">
-          <h4>{chiTietPhong.name}</h4>
+          <h3>{chiTietPhong.name}</h3>
           <div
             className={`${
               width <= 1024 ? "" : "d-flex"
@@ -217,16 +299,27 @@ export default function RoomDetail(props) {
             <div>
               <div className={`${width <= 768 ? "" : "d-flex"}`}>
                 <div className="d-flex">
-                  <StarOutlined /> {locationId?.valueate}
-                  {dsDanhGia.length === 0
-                    ? ""
-                    : ` ${dsDanhGia.length} đánh giá`}
+                  <a
+                    href="#rank"
+                    className="d-flex text-dark text-decoration-underline"
+                  >
+                    <StarOutlined /> {locationId?.valueate}
+                  </a>
+                  <a
+                    href="#comment"
+                    className="ml-1 text-dark text-decoration-underline"
+                  >
+                    {dsDanhGia.length === 0
+                      ? " "
+                      : ` ${dsDanhGia.length} đánh giá`}
+                  </a>
                 </div>
-                <div className="d-flex mx-2">
-                  <UserOutlined />
-                  Chủ nhà siêu cấp
-                </div>
-                <a>
+
+                <a
+                  onClick={showModal}
+                  className="px-2 text-dark text-decoration-text-decoration-underline"
+                >
+                  {" "}
                   {locationId?.name}, {locationId?.province},{" "}
                   {locationId?.country}
                 </a>
@@ -234,44 +327,42 @@ export default function RoomDetail(props) {
             </div>
 
             <div className="d-flex mx-2">
-              <a className="d-flex" href="">
+              <a className="d-flex text-success">
                 <ShareAltOutlined /> Chia Sẽ
               </a>
 
-              <div className="d-flex mx-2">
+              <a className="d-flex mx-2 text-danger">
                 <HeartOutlined />
                 Lưu
-              </div>
+              </a>
             </div>
           </div>
         </div>
         <div className="roomDetail_head_photos py-4">
-          <Image src={locationId?.image} className={`img-fluid`} alt="photos" />
+          <Image
+            src={chiTietPhong?.image}
+            className={`img-fluid`}
+            style={{ height: "100%", width: "100vw" }}
+            alt="photos"
+          />
         </div>
       </div>
 
       <div className="roomDetail_book row">
         <div className={width <= 1024 ? "col-12" : "col-7"}>
           <div className="roomDetail_book_detail">
-            <div className="roomDetail_book_detail_head d-flex py-4">
-              <div>
-                <h5>Toàn Bộ Căn Hộ Chung Cư . Chủ nhà Phong</h5>
-                <span className="text-secondary">
-                  {chiTietPhong.guests ? `${chiTietPhong.guests} khách` : ""}{" "}
-                  {chiTietPhong.bedRoom
-                    ? `${chiTietPhong.bedRoom} phòng ngủ`
-                    : ""}{" "}
-                  {chiTietPhong.bath ? `${chiTietPhong.bath} phòng tắm` : ""}
-                </span>
-              </div>
-              <Avatar
-                src={
-                  <Image
-                    src="https://joeschmoe.io/api/v1/random"
-                    style={{ width: 32 }}
-                  />
-                }
-              />
+            <div className="roomDetail_book_detail_head py-4">
+              <h4>
+                {chiTietPhong.name} Tại {locationId?.name},{" "}
+                {locationId?.province}, {locationId?.country}
+              </h4>
+              <span className="text-secondary">
+                {chiTietPhong.guests ? `${chiTietPhong.guests} khách` : ""}{" "}
+                {chiTietPhong.bedRoom
+                  ? `${chiTietPhong.bedRoom} phòng ngủ`
+                  : ""}{" "}
+                {chiTietPhong.bath ? `${chiTietPhong.bath} phòng tắm` : ""}
+              </span>
             </div>
             <div className="roomDetail_book_detail_mid py-4 border-top border-bottom">
               <div className="d-flex">
@@ -315,7 +406,7 @@ export default function RoomDetail(props) {
               {chiTietPhong.description}
             </div>
             <div className="roomDetail_book_detail_last py-4 border-top border-bottom">
-              <h4>Tiện Nghi</h4>
+              <h4 className="my-1">Tiện Nghi</h4>
               <div className="row">
                 {renderTienNghi(add)}
                 <div className="col-12 text-center">
@@ -324,7 +415,7 @@ export default function RoomDetail(props) {
                       onClick={() => {
                         setAdd(10);
                       }}
-                      className="btn-outline-dark w-50 my-2"
+                      className="custom-btn btn_Add"
                     >
                       Hiển Thị Tất Cả Tiện Ích
                     </button>
@@ -339,6 +430,7 @@ export default function RoomDetail(props) {
         <div className={width <= 1024 ? "col-12" : "col-5"}>
           <div className="roomDetail_book_booking py-4">
             <Form
+              className="m-auto"
               style={{ maxWidth: 400 }}
               layout="vertical"
               size={width <= 400 ? "small" : width <= 800 ? "default" : "large"}
@@ -347,44 +439,37 @@ export default function RoomDetail(props) {
                 <span>
                   <span>${chiTietPhong.price}</span> / đêm
                 </span>
-                <span className="d-flex">
+                <div className="d-flex">
                   <StarOutlined style={{ color: "pink" }} />{" "}
                   <span style={{ color: "black" }}>
                     {locationId?.valueate}{" "}
-                    {dsDanhGia.length === 0
-                      ? ""
-                      : ` ${dsDanhGia.length} đánh giá`}
                   </span>
-                </span>
+                </div>
               </div>
               <div className="row">
-                <div className="col-6">
-                  <Form.Item label="Ngày Đến">
-                    <DatePicker
-                      placeholder="Ngày đến"
-                      name="form"
-                      id="ngayDen"
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-                <div className="col-6">
-                  <Form.Item label="Ngày Đi">
-                    <DatePicker
-                      placeholder="Ngày đi"
-                      id="ngayDi"
-                      name="to"
-                      onChange={(e) => {
-                        handleInput2(e);
-                      }}
-                    />
-                  </Form.Item>
-                </div>
                 <div className="col-12">
+                  <Form.Item>
+                    <label className="w-100 text-center">
+                      Ngày Đến Và Ngày Đi
+                    </label>
+                    <RangePicker
+                      value={hackValue || value}
+                      format="YYYY-MM-DD"
+                      disabledDate={disableDate}
+                      onCalendarChange={(val) => setDates(val)}
+                      onChange={(val) => setValue(val)}
+                      onOpenChange={onOpenChange}
+                    />
+                    {/* <RangePicker
+                      format="YYYY-MM-DD"
+                      disabledDate={disableDateRanges({
+                        endDate: checkOut,
+                        startDate: checkIn,
+                      })}
+                    /> */}
+                  </Form.Item>
                   <Form.Item label="Select">
-                    <Select onChange={(a) => {}}>
+                    <Select onChange={(a) => {}} defaultValue={{ value: "1" }}>
                       <Select.Option value="1">1 Khách</Select.Option>
                       <Select.Option value="2">2 Khách</Select.Option>
                       <Select.Option value="3">3 Khách</Select.Option>
@@ -393,7 +478,15 @@ export default function RoomDetail(props) {
                   </Form.Item>
                 </div>
                 <div className="col-12 text-center py-2">
-                  <Button className="w-100 btn_submit">Submit</Button>
+                  <Button
+                    onClick={() => {
+                      if (value?.length === 2) confirm();
+                      else alert("Chưa Chọn Ngày");
+                    }}
+                    className="w-100 btn_submit"
+                  >
+                    Submit
+                  </Button>
                 </div>
                 {renderReducer()}
               </div>
@@ -402,7 +495,6 @@ export default function RoomDetail(props) {
         </div>
       </div>
       <div className="roomdetail_map">
-        {/* TODO: */}
         <Map
           googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
           loadingElement={<div style={{ height: `100%` }} />}
@@ -419,7 +511,7 @@ export default function RoomDetail(props) {
         />
       </div>
       <div className="roomDetail_reviews py-4">
-        <div className="roomDetail_reviews_rank">
+        <div className="roomDetail_reviews_rank" id="rank">
           <div className="d-flex">
             <Icon style={{ color: "hotpink" }} component={HeartOutlined} />{" "}
             <h4>
@@ -434,10 +526,10 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-75"
                   strokeColor={{
-                    from: "#108ee9",
-                    to: "#87d068",
+                    from: "#E233FF",
+                    to: "#FF6B00",
                   }}
-                  percent={50}
+                  percent={`${locationId?.valueate}0`}
                   status="active"
                 />
               </div>
@@ -446,10 +538,10 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-75"
                   strokeColor={{
-                    from: "#108ee9",
-                    to: "#87d068",
+                    from: "#E233FF",
+                    to: "#FF6B00",
                   }}
-                  percent={99.9}
+                  percent={`${locationId?.valueate}0`}
                   status="active"
                 />
               </div>
@@ -458,10 +550,10 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-75"
                   strokeColor={{
-                    from: "#108ee9",
-                    to: "#87d068",
+                    from: "#E233FF",
+                    to: "#FF6B00",
                   }}
-                  percent={99.9}
+                  percent={`${locationId?.valueate}0`}
                   status="active"
                 />
               </div>
@@ -472,10 +564,10 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-75"
                   strokeColor={{
-                    from: "#108ee9",
-                    to: "#87d068",
+                    from: "#E233FF",
+                    to: "#FF6B00",
                   }}
-                  percent={99.9}
+                  percent={`${locationId?.valueate}0`}
                   status="active"
                 />
               </div>
@@ -484,10 +576,10 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-75"
                   strokeColor={{
-                    from: "#108ee9",
-                    to: "#87d068",
+                    from: "#E233FF",
+                    to: "#FF6B00",
                   }}
-                  percent={99.9}
+                  percent={`${locationId?.valueate}0`}
                   status="active"
                 />
               </div>
@@ -496,17 +588,17 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-75"
                   strokeColor={{
-                    from: "#108ee9",
-                    to: "#87d068",
+                    from: "#E233FF",
+                    to: "#FF6B00",
                   }}
-                  percent={99.9}
+                  percent={`${locationId?.valueate}0`}
                   status="active"
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className="roomDetail_reviews_comment py-4">
+        <div className="roomDetail_reviews_comment py-4" id="comment">
           <div className="row">
             {dsDanhGia?.length !== 0 ? (
               renderDanhGia(more)
@@ -521,8 +613,7 @@ export default function RoomDetail(props) {
               onClick={() => {
                 setMore(more + 6);
               }}
-              className="btn btn-outline-secondary"
-              style={{ padding: 5, boderRadius: 5 }}
+              className="custom-btn btn_Add"
             >
               Hiển Thị Thêm Đánh Giá
             </button>
@@ -531,6 +622,22 @@ export default function RoomDetail(props) {
           )}
         </div>
       </div>
+      <Modal
+        title={`${locationId?.name}, ${locationId?.province}, ${locationId?.country}`}
+        width="80%"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Wellcome"
+        cancelText={<i className="fab fa-angellist"></i>}
+      >
+        <Image
+          src={locationId?.image}
+          className={`img-fluid`}
+          style={{ height: "100%", width: "100vw" }}
+          alt="photos vitri"
+        />
+      </Modal>
     </div>
   );
 }
