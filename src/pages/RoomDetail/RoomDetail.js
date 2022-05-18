@@ -352,17 +352,17 @@ export default function RoomDetail(props) {
         <div className={width <= 1024 ? "col-12" : "col-7"}>
           <div className="roomDetail_book_detail">
             <div className="roomDetail_book_detail_head py-4">
-              <h4>
+              <a className=" fs-content fs-3" onClick={showModal}>
                 {chiTietPhong.name} Tại {locationId?.name},{" "}
                 {locationId?.province}, {locationId?.country}
-              </h4>
-              <span className="text-secondary">
+              </a>
+              <p className="text-secondary">
                 {chiTietPhong.guests ? `${chiTietPhong.guests} khách` : ""}{" "}
                 {chiTietPhong.bedRoom
                   ? `${chiTietPhong.bedRoom} phòng ngủ`
                   : ""}{" "}
                 {chiTietPhong.bath ? `${chiTietPhong.bath} phòng tắm` : ""}
-              </span>
+              </p>
             </div>
             <div className="roomDetail_book_detail_mid py-4 border-top border-bottom">
               <div className="d-flex">
