@@ -1,7 +1,8 @@
-/** @format */
+
 
 import { quanLyNguoiDung } from "../../services/NguoiDungServices";
 import { LayDSNguoiDungType } from "../Types/NguoiDungType";
+import { layDanhSachNguoiDung } from "../Types/NguoiDungType";
 
 //nhat
 export const LayDSNguoiDungAction = () => {
@@ -22,3 +23,22 @@ export const LayDSNguoiDungAction = () => {
   };
 };
 //nhat
+
+import { quanLyNguoiDung } from "../../services/NguoiDungServices";
+
+
+export const layDanhSachNguoiDungAction = () => {
+    return async (dispatch) => {
+        try {
+            let result = await quanLyNguoiDung.layDanhSachNguoiDung();
+            let action = {
+                type: layDanhSachNguoiDung,
+                mangNguoiDung: result.data
+            }
+            dispatch(action)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
