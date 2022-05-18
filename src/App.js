@@ -18,6 +18,7 @@ import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import Booking from './pages/Booking/Booking';
 import Profile from './pages/Profile/Profile';
 import User from './pages/Admin/User/User';
+import AddUser from './pages/Admin/User/AddUser';
 import EditUser from './pages/Admin/User/EditUser';
 
 import ViTri from './pages/Admin/ViTri/ViTri';
@@ -42,6 +43,7 @@ function App() {
           <UserTemplate path="/register" component={Register}/>
 
           <AdminTemplate path="/admin/user/edit/:id" component={EditUser}/>
+          <AdminTemplate path="/admin/user/add" component={AddUser}/>
           <AdminTemplate path="/admin/user" component={User}/>
           <AdminTemplate path="/vitri" component={ViTri}/>
 
