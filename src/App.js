@@ -2,7 +2,7 @@
 import logo from './logo.svg';
 import 'antd/dist/antd.css';
 import './App.css';
-import './assets/css/main-color.css'
+// import './assets/css/main-color.css'
 import {Router,Route,Switch} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import HomeTemplate from './templates/HomeTemplate/HomeTemplate';
