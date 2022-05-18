@@ -4,7 +4,7 @@ import { quanLyNguoiDung } from "../../services/NguoiDungServices";
 import { LayDSNguoiDungType } from "../Types/NguoiDungType";
 import { layDanhSachNguoiDung } from "../Types/NguoiDungType";
 
-//nhat
+//nhat ***
 export const LayDSNguoiDungAction = () => {
   return async (dispatch) => {
     try {
@@ -22,9 +22,8 @@ export const LayDSNguoiDungAction = () => {
     }
   };
 };
-//nhat
+//*** nhat
 
-import { quanLyNguoiDung } from "../../services/NguoiDungServices";
 
 
 export const layDanhSachNguoiDungAction = () => {
