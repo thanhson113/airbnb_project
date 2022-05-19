@@ -22,8 +22,6 @@ import EditUser from './pages/Admin/User/EditUser';
 
 import ViTri from './pages/Admin/ViTri/ViTri';
 
-
-
 import './App.css';
 
 export const history = createBrowserHistory();
