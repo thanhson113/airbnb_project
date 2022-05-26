@@ -66,8 +66,8 @@ export default function Register() {
       gender: Yup.boolean(),
     }),
     onSubmit: (values) => {
-    
-       dispatch(RegisterAction(values));
+      console.log(values);
+      //  dispatch(RegisterAction(values));
     },
   });
 
@@ -136,8 +136,8 @@ export default function Register() {
               onBlur={formik.handleBlur}
               className="custom-select"
             >
-              <option value="true">Girl</option>
-              <option value="false">Boy</option>
+              <option value="true">Boy</option>
+              <option value="false">Girl</option>
             </select>
             {formik.touched.gender && formik.errors.gender ? (
               <div className="alert alert-danger">{formik.errors.gender}</div>

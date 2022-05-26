@@ -1,228 +1,152 @@
-import React from 'react'
+/** @format */
+
+
+import { Avatar, Image, Modal, Select, Tabs } from "antd";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ChiTietNguoiDungAction,
+  UploadAvaraNDAction,
+} from "../../redux/Actions/NguoiDungAction";
+import {formUp} from "../Profile/UpdateND"
+import { Booking} from "../Profile/HistoryBooking"
+
+import "../../asset/css/profile.css";
+
+const { TabPane } = Tabs;
+
 
 export default function Profile() {
-    return (
-        <div id="wrapper">
-            {/* Titlebar
-================================================== */}
-            <div id="titlebar" className="gradient">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="user-profile-titlebar">
-                                <div className="user-profile-avatar"><img src="images/user-profile-avatar.jpg" alt /></div>
-                                <div className="user-profile-name">
-                                    <h2>Tom Perrin</h2>
-                                    <div className="star-rating" data-rating={5}>
-                                        <div className="rating-counter"><a href="#listing-reviews">(60 reviews)</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const dispatch = useDispatch();
+  const id = localStorage.getItem("id");
+  const [imgSrc, setImgSrc] = useState(null);
+  const [fileSrc, setFileSrc] = useState(null);
+  const [upL, setUpl] = useState(false);
+
+  const { user } = useSelector((state) => state.nguoiDungReducer);
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    if (id) dispatch(ChiTietNguoiDungAction(id));
+
+    const handleWindowResize = () => {
+      setWidth(window.innerWidth);
+      // setHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
+  const handleChangeFile = (e) => {
+    let file = e?.target.files[0];
+    if (
+      file?.type === "image/jpeg" ||
+      file?.type === "image/png" ||
+      file?.type === "image/jpg" ||
+      file?.type === "image/gif"
+    ) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setImgSrc(e.target.result); //hinh base
+        setFileSrc(file);
+      };
+      setUpl(true);
+    }
+  };
+  const handleSubmitFile = () => {
+    let formData = new FormData();
+    formData.append("avatar", fileSrc, fileSrc.name);
+    dispatch(UploadAvaraNDAction(formData));
+  };
+
+  return (
+    <div className="profile overflow-hidden">
+      <div className="profife_status">
+        <div className="profife_status_avatar text-center">
+          <div className="btn_avatar d-flex justify-content-end p-2">
+            <label
+              htmlFor="upload-photo"
+              className="btn_avatar_button custom-btn  my-2 "
+            >
+              Thay Đổi Avatar
+            </label>
+            <input
+              id="upload-photo"
+              type="file"
+              onChange={handleChangeFile}
+              accept="image/jpeg, image/png, image/gif,image/jpg"
+            />
+          </div>
+          <Avatar
+            size={100}
+            src={
+              <Image src={user?.avatar} style={{ height: 100, width: 100 }} />
+            }
+          />
+          <div className="profife_status_avatar_detail py-2 ">
+            <h3>{user?.name}</h3>
+            <div className="d-flex justify-content-center py-2">
+              <div className="d-flex "> 
+                <span className="text text-secondary">Hội Viên :</span>
+                <span className="ml-1"> Thân Thiết</span>
+              </div>
+              <div className="d-flex ml-3">
+                <span className="text text-secondary">Đã Tham gia :</span>
+                <span className="ml-1"> 1 Năm</span>
+              </div>
             </div>
-            {/* Content
-================================================== */}
-            <div className="container">
-                <div className="row sticky-wrapper">
-                    {/* Sidebar
-		================================================== */}
-                    <div className="col-lg-4 col-md-4 margin-top-0">
-                        {/* Verified Badge */}
-                        <div className="verified-badge with-tip" data-tip-content="Account has been verified and belongs to the person or organization represented.">
-                            <i className="sl sl-icon-user-following" /> Verified Account
-                        </div>
-                        {/* Contact */}
-                        <div className="boxed-widget margin-top-30 margin-bottom-50">
-                            <h3>Contact</h3>
-                            <ul className="listing-details-sidebar">
-                                <li><i className="sl sl-icon-phone" /> (123) 123-456</li>
-                                <li><i className="fa fa-envelope-o" /> <a href="#">tom@example.com</a></li>
-                            </ul>
-                            <ul className="listing-details-sidebar social-profiles">
-                                <li><a href="#" className="facebook-profile"><i className="fa fa-facebook-square" /> Facebook</a></li>
-                                <li><a href="#" className="twitter-profile"><i className="fa fa-twitter" /> Twitter</a></li>
-                                {/* <li><a href="#" class="gplus-profile"><i class="fa fa-google-plus"></i> Google Plus</a></li> */}
-                            </ul>
-                            {/* Reply to review popup */}
-                            <div id="small-dialog" className="zoom-anim-dialog mfp-hide">
-                                <div className="small-dialog-header">
-                                    <h3>Send Message</h3>
-                                </div>
-                                <div className="message-reply margin-top-0">
-                                    <textarea cols={40} rows={3} placeholder="Your message to Tom" defaultValue={""} />
-                                    <button className="button">Send Message</button>
-                                </div>
-                            </div>
-                            <a href="#small-dialog" className="send-message-to-owner button popup-with-zoom-anim"><i className="sl sl-icon-envelope-open" /> Send Message</a>
-                        </div>
-                        {/* Contact / End*/}
-                    </div>
-                    {/* Sidebar / End */}
-                    {/* Content
-		================================================== */}
-                    <div className="col-lg-8 col-md-8 padding-left-30">
-                        <h3 className="margin-top-0 margin-bottom-40">Tom's Listings</h3>
-                        {/* Listings Container */}
-                        <div className="row">
-                            {/* Listing Item */}
-                            <div className="col-lg-12 col-md-12">
-                                <div className="listing-item-container list-layout">
-                                    <a href="listings-single-page.html" className="listing-item">
-                                        {/* Image */}
-                                        <div className="listing-item-image">
-                                            <img src="images/listing-item-01.jpg" alt />
-                                            <span className="tag">Eat &amp; Drink</span>
-                                        </div>
-                                        {/* Content */}
-                                        <div className="listing-item-content">
-                                            <div className="listing-badge now-open">Now Open</div>
-                                            <div className="listing-item-inner">
-                                                <h3>Tom's Restaurant</h3>
-                                                <span>964 School Street, New York</span>
-                                                <div className="star-rating" data-rating="3.5">
-                                                    <div className="rating-counter">(12 reviews)</div>
-                                                </div>
-                                            </div>
-                                            <span className="like-icon" />
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            {/* Listing Item / End */}
-                            {/* Listing Item */}
-                            <div className="col-lg-12 col-md-12">
-                                <div className="listing-item-container list-layout">
-                                    <a href="listings-single-page.html" className="listing-item">
-                                        {/* Image */}
-                                        <div className="listing-item-image">
-                                            <img src="images/listing-item-03.jpg" alt />
-                                            <span className="tag">Hotels</span>
-                                        </div>
-                                        {/* Content */}
-                                        <div className="listing-item-content">
-                                            <div className="listing-item-inner">
-                                                <h3>Hotel Govendor</h3>
-                                                <span>778 Country Street, New York</span>
-                                                <div className="star-rating" data-rating={2.0}>
-                                                    <div className="rating-counter">(17 reviews)</div>
-                                                </div>
-                                            </div>
-                                            <span className="like-icon" />
-                                            <div className="listing-item-details">Starting from $59 per night</div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            {/* Listing Item / End */}
-                            {/* Listing Item */}
-                            <div className="col-lg-12 col-md-12">
-                                <div className="listing-item-container list-layout">
-                                    <a href="listings-single-page.html" className="listing-item">
-                                        {/* Image */}
-                                        <div className="listing-item-image">
-                                            <img src="images/listing-item-04.jpg" alt />
-                                            <span className="tag">Eat &amp; Drink</span>
-                                        </div>
-                                        {/* Content */}
-                                        <div className="listing-item-content">
-                                            <div className="listing-badge now-open">Now Open</div>
-                                            <div className="listing-item-inner">
-                                                <h3>Burger House</h3>
-                                                <span>2726 Shinn Street, New York</span>
-                                                <div className="star-rating" data-rating={5.0}>
-                                                    <div className="rating-counter">(31 reviews)</div>
-                                                </div>
-                                            </div>
-                                            <span className="like-icon" />
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            {/* Listing Item / End */}
-                            <div className="col-md-12 browse-all-user-listings">
-                                <a href="#">Browse All Listings <i className="fa fa-angle-right" /> </a>
-                            </div>
-                        </div>
-                        {/* Listings Container / End */}
-                        {/* Reviews */}
-                        <div id="listing-reviews" className="listing-section">
-                            <h3 className="margin-top-60 margin-bottom-20">Reviews</h3>
-                            <div className="clearfix" />
-                            {/* Reviews */}
-                            <section className="comments listing-reviews">
-                                <ul>
-                                    <li>
-                                        <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /></div>
-                                        <div className="comment-content"><div className="arrow-comment" />
-                                            <div className="comment-by">Kathy Brown <div className="comment-by-listing">on <a href="#">Burger House</a></div> <span className="date">June 2019</span>
-                                                <div className="star-rating" data-rating={5} />
-                                            </div>
-                                            <p>Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam posuere tristique sem, eu ultricies tortor imperdiet vitae. Curabitur lacinia neque non metus</p>
-                                            <div className="review-images mfp-gallery-container">
-                                                <a href="images/review-image-01.jpg" className="mfp-gallery"><img src="images/review-image-01.jpg" alt /></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /> </div>
-                                        <div className="comment-content"><div className="arrow-comment" />
-                                            <div className="comment-by">John Doe <div className="comment-by-listing">on <a href="#">Tom's Restaurant</a></div> <span className="date">May 2019</span>
-                                                <div className="star-rating" data-rating={4} />
-                                            </div>
-                                            <p>Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /></div>
-                                        <div className="comment-content"><div className="arrow-comment" />
-                                            <div className="comment-by">Kathy Brown <div className="comment-by-listing">on <a href="#">Burger House</a></div> <span className="date">June 2019</span>
-                                                <div className="star-rating" data-rating={5} />
-                                            </div>
-                                            <p>Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam posuere tristique sem, eu ultricies tortor imperdiet vitae. Curabitur lacinia neque non metus</p>
-                                            <div className="review-images mfp-gallery-container">
-                                                <a href="images/review-image-02.jpg" className="mfp-gallery"><img src="images/review-image-02.jpg" alt /></a>
-                                                <a href="images/review-image-03.jpg" className="mfp-gallery"><img src="images/review-image-03.jpg" alt /></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt /> </div>
-                                        <div className="comment-content"><div className="arrow-comment" />
-                                            <div className="comment-by">John Doe <div className="comment-by-listing">on <a href="#">Hotel Govendor</a></div> <span className="date">May 2019</span>
-                                                <div className="star-rating" data-rating={5} />
-                                            </div>
-                                            <p>Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris.</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </section>
-                            {/* Pagination */}
-                            <div className="clearfix" />
-                            <div className="row">
-                                <div className="col-md-12">
-                                    {/* Pagination */}
-                                    <div className="pagination-container margin-top-30">
-                                        <nav className="pagination">
-                                            <ul>
-                                                <li><a href="#" className="current-page">1</a></li>
-                                                <li><a href="#">2</a></li>
-                                                <li><a href="#"><i className="sl sl-icon-arrow-right" /></a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="clearfix" />
-                            {/* Pagination / End */}
-                        </div>
-                    </div>
-                </div>
+            <div className="d-flex justify-content-center py-1">
+              <div className="d-flex">
+                <span className="text text-secondary">Lượt like :</span>
+                <span className="ml-1"> 6</span>
+              </div>{" "}
+              <div className="d-flex ml-3">
+                <span className="text text-secondary">Số phòng cho thuê :</span>
+                <span className="ml-1"> 0</span>
+              </div>
             </div>
-            {/* Back To Top Button */}
-            <div id="backtotop"><a href="#" /></div>
+          </div>
+          <Modal
+            title={
+              <h4 className="px-3">Bạn chắn chắn muốn đổi ảnh đại diện này</h4>
+            }
+            visible={upL}
+            onOk={() => {
+              handleSubmitFile();
+              setUpl(false);
+            }}
+            okText="Vâng, chắc chắn"
+            onCancel={() => setUpl(false)}
+            cancelText="Để suy nghĩ lại"
+            className="profile_modal"
+            width={width < 500 ? 350 : width >= 500 && width <= 768 ? 450 : 600}
+          >
+            <Image
+              style={{ maxWidth: "400px", maxHeight: "300px" }}
+              src={imgSrc}
+              alt="..."
+            />
+          </Modal>
         </div>
 
-    )
+        <div className="profife_status_content">
+          <Tabs defaultActiveKey="1" centered>
+            <TabPane tab="Thông tin " key="1">
+              <div className="profife_info px-2">
+              {formUp(id)}
+              </div>
+            </TabPane>
+            <TabPane tab="Lịch Sử Booking" key="2">
+              <div className="profile_booking px-2">
+                {Booking()}
+              </div>
+            </TabPane>
+          </Tabs>
+        </div>
+      </div>
+
+      <div className="col-9"></div>
+    </div>
+  );
 }
