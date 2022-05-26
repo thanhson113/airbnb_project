@@ -1,18 +1,20 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { createElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Map from "./Map";
 
 import {
   Avatar,
   Button,
+  Comment,
   DatePicker,
   Form,
   Image,
   Modal,
   Progress,
   Select,
+  Tooltip,
 } from "antd";
 import Icon, {
   CalendarOutlined,
@@ -24,6 +26,10 @@ import Icon, {
   TrophyOutlined,
   WifiOutlined,
   ExclamationCircleOutlined,
+  LikeFilled,
+  DislikeFilled,
+  LikeOutlined,
+  DislikeOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -34,16 +40,21 @@ import {
   Restaurant,
 } from "@mui/icons-material";
 
-import { DSDanhGiaTheoPhongAction } from "../../redux/Actions/DanhGiaAction";
+import {
+  DSDanhGiaTheoPhongAction,
+  TaoDanhGiaTheoPhongAction,
+} from "../../redux/Actions/DanhGiaAction";
 import {
   DatPhongAction,
   ThongTinChiTietPhongAction,
 } from "../../redux/Actions/PhongThueAction";
+import { ChiTietNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
 import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
 
 import moment from "moment";
 
 import "../../asset/css/roomdetail.css";
+import TextArea from "antd/lib/input/TextArea";
 
 export default function RoomDetail(props) {
   const dispatch = useDispatch();
@@ -51,7 +62,8 @@ export default function RoomDetail(props) {
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { locationId } = chiTietPhong;
   const { dsVeIdroom } = useSelector((state) => state.VeReducer);
-  console.log(dsVeIdroom);
+  const idUser = localStorage.getItem("id");
+  const { user } = useSelector((state) => state.nguoiDungReducer);
 
   const { RangePicker } = DatePicker;
   const [dates, setDates] = useState([]);
@@ -68,13 +80,88 @@ export default function RoomDetail(props) {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  //comment
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [action, setAction] = useState(null);
+  const like = () => {
+    setLikes(1);
+    setDislikes(0);
+    setAction("liked");
+  };
+
+  const dislike = () => {
+    setLikes(0);
+    setDislikes(1);
+    setAction("disliked");
+  };
+
+  const actions = [
+    <Tooltip key="comment-basic-like" title="Like">
+      <span onClick={like}>
+        {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
+        <span className="comment-action">{likes}</span>
+      </span>
+    </Tooltip>,
+    <Tooltip key="comment-basic-dislike" title="Dislike">
+      <span onClick={dislike}>
+        {createElement(action === "disliked" ? DislikeFilled : DislikeOutlined)}
+        <span className="comment-action">{dislikes}</span>
+      </span>
+    </Tooltip>,
+    <span key="comment-basic-reply-to">Reply to</span>,
+  ];
+
+  //user comment
+  const [submitting, setSubmitting] = useState(false);
+  const [valueCM, setValueCM] = useState("");
+
+  const handleSubmit = () => {
+    console.log(valueCM);
+    if (!valueCM) return;
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      setValue("");
+      dispatch(
+        TaoDanhGiaTheoPhongAction(props.match.params.id, { content: valueCM })
+      );//TODO:
+    }, 1000);
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    setValueCM(e.target.value);
+  };
+
+  const Editor = ({ onChange, onSubmit, submitting, value }) => (
+    <>
+      <Form.Item>
+        <TextArea rows={4} onChange={onChange} value={value} />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          htmlType="submit"
+          loading={submitting}
+          onClick={onSubmit}
+          type="primary"
+        >
+          Add Comment
+        </Button>
+      </Form.Item>
+    </>
+  );
+
   //Form setting
-  console.log(value, "value");
 
   useEffect(() => {
-    dispatch(ThongTinChiTietPhongAction(props.match.params.id));
-    dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
-    dispatch(layDSVeTheoPhongAction(props.match.params.id));
+    if (props.match.params.id) {
+      dispatch(ThongTinChiTietPhongAction(props.match.params.id));
+      dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
+      dispatch(layDSVeTheoPhongAction(props.match.params.id));
+    }
+
+    if (idUser) dispatch(ChiTietNguoiDungAction(idUser));
 
     const handleWindowResize = () => {
       setWidth(window.innerWidth);
@@ -84,21 +171,7 @@ export default function RoomDetail(props) {
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
-  //datepicker
-  // const disableDateRanges = (range = { startDate: false, endDate: false }) => {
-  //   const { startDate, endDate } = range;
-  //   return function disabledDate(current) {
-  //     let startCheck = true;
-  //     let endCheck = true;
-  //     if (startDate) {
-  //       startCheck = current && current > moment(startDate, "YYYY-MM-DD");
-  //     }
-  //     if (endDate) {
-  //       endCheck = current && current < moment(endDate, "YYYY-MM-DD");
-  //     }
-  //     return startDate && startCheck && endDate && endCheck;
-  //   };
-  // };
+
   const disableDate = (current) => {
     if (!dates || dates.length === 0) {
       return current && current < moment().endOf("day");
@@ -123,18 +196,26 @@ export default function RoomDetail(props) {
   const renderDanhGia = (more) => {
     return dsDanhGia?.slice(0, more)?.map((danhGia, index) => {
       return (
-        <div className="col-6" key={index}>
-          <div className="d-flex">
-            <Avatar src={danhGia.userId.avatar} style={{ width: "30px" }} />
-            <div className="m-2">
-              <h5>{danhGia.userId.name}</h5>
-              <span className="text text-secondary">
-                {moment(danhGia.updatedAt).format("DD-MM-YYYY")}
-              </span>
-            </div>
-          </div>
-          <span>{danhGia.content}</span>
-        </div>
+        <Comment
+          className={width < 768 ? "col-12" : "col-6"}
+          key={index}
+          actions={actions}
+          author={<a>{danhGia.userId.name}</a>}
+          avatar={
+            <Avatar
+              src={<Image src={danhGia.userId.avatar} />}
+              alt={danhGia.userId.name}
+            />
+          }
+          content={<p>{danhGia.content}</p>}
+          datetime={
+            <Tooltip
+              title={moment(danhGia.created_at).format("YYYY-MM-DD HH:mm:ss")}
+            >
+              <span>{moment().fromNow()}</span>
+            </Tooltip>
+          }
+        />
       );
     });
   };
@@ -225,8 +306,6 @@ export default function RoomDetail(props) {
 
     return tienNghi.slice(0, add);
   };
-  // const checkIn = "2022-05-23T05:00:00.000Z";
-  // const checkOut = "2022-05-26T05:00:00.000Z";
 
   const renderReducer = () => {
     if (value?.length === 0 || !value)
@@ -308,23 +387,6 @@ export default function RoomDetail(props) {
           >
             <div>
               <div className={`${width <= 768 ? "" : "d-flex"}`}>
-                {/* <div className="d-flex">
-                  <a
-                    href="#rank"
-                    className="d-flex text-dark text-decoration-underline"
-                  >
-                    <StarOutlined /> {locationId?.valueate}
-                  </a>
-                  <a
-                    href="#comment"
-                    className="ml-1 text-dark text-decoration-underline"
-                  >
-                    {dsDanhGia.length === 0
-                      ? " "
-                      : ` ${dsDanhGia.length} đánh giá`}
-                  </a>
-                </div> */}
-
                 <h5
                   onClick={showModal}
                   className="cursor h_located text-decoration-text-decoration-underline py-3 "
@@ -425,7 +487,7 @@ export default function RoomDetail(props) {
               <h5 className="mb-2">Tiện Nghi</h5>
               <div className="row">
                 {renderTienNghi(add)}
-                <div className="col-12 text-center">
+                <div className="col-12 text-center p-2">
                   {renderTienNghi(add).length >= add ? (
                     <button
                       onClick={() => {
@@ -535,11 +597,11 @@ export default function RoomDetail(props) {
             </h4>
           </div>
           <div className="row">
-            <div className="col-6">
+            <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
-                <span>Mức Độ Sạch Sẽ</span>
+                <span className="w-50">Mức Độ Sạch Sẽ</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
@@ -549,9 +611,9 @@ export default function RoomDetail(props) {
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Liên Lạc</span>
+                <span className="w-50">Liên Lạc</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
@@ -561,9 +623,9 @@ export default function RoomDetail(props) {
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Nhận Phòng</span>
+                <span className="w-50">Nhận Phòng</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
@@ -575,9 +637,9 @@ export default function RoomDetail(props) {
             </div>
             <div className="col-6">
               <div className="d-flex justify-content-between">
-                <span>Mức Độ Chính Xác</span>
+                <span className="w-50">Mức Độ Chính Xác</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
@@ -587,9 +649,9 @@ export default function RoomDetail(props) {
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Vị Trí</span>
+                <span className="w-50">Vị Trí</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
@@ -599,9 +661,9 @@ export default function RoomDetail(props) {
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Giá Trị</span>
+                <span className="w-50">Giá Trị</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
@@ -624,14 +686,33 @@ export default function RoomDetail(props) {
             )}
           </div>
           {dsDanhGia?.length !== 0 && dsDanhGia.length > more ? (
-            <button
-              onClick={() => {
-                setMore(more + 6);
-              }}
-              className="custom-btn btn_Add"
-            >
-              Hiển Thị Thêm Đánh Giá
-            </button>
+            <div className="w-100 text-center p-2">
+              <button
+                onClick={() => {
+                  setMore(more + 6);
+                }}
+                className="custom-btn btn_Add"
+              >
+                Hiển Thị Thêm Đánh Giá
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+          {idUser ? (
+            <div className="roomDetail_reviews_user_comment">
+              <Comment
+                avatar={<Avatar src={user?.avatar} alt={user?.name} />}
+                content={
+                  <Editor
+                    onChange={handleChange}
+                    onSubmit={handleSubmit}
+                    submitting={submitting}
+                    value={valueCM}
+                  />
+                }
+              />
+            </div>
           ) : (
             ""
           )}

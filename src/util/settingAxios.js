@@ -9,7 +9,7 @@ http.interceptors.request.use((config) => {
     config.headers = {
         ...config.headers,
         'tokenByClass': TOKEN_CYBERSOFT,
-        'token':  Acces_stoken
+        'token':  Acces_stoken,
     }
     return config
 }, (errors => {

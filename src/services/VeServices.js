@@ -6,7 +6,9 @@ class QuanLyDatVe {
     layDSVeTheoPhong=(idRoom)=>{
         return http.get(`/api/tickets/by-room?roomId=${idRoom}`)
     }
-   
+    layChiTietVe=(idVe)=>{
+        return http.get(`https://airbnb.cybersoft.edu.vn/api/tickets/${idVe}`)
+    }
     // ** nHAT  
 
 }
