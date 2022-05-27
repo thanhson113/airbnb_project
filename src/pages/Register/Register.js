@@ -67,7 +67,7 @@ export default function Register() {
     }),
     onSubmit: (values) => {
       console.log(values);
-      //  dispatch(RegisterAction(values));
+       dispatch(RegisterAction(values));
     },
   });
 

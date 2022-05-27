@@ -11,6 +11,7 @@ import {
   DatePicker,
   Form,
   Image,
+  Input,
   Modal,
   Progress,
   Select,
@@ -30,6 +31,7 @@ import Icon, {
   DislikeFilled,
   LikeOutlined,
   DislikeOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -43,6 +45,7 @@ import {
 import {
   DSDanhGiaTheoPhongAction,
   TaoDanhGiaTheoPhongAction,
+  XoaDanhGiaAction,
 } from "../../redux/Actions/DanhGiaAction";
 import {
   DatPhongAction,
@@ -54,14 +57,13 @@ import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
 import moment from "moment";
 
 import "../../asset/css/roomdetail.css";
-import TextArea from "antd/lib/input/TextArea";
 
 export default function RoomDetail(props) {
   const dispatch = useDispatch();
   const { dsDanhGia } = useSelector((state) => state.danhGiaReducer);
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { locationId } = chiTietPhong;
-  const { dsVeIdroom } = useSelector((state) => state.VeReducer);
+
   const idUser = localStorage.getItem("id");
   const { user } = useSelector((state) => state.nguoiDungReducer);
 
@@ -74,11 +76,29 @@ export default function RoomDetail(props) {
   const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY"; //map
 
   const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
+  // const [height, setHeight] = useState(window.innerHeight);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (props.match.params.id) {
+      dispatch(ThongTinChiTietPhongAction(props.match.params.id));
+      dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
+      dispatch(layDSVeTheoPhongAction(props.match.params.id));
+    }
+
+    if (idUser) dispatch(ChiTietNguoiDungAction(idUser));
+
+    const handleWindowResize = () => {
+      setWidth(window.innerWidth);
+      // setHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
 
   //comment
   const [likes, setLikes] = useState(0);
@@ -96,81 +116,93 @@ export default function RoomDetail(props) {
     setAction("disliked");
   };
 
-  const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
-        {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
-        <span className="comment-action">{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {createElement(action === "disliked" ? DislikeFilled : DislikeOutlined)}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <span key="comment-basic-reply-to">Reply to</span>,
-  ];
+  const renderDanhGia = (more) => {
+    return dsDanhGia?.slice(0, more).map((danhGia, index) => {
+      const actions = [
+        <Tooltip key="comment-basic-like" title="Like">
+          <span onClick={like}>
+            {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
+            <span className="comment-action">{likes}</span>
+          </span>
+        </Tooltip>,
+        <Tooltip key="comment-basic-dislike" title="Dislike">
+          <span onClick={dislike}>
+            {createElement(
+              action === "disliked" ? DislikeFilled : DislikeOutlined
+            )}
+            <span className="comment-action">{dislikes}</span>
+          </span>
+        </Tooltip>,
+        <span key="comment-basic-reply-to">Reply to</span>,
+
+        <Tooltip key="delete-comment" title="Delete">
+          {idUser === danhGia?.userId._id ? (
+            <span
+              onClick={() => {
+                dispatch(XoaDanhGiaAction(danhGia._id, props.match.params.id));
+              }}
+              className="DeleteOutlined"
+            >
+              <DeleteOutlined />
+            </span>
+          ) : (
+            ""
+          )}
+        </Tooltip>,
+      ];
+      return (
+        <Comment
+          className={width < 768 ? "col-12" : "col-6"}
+          key={index}
+          actions={actions}
+          author={<a>{danhGia.userId?.name}</a>}
+          avatar={
+            <Avatar
+              src={<Image src={danhGia.userId?.avatar} />}
+              alt={danhGia.userId.name}
+            />
+          }
+          content={<p>{danhGia.content}</p>}
+          datetime={
+            <Tooltip
+              title={moment(danhGia.created_at).format("YYYY-MM-DD HH:mm:ss")}
+            >
+              <span>{moment().fromNow()}</span>
+            </Tooltip>
+          }
+        />
+      );
+    });
+  };
 
   //user comment
+
   const [submitting, setSubmitting] = useState(false);
-  const [valueCM, setValueCM] = useState("");
+  let [valueComment, setValueComment] = useState("");
+
+  const { TextArea } = Input;
 
   const handleSubmit = () => {
-    console.log(valueCM);
-    if (!valueCM) return;
+    console.log("submit");
+    if (!valueComment) return;
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
-      setValue("");
       dispatch(
-        TaoDanhGiaTheoPhongAction(props.match.params.id, { content: valueCM })
-      );//TODO:
+        TaoDanhGiaTheoPhongAction(props.match.params.id, {
+          content: valueComment,
+        })
+      );
+      console.log(valueComment);
     }, 1000);
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    setValueCM(e.target.value);
+    console.log("Change:", e.target.value);
+    setValueComment(e.target.value);
+    e.preventDefault();
   };
-
-  const Editor = ({ onChange, onSubmit, submitting, value }) => (
-    <>
-      <Form.Item>
-        <TextArea rows={4} onChange={onChange} value={value} />
-      </Form.Item>
-      <Form.Item>
-        <Button
-          htmlType="submit"
-          loading={submitting}
-          onClick={onSubmit}
-          type="primary"
-        >
-          Add Comment
-        </Button>
-      </Form.Item>
-    </>
-  );
-
   //Form setting
-
-  useEffect(() => {
-    if (props.match.params.id) {
-      dispatch(ThongTinChiTietPhongAction(props.match.params.id));
-      dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
-      dispatch(layDSVeTheoPhongAction(props.match.params.id));
-    }
-
-    if (idUser) dispatch(ChiTietNguoiDungAction(idUser));
-
-    const handleWindowResize = () => {
-      setWidth(window.innerWidth);
-      setHeight(window.innerHeight);
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
 
   const disableDate = (current) => {
     if (!dates || dates.length === 0) {
@@ -193,32 +225,6 @@ export default function RoomDetail(props) {
     }
   };
 
-  const renderDanhGia = (more) => {
-    return dsDanhGia?.slice(0, more)?.map((danhGia, index) => {
-      return (
-        <Comment
-          className={width < 768 ? "col-12" : "col-6"}
-          key={index}
-          actions={actions}
-          author={<a>{danhGia.userId.name}</a>}
-          avatar={
-            <Avatar
-              src={<Image src={danhGia.userId.avatar} />}
-              alt={danhGia.userId.name}
-            />
-          }
-          content={<p>{danhGia.content}</p>}
-          datetime={
-            <Tooltip
-              title={moment(danhGia.created_at).format("YYYY-MM-DD HH:mm:ss")}
-            >
-              <span>{moment().fromNow()}</span>
-            </Tooltip>
-          }
-        />
-      );
-    });
-  };
   const renderTienNghi = (add) => {
     const tienNghi = [];
     if (chiTietPhong.kitchen)
@@ -516,12 +522,16 @@ export default function RoomDetail(props) {
                 <span>
                   <span>${chiTietPhong.price}</span> / đêm
                 </span>
-                <div className="d-flex">
-                  <StarOutlined style={{ color: "pink" }} />{" "}
-                  <span style={{ color: "black" }}>
-                    {locationId?.valueate}{" "}
-                  </span>
-                </div>
+                {locationId ? (
+                  <div className="d-flex">
+                    <StarOutlined style={{ color: "pink" }} />{" "}
+                    <span style={{ color: "black" }}>
+                      {locationId?.valueate}{" "}
+                    </span>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="row">
                 <div className="col-12">
@@ -591,12 +601,13 @@ export default function RoomDetail(props) {
         <div className="roomDetail_reviews_rank" id="rank">
           <div className="d-flex">
             <Icon style={{ color: "hotpink" }} component={HeartOutlined} />{" "}
-            <h4>
-              {locationId?.valueate}{" "}
-              {dsDanhGia.length === 0 ? "" : ` ${dsDanhGia.length} đánh giá`}
-            </h4>
+            <h5 className="pl-1">
+              {dsDanhGia.length === 0
+                ? "Hiện Tại Chưa Có Đánh Giá"
+                : `Có ${dsDanhGia.length} đánh giá`}
+            </h5>
           </div>
-          <div className="row">
+          <div className="row py-2">
             <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
                 <span className="w-50">Mức Độ Sạch Sẽ</span>
@@ -606,7 +617,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -618,7 +629,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -630,12 +641,12 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
             </div>
-            <div className="col-6">
+            <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
                 <span className="w-50">Mức Độ Chính Xác</span>
                 <Progress
@@ -644,7 +655,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -656,7 +667,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -668,7 +679,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -696,20 +707,48 @@ export default function RoomDetail(props) {
                 Hiển Thị Thêm Đánh Giá
               </button>
             </div>
+          ) : dsDanhGia?.length !== 0 ? (
+            <div className="w-100 text-center p-2">
+              <button
+                onClick={() => {
+                  setMore(6);
+                }}
+                className="custom-btn btn_Add"
+              >
+                Ẩn Bớt Đánh Giá
+              </button>
+            </div>
           ) : (
             ""
           )}
           {idUser ? (
             <div className="roomDetail_reviews_user_comment">
               <Comment
-                avatar={<Avatar src={user?.avatar} alt={user?.name} />}
+                avatar={<Avatar src={user.avatar} alt={user.name} />}
                 content={
-                  <Editor
-                    onChange={handleChange}
-                    onSubmit={handleSubmit}
-                    submitting={submitting}
-                    value={valueCM}
-                  />
+                  <>
+                    <Form.Item>
+                      <TextArea
+                        showCount
+                        placeholder="Xin cho biết cảm nghĩ của bạn về phòng này"
+                        maxLength={100}
+                        rows={4}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        value={value}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button
+                        loading={submitting}
+                        onClick={handleSubmit}
+                        type="primary"
+                      >
+                        Add Comment
+                      </Button>
+                    </Form.Item>
+                  </>
                 }
               />
             </div>

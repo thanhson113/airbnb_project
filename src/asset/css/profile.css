@@ -26,11 +26,13 @@
   outline: none;
 }
 .profile .btn_avatar_button,
+.profile .btn_addBook,
 .profile .btn_updateInfor {
   border: none;
   color: #000;
 }
 .profile .btn_avatar_button:after,
+.profile .btn_addBook:after,
 .profile .btn_updateInfor:after {
   position: absolute;
   content: "";
@@ -48,10 +50,12 @@
   color: #000;
   text-decoration: underline;
 }
+.profile .btn_updateInfor:hover ,
 .profile .btn_updateInfor:hover {
   color: rgba(0, 0, 0, 0.748);
 }
 .profile .btn_avatar_button:hover:after,
+.profile .btn_addBook:hover:after,
 .profile .btn_updateInfor:hover:after {
   left: auto;
   right: 0;
@@ -112,7 +116,7 @@
   }
   .profile .historyBooking_content_item {
     max-width: 100%;
-    padding: 30px;
+    padding: 10%;
   }
 }
 @media screen and (min-width: 768px) {
@@ -140,8 +144,5 @@
   .profile {
     font-size: 20px;
   }
-  .profile .historyBooking_content_item {
-    flex: 0 0 20%;
-    max-width: 20%;
-  }
+  
 }

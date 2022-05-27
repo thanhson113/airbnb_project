@@ -1,27 +1,36 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/** @format */
 
- p,h1,h2,h3,h4,h5,h6{
-    margin-bottom: 0;
-    font-family: 'Playfair Display', serif;	
-}
-p,span{
-    font-family: 'Lato', sans-serif;	
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 
-.d-flex{
-    align-items: center;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0;
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
 }
-.ant-back-top{
-    transition: all 0.5s;
+p,
+span {
+  font-family: "Lato", sans-serif;
+  margin-bottom: 0;
 }
-.ant-back-top:hover{
-    transform: scale(1.2);
-    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-   7px 7px 20px 0px rgba(0,0,0,.1),
-   4px 4px 5px 0px rgba(0,0,0,.1);
+
+.d-flex {
+  align-items: center;
+}
+.ant-back-top {
+  transition: all 0.5s;
+}
+.ant-back-top:hover {
+  transform: scale(1.2);
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
 }
