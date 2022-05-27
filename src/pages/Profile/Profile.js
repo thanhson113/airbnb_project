@@ -1,6 +1,5 @@
 /** @format */
 
-
 import { Avatar, Image, Modal, Select, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +7,12 @@ import {
   ChiTietNguoiDungAction,
   UploadAvaraNDAction,
 } from "../../redux/Actions/NguoiDungAction";
-import {formUp} from "../Profile/UpdateND"
-import { Booking} from "../Profile/HistoryBooking"
+import { formUp } from "../Profile/UpdateND";
+import { Booking } from "../Profile/HistoryBooking";
 
 import "../../asset/css/profile.css";
 
 const { TabPane } = Tabs;
-
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -87,7 +85,7 @@ export default function Profile() {
           <div className="profife_status_avatar_detail py-2 ">
             <h3>{user?.name}</h3>
             <div className="d-flex justify-content-center py-2">
-              <div className="d-flex "> 
+              <div className="d-flex ">
                 <span className="text text-secondary">Hội Viên :</span>
                 <span className="ml-1"> Thân Thiết</span>
               </div>
@@ -133,14 +131,10 @@ export default function Profile() {
         <div className="profife_status_content">
           <Tabs defaultActiveKey="1" centered>
             <TabPane tab="Thông tin " key="1">
-              <div className="profife_info px-2">
-              {formUp(id)}
-              </div>
+              <div className="profife_info px-2">{formUp(id)}</div>
             </TabPane>
             <TabPane tab="Lịch Sử Booking" key="2">
-              <div className="profile_booking px-2">
-                {Booking()}
-              </div>
+              <div className="profile_booking px-2">{Booking()}</div>
             </TabPane>
           </Tabs>
         </div>

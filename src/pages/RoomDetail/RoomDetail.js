@@ -55,6 +55,7 @@ import moment from "moment";
 
 import "../../asset/css/roomdetail.css";
 import TextArea from "antd/lib/input/TextArea";
+import { danhGia } from "./Comment";
 
 export default function RoomDetail(props) {
   const dispatch = useDispatch();
@@ -111,46 +112,9 @@ export default function RoomDetail(props) {
     </Tooltip>,
     <span key="comment-basic-reply-to">Reply to</span>,
   ];
-
+  
   //user comment
-  const [submitting, setSubmitting] = useState(false);
-  const [valueCM, setValueCM] = useState("");
-
-  const handleSubmit = () => {
-    console.log(valueCM);
-    if (!valueCM) return;
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setValue("");
-      dispatch(
-        TaoDanhGiaTheoPhongAction(props.match.params.id, { content: valueCM })
-      );//TODO:
-    }, 1000);
-  };
-
-  const handleChange = (e) => {
-    console.log(e.target.value);
-    setValueCM(e.target.value);
-  };
-
-  const Editor = ({ onChange, onSubmit, submitting, value }) => (
-    <>
-      <Form.Item>
-        <TextArea rows={4} onChange={onChange} value={value} />
-      </Form.Item>
-      <Form.Item>
-        <Button
-          htmlType="submit"
-          loading={submitting}
-          onClick={onSubmit}
-          type="primary"
-        >
-          Add Comment
-        </Button>
-      </Form.Item>
-    </>
-  );
+ 
 
   //Form setting
 
@@ -516,12 +480,16 @@ export default function RoomDetail(props) {
                 <span>
                   <span>${chiTietPhong.price}</span> / đêm
                 </span>
-                <div className="d-flex">
-                  <StarOutlined style={{ color: "pink" }} />{" "}
-                  <span style={{ color: "black" }}>
-                    {locationId?.valueate}{" "}
-                  </span>
-                </div>
+                {locationId ? (
+                  <div className="d-flex">
+                    <StarOutlined style={{ color: "pink" }} />{" "}
+                    <span style={{ color: "black" }}>
+                      {locationId?.valueate}{" "}
+                    </span>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="row">
                 <div className="col-12">
@@ -591,12 +559,11 @@ export default function RoomDetail(props) {
         <div className="roomDetail_reviews_rank" id="rank">
           <div className="d-flex">
             <Icon style={{ color: "hotpink" }} component={HeartOutlined} />{" "}
-            <h4>
-              {locationId?.valueate}{" "}
-              {dsDanhGia.length === 0 ? "" : ` ${dsDanhGia.length} đánh giá`}
-            </h4>
+            <h5 className="pl-1">
+              {dsDanhGia.length === 0 ? "Hiện Tại Chưa Có Đánh Giá" : `Có ${dsDanhGia.length} đánh giá`}
+            </h5>
           </div>
-          <div className="row">
+          <div className="row py-2">
             <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
                 <span className="w-50">Mức Độ Sạch Sẽ</span>
@@ -606,7 +573,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -618,7 +585,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -630,12 +597,12 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
             </div>
-            <div className="col-6">
+            <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
                 <span className="w-50">Mức Độ Chính Xác</span>
                 <Progress
@@ -644,7 +611,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -656,7 +623,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -668,7 +635,7 @@ export default function RoomDetail(props) {
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -697,21 +664,23 @@ export default function RoomDetail(props) {
               </button>
             </div>
           ) : (
-            ""
+            <div className="w-100 text-center p-2">
+              <button
+                onClick={() => {
+                  setMore(6);
+                }}
+                className="custom-btn btn_Add"
+              >
+                Ẩn Bớt Đánh Giá
+              </button>
+            </div>
           )}
           {idUser ? (
             <div className="roomDetail_reviews_user_comment">
-              <Comment
-                avatar={<Avatar src={user?.avatar} alt={user?.name} />}
-                content={
-                  <Editor
-                    onChange={handleChange}
-                    onSubmit={handleSubmit}
-                    submitting={submitting}
-                    value={valueCM}
-                  />
-                }
-              />
+               
+
+
+               {danhGia()}
             </div>
           ) : (
             ""
