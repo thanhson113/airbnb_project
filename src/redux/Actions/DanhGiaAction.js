@@ -38,4 +38,20 @@ export const TaoDanhGiaTheoPhongAction = (idPhong, comment) => {
     }
   };
 };
+
+export const XoaDanhGiaAction = (idDanhGia, idPhong) => {
+  return async (dispatch) => {
+    try {
+      const result = await quanLyDanhGia.XoaDanhGiaTheoPhong(idDanhGia);
+      if (result.status === 200) {
+        console.log(result);
+        console.log(result.data);
+        dispatch(DSDanhGiaTheoPhongAction(idPhong));
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  };
+};
 //nhat final
