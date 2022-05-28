@@ -1,4 +1,4 @@
-import history from '../../App'
+import {history} from '../../App'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -23,7 +23,7 @@ export default function RoomList(props) {
             return (
                 <div className="col-lg-12 col-md-12" key={phong._id}>
                     <div className="listing-item-container list-layout" data-marker-id={1}>
-                        <div onClick={() => history.push(`/roomdetail/${phong._id}`)} className="listing-item">
+                        <div onClick={() => {history.push(`/roomdetail/${phong._id}`)}} className="listing-item">
                             {/* Image */}
                             <div className="listing-item-image">
                                 <img  src={phong.image} />

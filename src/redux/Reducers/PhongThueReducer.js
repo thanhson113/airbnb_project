@@ -17,6 +17,7 @@ export const phongThueReducer = (state = phongThueState, action) => {
 
       return { ...state };
     //nhat
+    default: return { ...state }
   }
 }
 

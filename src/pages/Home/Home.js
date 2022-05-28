@@ -4,6 +4,15 @@ import { NavLink } from 'react-router-dom'
 import { history } from '../../App'
 import './home.css'
 import { layDanhSachViTri_1 } from '../../redux/Actions/ViTriActon'
+import imgPopular from '../../assets/images/popular-location-01.jpg'
+import imgPopular2 from '../../assets/images/popular-location-02.jpg'
+import imgPopular3 from '../../assets/images/popular-location-03.jpg'
+import imgPopular4 from '../../assets/images/popular-location-03.jpg'
+import imgBaNaHill from '../../assets/images/banahill.jpg'
+import imgCauRong from '../../assets/images/caurong.jpg'
+import imgHoiAn from '../../assets/images/hoian.jpg'
+import imgHaLong from '../../assets/images/halong.jpg'
+import imgNhaTrang from '../../assets/images/nhatran.jpg'
 export default function Home() {
     const dispatch = useDispatch();
     const { danhSachViTri } = useSelector(state => state.viTriReducer)
@@ -63,7 +72,7 @@ export default function Home() {
                 </div>
                 {/* Video */}
                 <div className="video-container" style={{
-                    backgroundImage: 'url("./images/banner_img.jpg")', 
+                    backgroundImage: `url(${imgBaNaHill})`, 
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     }}>
@@ -74,10 +83,10 @@ export default function Home() {
 ================================================== */}
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12">
-                        <h3 className="headline centered margin-top-75">
+                    <div className="col-md-12 my-5 text-center" >
+                        <h2 className="headline centered margin-top-75">
                            Danh mục
-                        </h3>
+                        </h2>
                     </div>
                 </div>
             </div>
@@ -128,23 +137,28 @@ export default function Home() {
             </div>
             {/* Category Boxes / End */}
             {/* Fullwidth Section */}
-            <section className="fullwidth margin-top-65 padding-top-75 padding-bottom-70" data-background-color="#f8f8f8">
+            <section style={{padding:'100px 0'}} className="fullwidth margin-top-65 padding-top-75 padding-bottom-70" data-background-color="#f8f8f8">
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-12">
-                            <h3 className="headline centered margin-bottom-45">
+                        <div className="col-md-12 text-center pb-5">
+                            <h2 className="headline centered margin-bottom-45 pb-3">
                                Các địa điểm ghé thăm nhiều nhất
-                                <span>Khám phá các địa điểm được xếp hạng cao </span>
-                            </h3>
+                            </h2>
+                                <span style={{fontSize:'20px'}}>Khám phá các địa điểm được xếp hạng cao </span>
                         </div>
                         <div className="col-md-12">
-                            {/* Listing Item */}
+                            <div className="row">
+                                 {/* Listing Item */}
                             <div className="col-sm-12 col-md-6 col-lg-3">
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/caurong.jpg" />
-                                            {/* <div className="listing-badge now-open">Now Open</div> */}
+                                            <img src={imgCauRong} />
+                                            <div className="listing-item-details">
+                                                <ul>
+                                                    <li>Thành phố đáng sống ở Việt Nam</li>
+                                                </ul>
+                                            </div>
                                             <div className="listing-item-content">
                                                 <div className="numerical-rating mid" data-rating="9" />
                                                 <h3>Đà Nẵng</h3>
@@ -161,7 +175,7 @@ export default function Home() {
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/hoian.jpg" />
+                                            <img src={imgHoiAn} />
                                             <div className="listing-item-details">
                                                 <ul>
                                                     <li>Di tích văn hóa thế giới</li>
@@ -184,7 +198,7 @@ export default function Home() {
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/halong.jpg" />
+                                            <img src={imgHaLong} />
                                             <div className="listing-item-details">
                                                 <ul>
                                                     <li>Di sản thiên nhiên thế giới</li>
@@ -207,8 +221,12 @@ export default function Home() {
                                 <div className="fw-carousel-item">
                                     <a href="listings-single-page.html" className="listing-item-container compact">
                                         <div className="listing-item">
-                                            <img src="images/nhatrang.jpg" />
-                                            {/* <div className="listing-badge now-open">Now Open</div> */}
+                                            <img src={imgNhaTrang} />
+                                            <div className="listing-item-details">
+                                                <ul>
+                                                    <li>Những bãi biển đẹp nhất hành tinh</li>
+                                                </ul>
+                                            </div>
                                             <div className="listing-item-content">
                                                 <div className="numerical-rating high" data-rating={9.0} />
                                                 <h3>Nha Trang</h3>
@@ -222,6 +240,7 @@ export default function Home() {
                             </div>
                             {/* Listing Item / End */}
                             {/* Listing Item */}
+                            </div>
 
                         </div>
                     </div>
@@ -234,13 +253,15 @@ export default function Home() {
             {/* Container */}
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12">
-                        <h3 className="headline centered margin-bottom-35 margin-top-70">Các thành phố nổi tiếng<span>Danh sách các địa điểm nổi tiếng</span></h3>
+                    <div className="col-md-12 text-center">
+                        <h2 className="headline centered margin-bottom-35 margin-top-70 pb-3">Các thành phố nổi tiếng
+                        </h2>
+                        <span style={{fontSize: '20px'}}>Danh sách các địa điểm nổi tiếng</span>
                     </div>
                     <div className="col-md-4">
                         {/* Image Box */}
                         <div className="img-div">
-                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-01.jpg")' }}>
+                            <img  className="img-box" style={{ backgroundImage: `url(${imgPopular})` }}>
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>New York </h4>
@@ -251,7 +272,7 @@ export default function Home() {
                     </div>
                     <div className="col-md-8">
                         <div className="img-div">
-                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-02.jpg")'}}>
+                            <img  className="img-box" style={{ backgroundImage: `url(${imgPopular2})` }}>
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>Los Angeles </h4>
@@ -263,7 +284,7 @@ export default function Home() {
                     <div className="col-md-8">
                         {/* Image Box */}
                         <div className="img-div">
-                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-03.jpg")' }}>
+                            <img  className="img-box" style={{ backgroundImage: `url(${imgPopular3})` }}>
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>San Francisco  </h4>
@@ -275,7 +296,7 @@ export default function Home() {
                     <div className="col-md-4">
                         {/* Image Box */}
                         <div className="img-div">
-                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-04.jpg")' }}>
+                            <img  className="img-box" style={{ backgroundImage: `url(${imgPopular4})` }}>
                             </img>
                                 <div className="img-box-content visible">
                                     <h4>Miami</h4>
