@@ -1,37 +1,54 @@
 /** @format */
 
-import { DatePicker, Form, Input, Select } from "antd";
+import { DatePicker, Form, Input, InputNumber, Select } from "antd";
 import { useFormik } from "formik";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { ChiTietNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
+import {
+  ChiTietNguoiDungAction,
+  LayDSNguoiDungAction,
+} from "../../redux/Actions/NguoiDungAction";
 
 const { Option } = Select;
 
 function UpdateND(props) {
-  const [turnOn, setTurnOn] = useState(true);
-  const { user } = useSelector((state) => state.nguoiDungReducer);
+  const dispatch = useDispatch();
+  const idUser = localStorage.getItem("id");
+  const { user, dsNguoiDung } = useSelector((state) => state.nguoiDungReducer);
   const { address, birthday, email, gender, phone, name } = user;
+  console.log(address, birthday, email, gender, phone, name);
+  const [turnOn, setTurnOn] = useState(true);
+
+  useEffect(() => {
+    dispatch(ChiTietNguoiDungAction(idUser));
+    dispatch(LayDSNguoiDungAction());
+  }, []);
+
+  const listDSEmailND = dsNguoiDung.map((nd) => nd.email);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: "",
-      email: "",
-      phone: "",
-      birthday: "",
-      gender: true,
-      address: "",
+      name: name,
+      email: email,
+      phone: phone,
+      birthday: birthday,
+      gender: gender,
+      address: address,
       type: "CLIENT",
     },
     validationSchema: Yup.object({
       email: Yup.string()
         .required("Email khong duoc de trong")
-        .email("Email ko đúng định dạng email"),
-      // .notOneOf(taoDSNDEmail, "Email đã được sử dụng"),
-      phone: Yup.string().required("Số điện thoai khong duoc de trong"),
+        .email("Email ko đúng định dạng email")
+        .notOneOf(listDSEmailND, "Email đã được sử dụng"),
+      phone: Yup.string().required("Số điện thoai khong duoc de trong")
+      .matches(/^[0-9]+$/,"Đây là trường số bạn ơi !")
+      ,
       //matches : kiểm tra biểu thức
+
       name: Yup.string()
         .required("Họ Tên khong duoc de trong")
         .matches(
@@ -41,7 +58,7 @@ function UpdateND(props) {
       address: Yup.string().required("Địa chỉ không được để trống"),
       birthday: Yup.string().required("Chưa Nhập Ngày Sinh"),
 
-      gender: Yup.boolean().required("Chưa chọn giới tính"),
+      gender: Yup.string().required("Chưa chọn giới tính"),
     }),
     onSubmit: (values) => {
       console.log("values", values);
@@ -65,30 +82,26 @@ function UpdateND(props) {
       },
     },
   };
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
-      },
-    },
-  };
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
-  const handleChangeForm = (values) => {
-    console.log("Received values of form: ", values);
-  };
-  const handleChangeDatePicker = (values) => {
-    let birthday = moment(values).format("YYYY/MM/DD");
-    formik.setFieldValue(birthday);
+  const handleChangeSwitch = (name) => {
+    return (value) => {
+      formik.setFieldValue(name, value);
+    };
   };
 
-  const [form] = Form.useForm();
+  const handleChangeDatePicker = (value) => {
+    
+      console.log("value",value);
+      let birthday = moment(value);
+      formik.setFieldValue('birthday', birthday);
+      console.log(formik.values.birthday);
+   
+  };
+  const handleChangeInputNumber = (name) => {
+    return (value) => {
+      formik.setFieldValue(name, value);
+    };
+  };
+
   return (
     <div>
       <div className="UpdateND py-2">
@@ -101,22 +114,14 @@ function UpdateND(props) {
           Cập Nhập Thông tin
         </button>
       </div>
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="updateInfo"
-        onFinish={formik.onSubmit}
-        onValuesChange={handleChangeForm}
-        size={"middle"}
-        scrollToFirstError
-      >
+      <Form {...formItemLayout} onSubmitCapture={formik.handleSubmit}>
         <Form.Item label="E-mail">
           <Input
             disabled={turnOn}
             name="email"
-            value={email ? email : ""}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            value={formik.values.email}
           />
           {formik.touched.email && formik.errors.email ? (
             <div className="alert alert-danger">{formik.errors.email}</div>
@@ -130,11 +135,10 @@ function UpdateND(props) {
         >
           <Input
             disabled={turnOn}
-            value={name ? name : ""}
-            type="text"
             name="name"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            value={formik.values.name}
           />
           {formik.touched.name && formik.errors.name ? (
             <div className="alert alert-danger">{formik.errors.name}</div>
@@ -142,15 +146,15 @@ function UpdateND(props) {
         </Form.Item>
 
         <Form.Item label="Số điện thoại">
-          <Input
+          <InputNumber
             disabled={turnOn}
-            value={phone ? phone : ""}
             name="phone"
             style={{
               width: "100%",
             }}
-            onChange={formik.handleChange}
+            onChange={handleChangeSwitch("phone")}
             onBlur={formik.handleBlur}
+            value={formik.values.phone}
           />
           {formik.touched.phone && formik.errors.phone ? (
             <div className="alert alert-danger">{formik.errors.phone}</div>
@@ -159,11 +163,11 @@ function UpdateND(props) {
         <Form.Item label="Ngày sinh">
           <DatePicker
             disabled={turnOn}
-            value={birthday ? moment(birthday) : ""}
             format={"YYYY/MM/DD"}
             name="birthday"
             onChange={handleChangeDatePicker}
             onBlur={formik.handleBlur}
+            value={moment(formik.values.birthday)}
           />
           {formik.touched.birthday && formik.errors.birthday ? (
             <div className="alert alert-danger">{formik.errors.birthday}</div>
@@ -173,10 +177,12 @@ function UpdateND(props) {
         <Form.Item label="Địa chỉ">
           <Input.TextArea
             disabled={turnOn}
-            value={address ? address : ""}
             name="address"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             showCount
             maxLength={150}
+            value={formik.values.address}
           />
           {formik.touched.address && formik.errors.address ? (
             <div className="alert alert-danger">{formik.errors.address}</div>
@@ -186,14 +192,13 @@ function UpdateND(props) {
         <Form.Item label="Giới tính">
           <Select
             disabled={turnOn}
-            value={gender ? "true" : "false"}
             name="gender"
-            onChange={formik.handleChange}
+            onChange={handleChangeSwitch('gender')}
             onBlur={formik.handleBlur}
-            placeholder="select your gender"
+            value={formik.values.gender}
           >
-            <Option value="true">Boy</Option>
-            <Option value="false">Girl</Option>
+            <Option value={true}>Boy</Option>
+            <Option value={false}>Girl</Option>
           </Select>
           {formik.touched.gender && formik.errors.gender ? (
             <div className="alert alert-danger d-none">
@@ -201,14 +206,18 @@ function UpdateND(props) {
             </div>
           ) : null}
         </Form.Item>
+        <Form.Item>
+          <div className="w-100 text-center">
+            <button
+              disabled={turnOn}
+              className="btn btn-outline-success w-25 py-3"
+              type="submit"
+            >
+              Update
+            </button>
+          </div>
+        </Form.Item>
       </Form>
-      <div className={`w-100 text-center  ${turnOn ? "d-none" : ""}`}>
-        <button onClick={()=>{
-          setTurnOn(!turnOn)
-        }} className="btn btn-outline-success w-25 py-3" type="submit">
-          Update
-        </button>
-      </div>
     </div>
   );
 }
