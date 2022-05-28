@@ -3,32 +3,32 @@ import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../../assets/images/logo.png'
 import './header.css'
-import {ACCESS_TOKEN} from '../../../../util/setting'
+import { Acces_stoken } from '../../../../util/setting'
 export default function Header() {
     const { userLogin } = useSelector(state => state.nguoiDungReducer);
     const dispatch = useDispatch()
     const renderUserLogin = () => {
-        if(localStorage.getItem('accessToken')){
-           return <a className="header__logout" style={{cursor:'pointer'}}  onClick={() => {
-                localStorage.removeItem(ACCESS_TOKEN);
+        if (localStorage.getItem('accessToken')) {
+            return <a className="header__logout" style={{ cursor: 'pointer' }} onClick={() => {
+                localStorage.removeItem(Acces_stoken);
                 window.location.reload();
             }}>Đăng xuất</a>
-        }else{
+        } else {
             return (
                 <>
-                     <div className="header__login">
-                                <NavLink to="/login">
-                                <i className="fa-solid fa-arrow-right-to-bracket" />
-                                    Đăng nhập
-                                </NavLink>
-                            </div>
-                            <div className="header__register">
-                                <NavLink to="/register">
-                                <i className="fa-solid fa-pen-to-square"></i>
-                                    Đăng ký
-                                </NavLink>
+                    <div className="header__login">
+                        <NavLink to="/login">
+                            <i className="fa-solid fa-arrow-right-to-bracket" />
+                            Đăng nhập
+                        </NavLink>
+                    </div>
+                    <div className="header__register">
+                        <NavLink to="/register">
+                            <i className="fa-solid fa-pen-to-square"></i>
+                            Đăng ký
+                        </NavLink>
 
-                            </div>
+                    </div>
                 </>
             )
         }
@@ -60,7 +60,7 @@ export default function Header() {
                         </ul>
                         <div className="header__right">
                             {renderUserLogin()}
-                        </div>  
+                        </div>
                     </div>
 
                 </nav>

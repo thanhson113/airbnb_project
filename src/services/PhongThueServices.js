@@ -1,21 +1,15 @@
 import { http } from "../util/settingAxios";
 
-<<<<<<< HEAD
-class QuanLyPhongChoThue{
-    layDSPhongThueTheoViTri = (idViTri) => {
-        return http.get(`/api/rooms?locationId=${idViTri}`)
-    }
-=======
-
 class QuanLyPhongChoThue {
-    //nhat head
+  layDSPhongThueTheoViTri = (idViTri) => {
+    return http.get(`/api/rooms?locationId=${idViTri}`)
+  }
   ThongTinChiTietPhong = (id) => {
     return http.get(`/api/rooms/${id}`);
   };
-  DatVe=(ve)=>{
-    return  http.post(`/api/rooms/booking`,ve)
->>>>>>> eba15c20f0c03ecbaeaa96758bd6ce72ff97f1e5
-}
-  // nhat final
+  DatVe = (ve) => {
+    return http.post(`/api/rooms/booking`, ve)
+
+  }
 }
 export const quanLyPhongChoThue = new QuanLyPhongChoThue();

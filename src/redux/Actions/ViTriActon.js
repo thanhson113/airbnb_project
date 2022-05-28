@@ -1,8 +1,7 @@
 import { quanLyViTri } from "../../services/ViTriServices"
-<<<<<<< HEAD
-import { GET_VITRI } from "../Types/ViTriType";
+import { GET_VITRI, layDanhSachViTri } from "../Types/ViTriType";
 
-export const layDanhSachViTri = (keyWord = '') => {
+export const layDanhSachViTri_1 = (keyWord = '') => {
     return async (dispatch) => {
         try{
             let result = await quanLyViTri.layDanhSachViTri(keyWord)
@@ -15,8 +14,7 @@ export const layDanhSachViTri = (keyWord = '') => {
         }
     }
 }
-=======
-import { layDanhSachViTri } from "../Types/ViTriType"
+
 
 
 export const layDanhSachViTriAction = () => {
@@ -34,4 +32,3 @@ export const layDanhSachViTriAction = () => {
         }
     }
 }
->>>>>>> eba15c20f0c03ecbaeaa96758bd6ce72ff97f1e5
