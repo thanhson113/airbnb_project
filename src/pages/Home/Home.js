@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { history } from '../../App'
 import './home.css'
-import { layDanhSachViTri } from '../../redux/Actions/ViTriActon'
+import { layDanhSachViTri_1 } from '../../redux/Actions/ViTriActon'
 export default function Home() {
     const dispatch = useDispatch();
     const { danhSachViTri } = useSelector(state => state.viTriReducer)
@@ -23,11 +23,11 @@ export default function Home() {
     const handleInput = async (event) => {
         let value = event.target.value;
         setKeyword(value)
-        dispatch(layDanhSachViTri(value))
+        dispatch(layDanhSachViTri_1(value))
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch(layDanhSachViTri(keyWord))
+        // dispatch(layDanhSachViTri_1(keyWord))
     }
     return (
         <div id="wrapper">
