@@ -1,6 +1,5 @@
 /** @format */
 
-import logo from "./logo.svg";
 import "antd/dist/antd.css";
 import { BackTop } from "antd";
 
@@ -22,7 +21,7 @@ import User from "./pages/Admin/User/User";
 import EditUser from "./pages/Admin/User/EditUser";
 
 import ViTri from "./pages/Admin/ViTri/ViTri";
-
+import "antd/dist/antd.css";
 import "./App.css";
 
 const style = {
@@ -49,13 +48,10 @@ function App() {
         <RoomDetailTemplate path="/roomlist" component={RoomList} />
         <UserTemplate path="/login" component={Login} />
         <UserTemplate path="/register" component={Register} />
-
         <AdminTemplate path="/admin/user/edit/:id" component={EditUser} />
         <AdminTemplate path="/admin/user" component={User} />
         <AdminTemplate path="/vitri" component={ViTri} />
-
         <AdminTemplate path="/admin" component={Dashboard} />
-
         <HomeTemplate path="/" component={Home} />
       </Switch>
       <BackTop>
@@ -64,5 +60,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;
