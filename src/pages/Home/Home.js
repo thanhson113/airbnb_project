@@ -1,8 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { history } from '../../App'
-
+import './home.css'
+import { layDanhSachViTri } from '../../redux/Actions/ViTriActon'
 export default function Home() {
+    const dispatch = useDispatch();
+    const { danhSachViTri } = useSelector(state => state.viTriReducer)
+    const [ketQua, setKetQua] = useState(false)
+    const [keyWord, setKeyword] = useState('')
+
+    const renderDSViTri = () => {
+        return danhSachViTri.map((viTri, index) => {
+            return (
+                <li key={viTri._id} onClick={() => { history.push(`/roomlist/${viTri._id}`) }} style={{cursor:'pointer'}}>
+                    <i className="fa fa-map-marker" />
+                    <span>{viTri.name}</span>
+                </li>
+            )
+        })
+    }
+    const handleInput = async (event) => {
+        let value = event.target.value;
+        setKeyword(value)
+        dispatch(layDanhSachViTri(value))
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch(layDanhSachViTri(keyWord))
+    }
     return (
         <div id="wrapper">
             {/* Banner
@@ -12,41 +38,36 @@ export default function Home() {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                <h2>Find Nearby Attractions</h2>
-                                <h4>Expolore top-rated attractions, activities and more</h4>
-                                <div className="main-search-input">
-                                    <div className="main-search-input-item">
-                                        <input type="text" placeholder="What are you looking for?" defaultValue />
-                                    </div>
-                                    <div className="main-search-input-item location">
-                                        <div id="autocomplete-container">
-                                            <input id="autocomplete-input" type="text" placeholder="Location" />
+                                <h2>Tìm các địa điểm tham quan</h2>
+                                <h4>Khám phá các điểm tham quan, hoạt động được xếp hạng hàng đầu và hơn thế nữa</h4>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="main-search-input">
+                                        <div className="main-search-input-item location">
+                                            <div id="autocomplete-container">
+                                                <input id="autocomplete-input" type="text" placeholder="Địa điểm" onChange={handleInput} />
+                                            </div>
+                                            <a href="#"><i className="fa fa-map-marker" /></a>
+                                            <ul className={`main-search-input-result `} style={{
+                                                display: danhSachViTri.length > 0 && keyWord !== '' ? 'block' : 'none'
+                                            }}>
+                                                {renderDSViTri()}
+                                            </ul>
                                         </div>
-                                        <a href="#"><i className="fa fa-map-marker" /></a>
+
+                                        <button className="button" type="submit">Tìm kiếm</button>
                                     </div>
-                                    <div className="main-search-input-item">
-                                        <select data-placeholder="All Categories" className="chosen-select">
-                                            <option>All Categories</option>
-                                            <option>Shops</option>
-                                            <option>Hotels</option>
-                                            <option>Restaurants</option>
-                                            <option>Fitness</option>
-                                            <option>Events</option>
-                                        </select>
-                                    </div>
-                                    <button className="button" onClick={() => {
-                                        history.push('/roomlist/123')
-                                    }}>Search</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* Video */}
-                <div className="video-container">
-                    <video poster="images/main-search-video-poster.jpg" loop autoPlay muted>
-                        <source src="images/main-search-video.mp4" type="video/mp4" />
-                    </video>
+                <div className="video-container" style={{
+                    backgroundImage: 'url("./images/banner_img.jpg")', 
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    }}>
+                    
                 </div>
             </div>
             {/* Content
@@ -55,7 +76,7 @@ export default function Home() {
                 <div className="row">
                     <div className="col-md-12">
                         <h3 className="headline centered margin-top-75">
-                            Browse Categories
+                           Danh mục
                         </h3>
                     </div>
                 </div>
@@ -68,31 +89,31 @@ export default function Home() {
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Hamburger" />
-                                <h4>Eat &amp; Drink</h4>
+                                <h4> Ăn uống</h4>
                                 <span className="category-box-counter">12</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im  im-icon-Sleeping" />
-                                <h4>Hotels</h4>
+                                <h4>Khách sạn</h4>
                                 <span className="category-box-counter">32</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Shopping-Bag" />
-                                <h4>Shops</h4>
+                                <h4>Cửa hàng</h4>
                                 <span className="category-box-counter">11</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Cocktail" />
-                                <h4>Nightlife</h4>
+                                <h4>Khám phá</h4>
                                 <span className="category-box-counter">15</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Electric-Guitar" />
-                                <h4>Events</h4>
+                                <h4>Sự kiện</h4>
                                 <span className="category-box-counter">21</span>
                             </a>
                             {/* Box */}
@@ -108,122 +129,105 @@ export default function Home() {
             {/* Category Boxes / End */}
             {/* Fullwidth Section */}
             <section className="fullwidth margin-top-65 padding-top-75 padding-bottom-70" data-background-color="#f8f8f8">
-                <div className="container">
+                <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12">
                             <h3 className="headline centered margin-bottom-45">
-                                Most Visited Places
-                                <span>Discover top-rated local businesses</span>
+                               Các địa điểm ghé thăm nhiều nhất
+                                <span>Khám phá các địa điểm được xếp hạng cao </span>
                             </h3>
+                        </div>
+                        <div className="col-md-12">
+                            {/* Listing Item */}
+                            <div className="col-sm-12 col-md-6 col-lg-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/caurong.jpg" />
+                                            {/* <div className="listing-badge now-open">Now Open</div> */}
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating mid" data-rating="9" />
+                                                <h3>Đà Nẵng</h3>
+                                                <span>Cầu Rồng</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+                            <div className="col-sm-12 col-md-6 col-lg-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/hoian.jpg" />
+                                            <div className="listing-item-details">
+                                                <ul>
+                                                    <li>Di tích văn hóa thế giới</li>
+                                                </ul>
+                                            </div>
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating high" data-rating={9.0} />
+                                                <h3>Hội An</h3>
+                                                <span>Phố cổ Hội An</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+                            <div className="col-sm-12 col-md-6 col-lg-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/halong.jpg" />
+                                            <div className="listing-item-details">
+                                                <ul>
+                                                    <li>Di sản thiên nhiên thế giới</li>
+                                                </ul>
+                                            </div>
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating low" data-rating={10.0} />
+                                                <h3>Thành phố Hạ Long</h3>
+                                                <span>Vịnh Hạ Long</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+                            <div className="col-sm-12 col-md-6 col-lg-3">
+                                <div className="fw-carousel-item">
+                                    <a href="listings-single-page.html" className="listing-item-container compact">
+                                        <div className="listing-item">
+                                            <img src="images/nhatrang.jpg" />
+                                            {/* <div className="listing-badge now-open">Now Open</div> */}
+                                            <div className="listing-item-content">
+                                                <div className="numerical-rating high" data-rating={9.0} />
+                                                <h3>Nha Trang</h3>
+                                                <span>Biển Nha Trang</span>
+                                            </div>
+                                            <span className="like-icon" />
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {/* Listing Item / End */}
+                            {/* Listing Item */}
+
                         </div>
                     </div>
                 </div>
                 {/* Carousel / Start */}
-                <div className="simple-fw-slick-carousel dots-nav">
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-01.jpg"  />
-                                <div className="listing-badge now-open">Now Open</div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating="3.5" />
-                                    <h3>Tom's Restaurant</h3>
-                                    <span>964 School Street, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-02.jpg"  />
-                                <div className="listing-item-details">
-                                    <ul>
-                                        <li>Friday, August 10</li>
-                                    </ul>
-                                </div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating={5.0} />
-                                    <h3>Sticky Band</h3>
-                                    <span>Bishop Avenue, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-03.jpg"  />
-                                <div className="listing-item-details">
-                                    <ul>
-                                        <li>Starting from $59 per night</li>
-                                    </ul>
-                                </div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating={2.0} />
-                                    <h3>Hotel Govendor</h3>
-                                    <span>778 Country Street, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-04.jpg"  />
-                                <div className="listing-badge now-open">Now Open</div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating={5.0} />
-                                    <h3>Burger House</h3>
-                                    <span>2726 Shinn Street, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-05.jpg"  />
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating="3.5" />
-                                    <h3>Airport</h3>
-                                    <span>1512 Duncan Avenue, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                    {/* Listing Item */}
-                    <div className="fw-carousel-item">
-                        <a href="listings-single-page.html" className="listing-item-container compact">
-                            <div className="listing-item">
-                                <img src="images/listing-item-06.jpg"  />
-                                <div className="listing-badge now-closed">Now Closed</div>
-                                <div className="listing-item-content">
-                                    <div className="numerical-rating" data-rating="4.5" />
-                                    <h3>Think Coffee</h3>
-                                    <span>215 Terry Lane, New York</span>
-                                </div>
-                                <span className="like-icon" />
-                            </div>
-                        </a>
-                    </div>
-                    {/* Listing Item / End */}
-                </div>
+
                 {/* Carousel / End */}
             </section>
             {/* Fullwidth Section / End */}
@@ -231,52 +235,64 @@ export default function Home() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <h3 className="headline centered margin-bottom-35 margin-top-70">Popular Cities <span>Browse listings in popular places</span></h3>
+                        <h3 className="headline centered margin-bottom-35 margin-top-70">Các thành phố nổi tiếng<span>Danh sách các địa điểm nổi tiếng</span></h3>
                     </div>
                     <div className="col-md-4">
                         {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-01.jpg">
-                            <div className="img-box-content visible">
-                                <h4>New York </h4>
-                                <span>14 Listings</span>
-                            </div>
-                        </a>
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-01.jpg")' }}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>New York </h4>
+                                    <span>14 địa điểm</span>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div className="col-md-8">
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-02.jpg")'}}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>Los Angeles </h4>
+                                    <span>24 địa điểm</span>
+                                </div>
+
+                        </div>
                     </div>
                     <div className="col-md-8">
                         {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-02.jpg">
-                            <div className="img-box-content visible">
-                                <h4>Los Angeles</h4>
-                                <span>24 Listings</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div className="col-md-8">
-                        {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-03.jpg">
-                            <div className="img-box-content visible">
-                                <h4>San Francisco </h4>
-                                <span>12 Listings</span>
-                            </div>
-                        </a>
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-03.jpg")' }}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>San Francisco  </h4>
+                                    <span>12 địa điểm</span>
+                                </div>
+
+                        </div>
                     </div>
                     <div className="col-md-4">
                         {/* Image Box */}
-                        <a href="listings-list-with-sidebar.html" className="img-box" data-background-image="images/popular-location-04.jpg">
-                            <div className="img-box-content visible">
-                                <h4>Miami</h4>
-                                <span>9 Listings</span>
-                            </div>
-                        </a>
+                        <div className="img-div">
+                            <img  className="img-box" style={{ backgroundImage: 'url("images/popular-location-04.jpg")' }}>
+                            </img>
+                                <div className="img-box-content visible">
+                                    <h4>Miami</h4>
+                                    <span>9 địa điểm</span>
+                                </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
             {/* Container / End */}
             {/* Flip banner */}
-            <a href="listings-half-screen-map-list.html" className="flip-banner parallax margin-top-65" data-background="images/slider-bg-02.jpg" data-color="#f91942" data-color-opacity="0.85" data-img-width={2500} data-img-height={1666}>
+            <a href="" className="flip-banner parallax margin-top-65" style={{backgroundImage:'url("images/slider-bg-02.jpg")'}} >
+            <div className="parallax-overlay" style={{backgroundColor: 'rgb(249, 25, 66)', opacity: 0.85}}></div>
                 <div className="flip-banner-content">
-                    <h2 className="flip-visible">Expolore top-rated attractions nearby</h2>
-                    <h2 className="flip-hidden">Browse Listings <i className="sl sl-icon-arrow-right" /></h2>
+                    <h2 className="flip-visible">Khám phá các điểm tham quan được xếp hạng hàng đầu lân cận</h2>
+                    <h2 className="flip-hidden">Danh sách <i className="sl sl-icon-arrow-right" /></h2>
                 </div>
             </a>
         </div>

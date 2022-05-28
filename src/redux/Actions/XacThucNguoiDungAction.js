@@ -18,6 +18,13 @@ export const LoginAction = (nd) => {
   return async (dispatch) => {
     try {
       const result = await xacThucNguoiDung.Login(nd);
+<<<<<<< HEAD
+      if (result.status === 200){
+          console.log(result.data.message);
+          localStorage.setItem("accessToken",JSON.stringify(result.data.token))
+      }
+      
+=======
       if (result.status === 200) {
         console.log(result.data.message);
         console.log(result.data);
@@ -28,6 +35,7 @@ export const LoginAction = (nd) => {
         localStorage.setItem("id", result.data.user._id);
         await success("SignIn")
         
+>>>>>>> eba15c20f0c03ecbaeaa96758bd6ce72ff97f1e5
 
       }
     } catch (error) {

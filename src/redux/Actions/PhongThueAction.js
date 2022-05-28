@@ -1,3 +1,21 @@
+<<<<<<< HEAD
+import { quanLyPhongChoThue } from "../../services/PhongThueServices"
+import { GET_DSPHONGTHUE_VITRI } from "../Types/PhongThueType";
+
+export const layDSPhongThueTheoViTri = (idViTri) => {
+    return async (dispatch) => {
+        try {
+            let result = await quanLyPhongChoThue.layDSPhongThueTheoViTri(idViTri);
+            dispatch({
+                type: GET_DSPHONGTHUE_VITRI,
+                dsPhongTheoViTri : result.data
+            })
+        }catch(err){
+            console.log(err.response.data)
+        }
+    }
+}
+=======
 import { quanLyPhongChoThue } from "../../services/PhongThueServices";
 import { ThongTinChiTietPhongType } from "../Types/PhongThueType";
 
@@ -38,3 +56,4 @@ export const DatPhongAction = (ve) => {
   }
 }
 //Nhat final
+>>>>>>> eba15c20f0c03ecbaeaa96758bd6ce72ff97f1e5
