@@ -89,31 +89,31 @@ export default function Home() {
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Hamburger" />
-                                <h4>Eat &amp; Drink</h4>
+                                <h4> Ăn uống</h4>
                                 <span className="category-box-counter">12</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im  im-icon-Sleeping" />
-                                <h4>Hotels</h4>
+                                <h4>Khách sạn</h4>
                                 <span className="category-box-counter">32</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Shopping-Bag" />
-                                <h4>Shops</h4>
+                                <h4>Cửa hàng</h4>
                                 <span className="category-box-counter">11</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Cocktail" />
-                                <h4>Nightlife</h4>
+                                <h4>Khám phá</h4>
                                 <span className="category-box-counter">15</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
                                 <i className="im im-icon-Electric-Guitar" />
-                                <h4>Events</h4>
+                                <h4>Sự kiện</h4>
                                 <span className="category-box-counter">21</span>
                             </a>
                             {/* Box */}

@@ -42,6 +42,9 @@
 .header__register:hover a{
     color: #f91942;
 }
+.header__logout:hover{
+    color: #f91942;
+}
 @media screen and (max-width:992px){
     .header__right{
         justify-content: space-evenly;

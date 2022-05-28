@@ -20,7 +20,7 @@ export default function Footer() {
                                 <li><a href="#">Tài khoản</a></li>
                                 <li><a href="#">Địa điểm</a></li>
                                 <li><a href="#">Định giá</a></li>
-                                <li><a href="#">Chính sach bảo mật</a></li>
+                                <li><a href="#">Chính sách bảo mật</a></li>
                             </ul>
                             <ul className="footer-links">
                                 <li><a href="#">FAQ</a></li>

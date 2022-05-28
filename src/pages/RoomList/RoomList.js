@@ -26,11 +26,11 @@ export default function RoomList(props) {
                         <div onClick={() => history.push(`/roomdetail/${phong._id}`)} className="listing-item">
                             {/* Image */}
                             <div className="listing-item-image">
-                                <img src={phong.image} />
+                                <img  src={phong.image} />
                             </div>
                             {/* Content */}
                             <div className="listing-item-content">
-                                <div className="listing-badge now-open">Now Open</div>
+                                {/* <div className="listing-badge now-open">Now Open</div> */}
                                 <div className="listing-item-inner">
                                     <h3>{phong.name}</h3>
                                     <span>{phong.locationId.province}, {phong.locationId.country}</span>
