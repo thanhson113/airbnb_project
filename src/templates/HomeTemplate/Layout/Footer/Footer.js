@@ -1,5 +1,6 @@
 import React from 'react'
-
+import './footer.css'
+import logo from '../../../../assets/images/logo.png'
 export default function Footer() {
     return (
         <>
@@ -8,7 +9,7 @@ export default function Footer() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-5 col-sm-6">
-                            <img className="footer-logo" src="images/logo.png"  />
+                            <img className="footer-logo" src={logo}  />
                             <br /><br />
                             <p>Là một thị trường cộng đồng cho việc đặt và cho thuê phòng, căn hộ, có trụ sở tại Silicon Valley, California được thành lập trong năm 2008, tương tự như một hệ thống đặt hàng trực tuyến</p>
                         </div>

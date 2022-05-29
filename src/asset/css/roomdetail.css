@@ -5,6 +5,7 @@
 }
 .roomDetail {
   width: 100%;
+ 
 }
 
 /* ROOMDETAIL HEAD*/
@@ -155,7 +156,7 @@
 @media screen and (min-width: 1024px) {
   .roomDetail {
     font-size: 16px;
-    padding-top: 50px;
+    padding-top: 140px;
   }
   .roomDetail .roomDetail_head_photos {
     position: relative;

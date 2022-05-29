@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../../assets/images/logo.png'
 import './header.css'
 import { Acces_stoken } from '../../../../util/setting'
+import {history} from '../../../../App'
 export default function Header() {
     const { userLogin } = useSelector(state => state.nguoiDungReducer);
     const dispatch = useDispatch()
     const renderUserLogin = () => {
         if (localStorage.getItem('accessToken')) {
-            return <a className="header__logout" style={{ cursor: 'pointer' }} onClick={() => {
-                localStorage.removeItem(Acces_stoken);
+            return <a className="header__logout" onClick={() => {
+                localStorage.removeItem('accessToken');
                 window.location.reload();
             }}>Đăng xuất</a>
         } else {
@@ -55,7 +56,7 @@ export default function Header() {
                                 <a className="nav-link" href="#">Liên hệ</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">Thông tin</a>
+                                <a className="nav-link" onClick={() =>{history.push('/profile')}}>Thông tin</a>
                             </li>
                         </ul>
                         <div className="header__right">
