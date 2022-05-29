@@ -7,7 +7,17 @@
     background-color: #fff;
     box-shadow: 0 0 12px 0 rgb(0 0 0 / 12%);
 }
-
+.header__logout{
+	cursor: pointer;
+	color: #333333;
+	padding: 3px 10px;
+    transition: all .5s;
+    border-radius: 20px;
+}
+.header__logout:hover{
+	color:#f91942;
+	background: rgba(249, 25, 66, .06);
+}
 .header ul li{
     padding: 3px 10px;
     margin: 0 5px;

@@ -97,37 +97,37 @@ export default function Home() {
                         <div className="categories-boxes-container margin-top-5 margin-bottom-30">
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
-                                <i className="im im-icon-Hamburger" />
+                            <i class="fa fa-hamburger"></i>
                                 <h4> Ăn uống</h4>
                                 <span className="category-box-counter">12</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
-                                <i className="im  im-icon-Sleeping" />
+                            <i class="fa fa-hotel"></i>
                                 <h4>Khách sạn</h4>
                                 <span className="category-box-counter">32</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
-                                <i className="im im-icon-Shopping-Bag" />
+                            <i class="fa fa-shopping-bag"></i>
                                 <h4>Cửa hàng</h4>
                                 <span className="category-box-counter">11</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
-                                <i className="im im-icon-Cocktail" />
+                            <i class="fa fa-cocktail"></i>
                                 <h4>Khám phá</h4>
                                 <span className="category-box-counter">15</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
-                                <i className="im im-icon-Electric-Guitar" />
+                            <i class="fa fa-guitar"></i>
                                 <h4>Sự kiện</h4>
                                 <span className="category-box-counter">21</span>
                             </a>
                             {/* Box */}
                             <a href="listings-list-with-sidebar.html" className="category-small-box">
-                                <i className="im im-icon-Dumbbell" />
+                            <i class="fa fa-dumbbell"></i>
                                 <h4>Fitness</h4>
                                 <span className="category-box-counter">28</span>
                             </a>
