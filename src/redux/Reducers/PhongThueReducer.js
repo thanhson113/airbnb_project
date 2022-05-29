@@ -22,11 +22,7 @@ export const phongThueReducer = (state = phongThueState, action) => {
 
       return { ...state };
     //nhat
-<<<<<<< HEAD
     default: return { ...state }
-=======
-    default:
-      return { ...state };
->>>>>>> 0388d4e090bcc26d62defe76e4d69fe75e3ee552
+    
   }
 };
