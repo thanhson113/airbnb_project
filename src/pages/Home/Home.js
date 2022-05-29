@@ -141,7 +141,7 @@ export default function Home() {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-12 text-center pb-5">
-                            <h2 className="headline centered margin-bottom-45 pb-3">
+                            <h2 className="headline centered margin-bottom-45 ">
                                Các địa điểm ghé thăm nhiều nhất
                             </h2>
                                 <span style={{fontSize:'20px'}}>Khám phá các địa điểm được xếp hạng cao </span>
@@ -254,7 +254,7 @@ export default function Home() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 text-center">
-                        <h2 className="headline centered margin-bottom-35 margin-top-70 pb-3">Các thành phố nổi tiếng
+                        <h2 className="headline centered margin-bottom-35 margin-top-70 ">Các thành phố nổi tiếng
                         </h2>
                         <span style={{fontSize: '20px'}}>Danh sách các địa điểm nổi tiếng</span>
                     </div>
@@ -307,15 +307,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            {/* Container / End */}
-            {/* Flip banner */}
-            <a href="" className="flip-banner parallax margin-top-65" style={{backgroundImage:'url("images/slider-bg-02.jpg")'}} >
-            <div className="parallax-overlay" style={{backgroundColor: 'rgb(249, 25, 66)', opacity: 0.85}}></div>
-                <div className="flip-banner-content">
-                    <h2 className="flip-visible">Khám phá các điểm tham quan được xếp hạng hàng đầu lân cận</h2>
-                    <h2 className="flip-hidden">Danh sách <i className="sl sl-icon-arrow-right" /></h2>
-                </div>
-            </a>
+            
         </div>
 
     )

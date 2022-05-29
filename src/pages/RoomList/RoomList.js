@@ -65,7 +65,7 @@ export default function RoomList(props) {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                <h2>Chỗ ở tại khu vực bản đồ đã chọn</h2><span></span>
+                                <h2 className='pb-5'>Chỗ ở tại khu vực bản đồ đã chọn</h2><span></span>
                                 {/* Breadcrumbs */}
                                 {/* <nav id="breadcrumbs">
                                     <ul>
