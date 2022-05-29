@@ -1,10 +1,7 @@
 import { layDanhSachViTri } from "../Types/ViTriType"
 
 const viTriState = {
-  mangViTri: [
-    { id: 1, name: 'Đà Nẵng' },
-    { id: 2, name: 'Đà lạt' }
-  ],
+  mangViTri: [],
 }
 
 export const viTriReducer = (state = viTriState, action) => {

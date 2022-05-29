@@ -1,8 +1,6 @@
-
-
+import { history } from "../../App";
 import { quanLyNguoiDung } from "../../services/NguoiDungServices";
-import { LayDSNguoiDungType } from "../Types/NguoiDungType";
-import { layDanhSachNguoiDung } from "../Types/NguoiDungType";
+import { LayDSNguoiDungType, layThongTinNguoiDungType } from "../Types/NguoiDungType";
 
 //nhat ***
 export const LayDSNguoiDungAction = () => {
@@ -10,7 +8,6 @@ export const LayDSNguoiDungAction = () => {
     try {
       const result = await quanLyNguoiDung.DSNguoiDung();
       if (result.status === 200) {
-        console.log(result.data);
         dispatch({
           type: LayDSNguoiDungType,
           dsNguoiDung: result.data,
@@ -25,19 +22,68 @@ export const LayDSNguoiDungAction = () => {
 //*** nhat
 
 
-
-export const layDanhSachNguoiDungAction = () => {
-    return async (dispatch) => {
-        try {
-            let result = await quanLyNguoiDung.layDanhSachNguoiDung();
-            let action = {
-                type: layDanhSachNguoiDung,
-                mangNguoiDung: result.data
-            }
-            dispatch(action)
-        } catch (error) {
-            console.log(error)
-        }
+export const themNguoiDungAction = (user) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.themNguoiDung(user);
+      if (result.status === 200) {
+        alert('Thêm người dùng thành công');
+        console.log(result.data);
+        history.push('/admin/user')
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
     }
+  };
 }
 
+export const layThongTinNguoiDungAction = (id) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.layThongTinNguoiDung(id);
+      if (result.status === 200) {
+        console.log(result.data);
+        dispatch({
+          type: layThongTinNguoiDungType,
+          thongTinNguoiDung: result.data,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+export const capNhatThongTinNguoiDungAction = (id, user) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.capNhatThongTinNguoiDung(id, user);
+      if (result.status === 200) {
+        alert('Thêm người dùng thành công');
+        console.log(result.data);
+        history.push('/admin/user')
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+export const xoaNguoiDungAction = (id) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.xoaNguoiDung(id);
+      if (result.status === 200) {
+        alert('xóa người dùng thành công');
+        // console.log(result.data);
+        history.push('/admin/user')
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}

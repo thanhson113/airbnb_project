@@ -17,10 +17,13 @@ import AdminTemplate from './templates/AdminTemplate/AdminTemplate';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import Booking from './pages/Booking/Booking';
 import Profile from './pages/Profile/Profile';
+
 import User from './pages/Admin/User/User';
+import AddUser from './pages/Admin/User/AddUser';
 import EditUser from './pages/Admin/User/EditUser';
 
-import ViTri from './pages/Admin/ViTri/ViTri';
+import Location from './pages/Admin/Location/Location';
+import AddLocation from './pages/Admin/Location/AddLocation';
 
 import './App.css';
 
@@ -40,8 +43,11 @@ function App() {
           <UserTemplate path="/register" component={Register}/>
 
           <AdminTemplate path="/admin/user/edit/:id" component={EditUser}/>
+          <AdminTemplate path="/admin/user/add" component={AddUser}/>
           <AdminTemplate path="/admin/user" component={User}/>
-          <AdminTemplate path="/vitri" component={ViTri}/>
+          
+          <AdminTemplate path="/admin/location/add" component={AddLocation}/>
+          <AdminTemplate path="/admin/location" component={Location}/>
 
           
           <AdminTemplate path="/admin" component={Dashboard}/>
