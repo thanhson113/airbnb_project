@@ -1,3 +1,4 @@
+/** @format */
 
 import logo from './logo.svg';
 import 'antd/dist/antd.css';
@@ -25,7 +26,20 @@ import EditUser from './pages/Admin/User/EditUser';
 import Location from './pages/Admin/Location/Location';
 import AddLocation from './pages/Admin/Location/AddLocation';
 
-import './App.css';
+import ViTri from "./pages/Admin/ViTri/ViTri";
+import "antd/dist/antd.css";
+import "./App.css";
+
+const style = {
+  height: 40,
+  width: 40,
+  lineHeight: "40px",
+  borderRadius: "5px",
+  backgroundColor: "#eee7e3",
+  color: "black",
+  textAlign: "center",
+  fontSize: 14,
+};
 
 export const history = createBrowserHistory();
 function App() {
@@ -55,8 +69,10 @@ function App() {
           
           <HomeTemplate path="/" component={Home}/>
       </Switch>
+      <BackTop>
+        <div style={style}>UP</div>
+      </BackTop>
     </Router>
   );
 }
-
 export default App;

@@ -1,8 +1,10 @@
+/** @format */
+
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import "../../asset/css/login.css";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
-
 
 export default function Login() {
   const [width, setWidth] = useState(window.innerWidth);
@@ -13,7 +15,7 @@ export default function Login() {
   let wbg = "";
   if (width < 600) wbg = "90%";
   else wbg = "450px";
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleWindowResize = () => setWidth(window.innerWidth);
@@ -28,6 +30,7 @@ export default function Login() {
       ...user,
       [name]: value,
     });
+    
   };
 
   const handleSubmit = (values) => {
@@ -35,8 +38,8 @@ export default function Login() {
 
     const { email, password } = values;
     setUserAccount({
-        email: email,
-        password: password,
+      email: email,
+      password: password,
     });
     dispatch(LoginAction(user));
   };
@@ -45,11 +48,15 @@ export default function Login() {
     <div className="container-fluid">
       <div className="login-box" style={{ width: wbg }}>
         <h2>SIGN IN</h2>
-        <form onSubmit={(values)=>{
-            handleSubmit(values)
-        }} style={{ witdh: "100%" }}>
+        <form
+          onSubmit={(values) => {
+            handleSubmit(values);
+          }}
+          style={{ witdh: "100%" }}
+        >
           <div className="user-box">
-            <input defaultValue=""
+            <input
+              defaultValue=""
               onChange={(event) => {
                 hanleInput(event);
               }}
@@ -60,7 +67,8 @@ export default function Login() {
             <label>Username</label>
           </div>
           <div className="user-box">
-            <input defaultValue=""
+            <input
+              defaultValue=""
               onChange={(event) => {
                 hanleInput(event);
               }}
@@ -80,14 +88,10 @@ export default function Login() {
                 Login
               </button>
             </div>
-            <div className="btn_register">
-              <button className="btn-outline-danger" type="button">
-                <span />
-                <span />
-                <span />
-                <span />
+            <div className="register">
+              <NavLink className=" custom-btn btn-register" to={'register'} >
                 Register
-              </button>
+              </NavLink>
             </div>
           </div>
         </form>

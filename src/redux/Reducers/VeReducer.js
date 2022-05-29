@@ -1,7 +1,8 @@
-import { layDSVeTheoPhongType } from "../Types/VeType"
+import { layDSVeTheoPhongType,LayChiTietVeCuaNDType } from "../Types/VeType"
 
 const VeState = {
-  dsVeIdroom:[]
+  dsVeIdroom:[],
+  dsVeTheoND:[]
 }
 
 export const VeReducer = (state = VeState, action) => {
@@ -9,6 +10,12 @@ export const VeReducer = (state = VeState, action) => {
     case layDSVeTheoPhongType:
     state.dsVeIdroom=[...action.dsVeIdroom]
 
+    return {...state}
+
+    case LayChiTietVeCuaNDType:
+      let dsVeCapNhap = [...state.dsVeTheoND]
+      dsVeCapNhap.push(action.ve)
+      state.dsVeTheoND=[...dsVeCapNhap]
     return {...state}
   default:
     return {...state}

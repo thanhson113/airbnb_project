@@ -1,18 +1,21 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { createElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Map from "./Map";
 
 import {
   Avatar,
   Button,
+  Comment,
   DatePicker,
   Form,
   Image,
+  Input,
   Modal,
   Progress,
   Select,
+  Tooltip,
 } from "antd";
 import Icon, {
   CalendarOutlined,
@@ -24,6 +27,11 @@ import Icon, {
   TrophyOutlined,
   WifiOutlined,
   ExclamationCircleOutlined,
+  LikeFilled,
+  DislikeFilled,
+  LikeOutlined,
+  DislikeOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -34,11 +42,16 @@ import {
   Restaurant,
 } from "@mui/icons-material";
 
-import { DSDanhGiaTheoPhongAction } from "../../redux/Actions/DanhGiaAction";
+import {
+  DSDanhGiaTheoPhongAction,
+  TaoDanhGiaTheoPhongAction,
+  XoaDanhGiaAction,
+} from "../../redux/Actions/DanhGiaAction";
 import {
   DatPhongAction,
   ThongTinChiTietPhongAction,
 } from "../../redux/Actions/PhongThueAction";
+import { ChiTietNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
 import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
 
 import moment from "moment";
@@ -50,8 +63,9 @@ export default function RoomDetail(props) {
   const { dsDanhGia } = useSelector((state) => state.danhGiaReducer);
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { locationId } = chiTietPhong;
-  const { dsVeIdroom } = useSelector((state) => state.VeReducer);
-  console.log(dsVeIdroom);
+
+  const idUser = localStorage.getItem("id");
+  const { user } = useSelector((state) => state.nguoiDungReducer);
 
   const { RangePicker } = DatePicker;
   const [dates, setDates] = useState([]);
@@ -62,43 +76,134 @@ export default function RoomDetail(props) {
   const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY"; //map
 
   const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
+  // const [height, setHeight] = useState(window.innerHeight);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  //Form setting
-  console.log(value, "value");
-
   useEffect(() => {
-    dispatch(ThongTinChiTietPhongAction(props.match.params.id));
-    dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
-    dispatch(layDSVeTheoPhongAction(props.match.params.id));
+    if (props.match.params.id) {
+      dispatch(ThongTinChiTietPhongAction(props.match.params.id));
+      dispatch(DSDanhGiaTheoPhongAction(props.match.params.id));
+      dispatch(layDSVeTheoPhongAction(props.match.params.id));
+    }
+
+    if (idUser) dispatch(ChiTietNguoiDungAction(idUser));
 
     const handleWindowResize = () => {
       setWidth(window.innerWidth);
-      setHeight(window.innerHeight);
+      // setHeight(window.innerHeight);
     };
 
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
-  //datepicker
-  // const disableDateRanges = (range = { startDate: false, endDate: false }) => {
-  //   const { startDate, endDate } = range;
-  //   return function disabledDate(current) {
-  //     let startCheck = true;
-  //     let endCheck = true;
-  //     if (startDate) {
-  //       startCheck = current && current > moment(startDate, "YYYY-MM-DD");
-  //     }
-  //     if (endDate) {
-  //       endCheck = current && current < moment(endDate, "YYYY-MM-DD");
-  //     }
-  //     return startDate && startCheck && endDate && endCheck;
-  //   };
-  // };
+
+  //comment
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [action, setAction] = useState(null);
+  const like = () => {
+    setLikes(1);
+    setDislikes(0);
+    setAction("liked");
+  };
+
+  const dislike = () => {
+    setLikes(0);
+    setDislikes(1);
+    setAction("disliked");
+  };
+
+  const renderDanhGia = (more) => {
+    return dsDanhGia?.slice(0, more).map((danhGia, index) => {
+      const actions = [
+        <Tooltip key="comment-basic-like" title="Like">
+          <span onClick={like}>
+            {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
+            <span className="comment-action">{likes}</span>
+          </span>
+        </Tooltip>,
+        <Tooltip key="comment-basic-dislike" title="Dislike">
+          <span onClick={dislike}>
+            {createElement(
+              action === "disliked" ? DislikeFilled : DislikeOutlined
+            )}
+            <span className="comment-action">{dislikes}</span>
+          </span>
+        </Tooltip>,
+        <span key="comment-basic-reply-to">Reply to</span>,
+
+        <Tooltip key="delete-comment" title="Delete">
+          {idUser === danhGia?.userId._id ? (
+            <span
+              onClick={() => {
+                dispatch(XoaDanhGiaAction(danhGia._id, props.match.params.id));
+              }}
+              className="DeleteOutlined"
+            >
+              <DeleteOutlined />
+            </span>
+          ) : (
+            ""
+          )}
+        </Tooltip>,
+      ];
+      return (
+        <Comment
+          className={width < 768 ? "col-12" : "col-6"}
+          key={index}
+          actions={actions}
+          author={<a>{danhGia.userId?.name}</a>}
+          avatar={
+            <Avatar
+              src={<Image src={danhGia.userId?.avatar} />}
+              alt={danhGia.userId.name}
+            />
+          }
+          content={<p>{danhGia.content}</p>}
+          datetime={
+            <Tooltip
+              title={moment(danhGia.created_at).format("YYYY-MM-DD HH:mm:ss")}
+            >
+              <span>{moment().fromNow()}</span>
+            </Tooltip>
+          }
+        />
+      );
+    });
+  };
+
+  //user comment
+
+  const [submitting, setSubmitting] = useState(false);
+  let [valueComment, setValueComment] = useState("");
+
+  const { TextArea } = Input;
+
+  const handleSubmit = () => {
+    console.log("submit");
+    if (!valueComment) return;
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      dispatch(
+        TaoDanhGiaTheoPhongAction(props.match.params.id, {
+          content: valueComment,
+        })
+      );
+      console.log(valueComment);
+    }, 1000);
+  };
+
+  const handleChange = (e) => {
+    console.log("Change:", e.target.value);
+    setValueComment(e.target.value);
+    e.preventDefault();
+  };
+  //Form setting
+
   const disableDate = (current) => {
     if (!dates || dates.length === 0) {
       return current && current < moment().endOf("day");
@@ -120,24 +225,6 @@ export default function RoomDetail(props) {
     }
   };
 
-  const renderDanhGia = (more) => {
-    return dsDanhGia?.slice(0, more)?.map((danhGia, index) => {
-      return (
-        <div className="col-6" key={index}>
-          <div className="d-flex">
-            <Avatar src={danhGia.userId.avatar} style={{ width: "30px" }} />
-            <div className="m-2">
-              <h5>{danhGia.userId.name}</h5>
-              <span className="text text-secondary">
-                {moment(danhGia.updatedAt).format("DD-MM-YYYY")}
-              </span>
-            </div>
-          </div>
-          <span>{danhGia.content}</span>
-        </div>
-      );
-    });
-  };
   const renderTienNghi = (add) => {
     const tienNghi = [];
     if (chiTietPhong.kitchen)
@@ -225,8 +312,6 @@ export default function RoomDetail(props) {
 
     return tienNghi.slice(0, add);
   };
-  // const checkIn = "2022-05-23T05:00:00.000Z";
-  // const checkOut = "2022-05-26T05:00:00.000Z";
 
   const renderReducer = () => {
     if (value?.length === 0 || !value)
@@ -308,23 +393,6 @@ export default function RoomDetail(props) {
           >
             <div>
               <div className={`${width <= 768 ? "" : "d-flex"}`}>
-                {/* <div className="d-flex">
-                  <a
-                    href="#rank"
-                    className="d-flex text-dark text-decoration-underline"
-                  >
-                    <StarOutlined /> {locationId?.valueate}
-                  </a>
-                  <a
-                    href="#comment"
-                    className="ml-1 text-dark text-decoration-underline"
-                  >
-                    {dsDanhGia.length === 0
-                      ? " "
-                      : ` ${dsDanhGia.length} đánh giá`}
-                  </a>
-                </div> */}
-
                 <h5
                   onClick={showModal}
                   className="cursor h_located text-decoration-text-decoration-underline py-3 "
@@ -425,7 +493,7 @@ export default function RoomDetail(props) {
               <h5 className="mb-2">Tiện Nghi</h5>
               <div className="row">
                 {renderTienNghi(add)}
-                <div className="col-12 text-center">
+                <div className="col-12 text-center p-2">
                   {renderTienNghi(add).length >= add ? (
                     <button
                       onClick={() => {
@@ -454,12 +522,16 @@ export default function RoomDetail(props) {
                 <span>
                   <span>${chiTietPhong.price}</span> / đêm
                 </span>
-                <div className="d-flex">
-                  <StarOutlined style={{ color: "pink" }} />{" "}
-                  <span style={{ color: "black" }}>
-                    {locationId?.valueate}{" "}
-                  </span>
-                </div>
+                {locationId ? (
+                  <div className="d-flex">
+                    <StarOutlined style={{ color: "pink" }} />{" "}
+                    <span style={{ color: "black" }}>
+                      {locationId?.valueate}{" "}
+                    </span>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="row">
                 <div className="col-12">
@@ -529,84 +601,85 @@ export default function RoomDetail(props) {
         <div className="roomDetail_reviews_rank" id="rank">
           <div className="d-flex">
             <Icon style={{ color: "hotpink" }} component={HeartOutlined} />{" "}
-            <h4>
-              {locationId?.valueate}{" "}
-              {dsDanhGia.length === 0 ? "" : ` ${dsDanhGia.length} đánh giá`}
-            </h4>
+            <h5 className="pl-1">
+              {dsDanhGia.length === 0
+                ? "Hiện Tại Chưa Có Đánh Giá"
+                : `Có ${dsDanhGia.length} đánh giá`}
+            </h5>
           </div>
-          <div className="row">
-            <div className="col-6">
+          <div className="row py-2">
+            <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
-                <span>Mức Độ Sạch Sẽ</span>
+                <span className="w-50">Mức Độ Sạch Sẽ</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Liên Lạc</span>
+                <span className="w-50">Liên Lạc</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Nhận Phòng</span>
+                <span className="w-50">Nhận Phòng</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
             </div>
-            <div className="col-6">
+            <div className={width < 768 ? "col-12" : "col-6"}>
               <div className="d-flex justify-content-between">
-                <span>Mức Độ Chính Xác</span>
+                <span className="w-50">Mức Độ Chính Xác</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Vị Trí</span>
+                <span className="w-50">Vị Trí</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
               <div className="d-flex justify-content-between">
-                <span>Giá Trị</span>
+                <span className="w-50">Giá Trị</span>
                 <Progress
-                  className="w-75"
+                  className="w-50"
                   strokeColor={{
                     from: "#E233FF",
                     to: "#FF6B00",
                   }}
-                  percent={`${locationId?.valueate}0`}
+                  percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
                 />
               </div>
@@ -624,14 +697,61 @@ export default function RoomDetail(props) {
             )}
           </div>
           {dsDanhGia?.length !== 0 && dsDanhGia.length > more ? (
-            <button
-              onClick={() => {
-                setMore(more + 6);
-              }}
-              className="custom-btn btn_Add"
-            >
-              Hiển Thị Thêm Đánh Giá
-            </button>
+            <div className="w-100 text-center p-2">
+              <button
+                onClick={() => {
+                  setMore(more + 6);
+                }}
+                className="custom-btn btn_Add"
+              >
+                Hiển Thị Thêm Đánh Giá
+              </button>
+            </div>
+          ) : dsDanhGia?.length !== 0 ? (
+            <div className="w-100 text-center p-2">
+              <button
+                onClick={() => {
+                  setMore(6);
+                }}
+                className="custom-btn btn_Add"
+              >
+                Ẩn Bớt Đánh Giá
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+          {idUser ? (
+            <div className="roomDetail_reviews_user_comment">
+              <Comment
+                avatar={<Avatar src={user.avatar} alt={user.name} />}
+                content={
+                  <>
+                    <Form.Item>
+                      <TextArea
+                        showCount
+                        placeholder="Xin cho biết cảm nghĩ của bạn về phòng này"
+                        maxLength={100}
+                        rows={4}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        value={value}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button
+                        loading={submitting}
+                        onClick={handleSubmit}
+                        type="primary"
+                      >
+                        Add Comment
+                      </Button>
+                    </Form.Item>
+                  </>
+                }
+              />
+            </div>
           ) : (
             ""
           )}

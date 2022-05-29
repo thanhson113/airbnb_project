@@ -1,6 +1,21 @@
 import { history } from "../../App";
 import { quanLyViTri } from "../../services/ViTriServices"
-import { layDanhSachViTri } from "../Types/ViTriType"
+import { GET_VITRI, layDanhSachViTri } from "../Types/ViTriType";
+
+export const layDanhSachViTri_1 = (keyWord = '') => {
+    return async (dispatch) => {
+        try{
+            let result = await quanLyViTri.layDanhSachViTri(keyWord)
+            dispatch({
+                type: GET_VITRI,
+                danhSachViTri : result.data
+            })
+        }catch(err){
+            console.log(err.response.data)
+        }
+    }
+}
+
 
 
 export const layDanhSachViTriAction = () => {
@@ -18,6 +33,7 @@ export const layDanhSachViTriAction = () => {
         }
     }
 }
+<<<<<<< HEAD
 
 export const themViTriAction = (location) => {
     return async (dispatch) => {
@@ -34,3 +50,5 @@ export const themViTriAction = (location) => {
         }
     }
 }
+=======
+>>>>>>> b3d0737b54bba64f654a5ebb56eca318938eb58c

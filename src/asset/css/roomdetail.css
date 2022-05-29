@@ -5,6 +5,7 @@
 }
 .roomDetail {
   width: 100%;
+ 
 }
 
 /* ROOMDETAIL HEAD*/
@@ -27,10 +28,10 @@
 
 /* Button thêm chi tiet  */
 .roomDetail .custom-btn {
-  height: 40px;
+  
   color: #fff;
   border-radius: 5px;
-  padding: 10px 25px;
+  padding: 5px 15px;
   font-family: "Lato", sans-serif;
   font-weight: 500;
   background: transparent;
@@ -155,7 +156,7 @@
 @media screen and (min-width: 1024px) {
   .roomDetail {
     font-size: 16px;
-    padding-top: 50px;
+    padding-top: 140px;
   }
   .roomDetail .roomDetail_head_photos {
     position: relative;
