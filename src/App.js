@@ -3,7 +3,7 @@
 import "antd/dist/antd.css";
 import { BackTop } from "antd";
 
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import HomeTemplate from "./templates/HomeTemplate/HomeTemplate";
 import Home from "./pages/Home/Home";
@@ -34,12 +34,17 @@ const style = {
   textAlign: "center",
   fontSize: 14,
 };
+const type = localStorage.getItem('type')
 
 export const history = createBrowserHistory();
 function App() {
   return (
     <Router history={history}>
       <Switch>
+      <Route exact path="/">
+            {type==='ADMIN' ? <Redirect to="admin" /> : <Redirect to="home" />}
+          </Route>
+
         <HomeTemplate path="/roomdetail/:id" component={RoomDetail} />
         <HomeTemplate path="/home" component={Home} />
         <HomeTemplate path="/booking" component={Booking} />
@@ -52,7 +57,7 @@ function App() {
         <AdminTemplate path="/admin/user" component={User} />
         <AdminTemplate path="/vitri" component={ViTri} />
         <AdminTemplate path="/admin" component={Dashboard} />
-        <HomeTemplate path="/" component={Home} />
+        {/* <HomeTemplate path="/" component={Home} /> */}
       </Switch>
       <BackTop>
         <div style={style}>UP</div>
