@@ -18,7 +18,6 @@ function UpdateND(props) {
   const idUser = localStorage.getItem("id");
   const { user, dsNguoiDung } = useSelector((state) => state.nguoiDungReducer);
   const { address, birthday, email, gender, phone, name } = user;
-  console.log(address, birthday, email, gender, phone, name);
   const [turnOn, setTurnOn] = useState(true);
 
   useEffect(() => {

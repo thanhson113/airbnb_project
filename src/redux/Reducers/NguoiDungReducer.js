@@ -19,7 +19,6 @@ export const nguoiDungReducer = (state = nguoiDungState, action) => {
 
     case ChiTieTNguoiDungType:
       state.user={...action.user}
-      
       return {...state}
     //***Nhat
 
