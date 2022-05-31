@@ -7,6 +7,16 @@
     background-color: #fff;
     box-shadow: 0 0 12px 0 rgb(0 0 0 / 12%);
 }
+.header .dropdown-toggle::after{
+	color: #333333;
+}
+.header .dropdown-item{
+	transition: all .5s;
+}
+.header .dropdown-item:hover{
+	color:#f91942;
+	background: rgba(249, 25, 66, .06);
+}
 .header__logout{
 	cursor: pointer;
 	color: #333333;

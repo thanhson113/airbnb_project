@@ -41,7 +41,6 @@ export const ChiTietNguoiDungAction = (id) => {
     try {
       const result = await quanLyNguoiDung.ChiTietNguoiDung(id);
       if (result.status === 200) {
-        console.log(result.data);
         dispatch({
           type: ChiTieTNguoiDungType,
           user: result.data,
