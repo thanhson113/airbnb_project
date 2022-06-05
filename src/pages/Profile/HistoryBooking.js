@@ -76,7 +76,7 @@ function HistoryBooking() {
             Hiển Thị Thêm Đánh Giá
           </button>
         </div>
-      ) : (
+      ) : more > dsVeTheoND.length&&dsVeTheoND.length >8 ? (
         <div className="w-100 text-center p-3">
           <button
             onClick={() => {
@@ -88,7 +88,7 @@ function HistoryBooking() {
             Ẩn Bớt Đánh Giá
           </button>
         </div>
-      )}
+      ):""}
     </div>
   );
 }
