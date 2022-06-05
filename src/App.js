@@ -10,7 +10,6 @@ import Home from "./pages/Home/Home";
 import RoomList from "./pages/RoomList/RoomList";
 import RoomDetail from "./pages/RoomDetail/RoomDetail";
 import Login from "./pages/Login/Login";
-import UserTemplate from "./templates/UserTemplate/UserTemplate";
 import Register from "./pages/Register/Register";
 import RoomDetailTemplate from "./templates/RoomDetailTemplate/RoomDetailTemplate";
 import AdminTemplate from "./templates/AdminTemplate/AdminTemplate";
@@ -23,6 +22,7 @@ import EditUser from "./pages/Admin/User/EditUser";
 import ViTri from "./pages/Admin/ViTri/ViTri";
 import "antd/dist/antd.css";
 import "./App.css";
+import CartTemplate from "./templates/CartTemplate/CartTemplate";
 
 const style = {
   height: 40,
@@ -51,8 +51,10 @@ function App() {
         <HomeTemplate path="/profile" component={Profile} />
         <RoomDetailTemplate path="/roomlist/:id" component={RoomList} />
         <RoomDetailTemplate path="/roomlist" component={RoomList} />
-        <UserTemplate path="/login" component={Login} />
-        <UserTemplate path="/register" component={Register} />
+        <Route path="/login" component={Login} />
+        <CartTemplate path="/cart/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <CartTemplate path="/cart/register" component={Register} />
         <AdminTemplate path="/admin/user/edit/:id" component={EditUser} />
         <AdminTemplate path="/admin/user" component={User} />
         <AdminTemplate path="/vitri" component={ViTri} />
