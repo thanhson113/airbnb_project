@@ -3,8 +3,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
-import { ThongTinChiTietPhongAction } from "../../../redux/Actions/PhongThueAction";
-import { Affix, Image } from "antd";
+import { DatPhongAction, ThongTinChiTietPhongAction } from "../../../redux/Actions/PhongThueAction";
+import { Affix, Image, Popconfirm } from "antd";
 
 import "../../../asset/css/cart.css";
 import moment from "moment";
@@ -13,16 +13,16 @@ export default function Cart(props) {
   const dispatch = useDispatch();
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { Component, id } = useSelector((state) => state.ComponentReducer);
-  console.log(Component, id);
+
   const roomId = localStorage.getItem("roomId");
   const token = localStorage.getItem("accessToken");
   const { item } = props;
-  console.log("====================================");
-  console.log(chiTietPhong.price);
-  console.log("====================================");
+
   const [width, setWidth] = useState(window.innerWidth);
   const [checkIn, setCheckIn] = useState(localStorage.getItem("checkIn"));
   const [checkOut, setCheckOut] = useState(localStorage.getItem("checkOut"));
+
+  const [exchange, setExchange] = useState(1);
 
   useEffect(() => {
     dispatch(ThongTinChiTietPhongAction(roomId));
@@ -42,6 +42,20 @@ export default function Cart(props) {
     return count;
   };
 
+  const handleChange = (e) => {
+    setExchange(e.target.value);
+  };
+
+  const confirm = () => {
+    let ve = {
+      roomId: roomId,
+      checkIn: checkIn,
+      checkOut: checkOut,
+    };
+    console.log(ve);
+    // dispatch(DatPhongAction(ve))
+  };
+
   return (
     <Fragment>
       <div className="cart">
@@ -53,7 +67,7 @@ export default function Cart(props) {
                   <div className="col-5">
                     <Image
                       style={{
-                        maxWidth: "200px",
+                        width: "200px",
                         maxHeight: "150px",
                         borderRadius: "10px",
                       }}
@@ -92,8 +106,8 @@ export default function Cart(props) {
                   />
                 </div>
                 <div className="col-7">
-                  <h6 className="text text-black py-1">{chiTietPhong?.name}</h6>
-                  <p className="pb-1 text text-black-50">
+                  <h6 className="text text-black py-2">{chiTietPhong?.name}</h6>
+                  <p className="pb-2 text text-black-50">
                     {chiTietPhong?.description}
                   </p>
                 </div>
@@ -129,7 +143,7 @@ export default function Cart(props) {
         </div>
         <div className="cart_detail">
           {width >= 1024 ? (
-            <Affix offsetTop={425}>
+            <Affix offsetTop={400}>
               <div className="cart_detail_fit">
                 <h5 className="text text-black py-2">Chi tiết giá</h5>
                 <div className="d-flex justify-content-between py-2">
@@ -147,12 +161,15 @@ export default function Cart(props) {
                   <span>${(chiTietPhong.price * countDate() * 5) / 100}</span>
                 </div>
                 <div className="d-flex justify-content-between py-3">
-                  <h5>Tổng Chi Phí là:</h5>
-                  <span>
+                  <h5 className="pr-4">
+                    Tổng Chi Phí là {exchange === 1 ? "" : "(Discount 50%)"} :{" "}
+                  </h5>
+                  <span className="text-danger">
                     $
-                    {chiTietPhong.price * countDate() -
-                      (chiTietPhong.price * countDate() * 5) / 100 -
-                      (chiTietPhong.price * countDate() * 2) / 100}
+                    {(chiTietPhong.price * countDate() +
+                      (chiTietPhong.price * countDate() * 5) / 100 +
+                      (chiTietPhong.price * countDate() * 2) / 100) *
+                      exchange}
                   </span>
                 </div>
                 <div className="w-100 text-right py-2 ">
@@ -178,12 +195,15 @@ export default function Cart(props) {
                 <span>${(chiTietPhong.price * countDate() * 5) / 100}</span>
               </div>
               <div className="d-flex justify-content-between py-3">
-                <h5>Tổng Chi Phí là:</h5>
-                <span>
+                <h5 className="pr-4">
+                  Tổng Chi Phí là {exchange === 1 ? "" : "(Discount 50%)"} :{" "}
+                </h5>
+                <span className="text-danger">
                   $
-                  {chiTietPhong.price * countDate() -
-                    (chiTietPhong.price * countDate() * 5) / 100 -
-                    (chiTietPhong.price * countDate() * 2) / 100}
+                  {(chiTietPhong.price * countDate() +
+                    (chiTietPhong.price * countDate() * 5) / 100 +
+                    (chiTietPhong.price * countDate() * 2) / 100) *
+                    exchange}
                 </span>
               </div>
               <div className="w-100 text-right py-2 ">
@@ -201,8 +221,10 @@ export default function Cart(props) {
                 type="radio"
                 name="payment"
                 id="payment1"
-                defaultValue="option1"
+                // defaultValue="option1"
+                value={1}
                 defaultChecked
+                onChange={handleChange}
               />
               <label className="form-check-label px-2" htmlFor="payment1">
                 Trả Toàn Bộ Chi Phí
@@ -214,7 +236,9 @@ export default function Cart(props) {
                 type="radio"
                 name="payment"
                 id="payment2"
-                defaultValue="option2"
+                // defaultValue="option2"
+                value={50 / 100}
+                onChange={handleChange}
               />
               <label className="form-check-label px-2" htmlFor="payment2">
                 Trả trước 50% chi phí, phần còn lại trả sau
@@ -241,11 +265,32 @@ export default function Cart(props) {
           </div>
         ) : (
           <div className="cart_submit">
-            <h5 className="text text-black text-center">
+            <div className="d-flex justify-content-center py-3">
+                <h5 className="pr-4">
+                  Tổng Chi Phí là {exchange === 1 ? "" : "(Discount 50%)"} :{" "}
+                </h5>
+                <h5 className="text-danger">
+                  $
+                  {(chiTietPhong.price * countDate() +
+                    (chiTietPhong.price * countDate() * 5) / 100 +
+                    (chiTietPhong.price * countDate() * 2) / 100) *
+                    exchange}
+                </h5>
+              </div>
+            <h5 className="text text-success text-center py-2">
               Bạn Muốn Thanh Toán Chứ
             </h5>
+
             <div className="cart_sudmit_btn w-100 text-center py-4">
-              <button className="btn btn-success">Chắn Chắn Ròi</button>
+              <Popconfirm
+                className="w-50"
+                title={<div className="pb-2"><h5>Bạn Chắn Chắn Chứ</h5></div>}
+                okText={<p>Vâng</p>}
+                cancelText='Để Khi Khác'
+                onConfirm={confirm}
+              >
+                <button className="btn btn-success">Vâng</button>
+              </Popconfirm>
             </div>
           </div>
         )}

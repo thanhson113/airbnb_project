@@ -112,7 +112,7 @@ export default function RoomDetail(props) {
     const onScroll = (e) => {
       setScrollTop(e.target.documentElement.scrollTop);
       setScrolling(
-        e.target.documentElement.scrollTop > 840 &&
+        e.target.documentElement.scrollTop > 830 &&
           e.target.documentElement.scrollTop < 1125
       );
     };
@@ -120,7 +120,6 @@ export default function RoomDetail(props) {
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [scrollTop]);
-  console.log("width", width, "scrolling", scrolling, "scrollTop", scrollTop);
   //comment
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
@@ -204,7 +203,6 @@ export default function RoomDetail(props) {
   const { TextArea } = Input;
 
   const handleSubmit = () => {
-    console.log("submit");
     if (!valueComment) return;
     setSubmitting(true);
     setTimeout(() => {
@@ -214,12 +212,10 @@ export default function RoomDetail(props) {
           content: valueComment,
         })
       );
-      console.log(valueComment);
     }, 1125);
   };
 
   const handleChange = (e) => {
-    console.log("Change:", e.target.value);
     setValueComment(e.target.value);
   };
   //Form setting
@@ -237,7 +233,6 @@ export default function RoomDetail(props) {
   };
   const onOpenChange = (open) => {
     if (open) {
-      console.log("onOpenChange");
       setHackValue([]);
       setDates([]);
     } else {
