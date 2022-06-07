@@ -26,9 +26,9 @@ import EditUser from './pages/Admin/User/EditUser';
 import Location from './pages/Admin/Location/Location';
 import AddLocation from './pages/Admin/Location/AddLocation';
 
-import ViTri from "./pages/Admin/ViTri/ViTri";
 import "antd/dist/antd.css";
 import "./App.css";
+import { BackTop } from 'antd';
 
 const style = {
   height: 40,

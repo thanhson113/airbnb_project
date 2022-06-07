@@ -33,7 +33,6 @@ export const layDanhSachViTriAction = () => {
         }
     }
 }
-<<<<<<< HEAD
 
 export const themViTriAction = (location) => {
     return async (dispatch) => {
@@ -50,5 +49,3 @@ export const themViTriAction = (location) => {
         }
     }
 }
-=======
->>>>>>> b3d0737b54bba64f654a5ebb56eca318938eb58c
