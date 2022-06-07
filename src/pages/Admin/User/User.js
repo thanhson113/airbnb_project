@@ -82,7 +82,7 @@ export default function User() {
 
     return (
         <div className="dashboard-content">
-            <h2>Admin/User</h2>
+            <h2 className='my-3'>Admin/User</h2>
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push('/admin/user/add')
             }}>Add new</Button>

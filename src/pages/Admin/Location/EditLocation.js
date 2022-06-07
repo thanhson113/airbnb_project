@@ -1,24 +1,32 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Form, Input, Select, DatePicker, InputNumber } from 'antd';
+import { Form, Input, Select, InputNumber } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { themViTriAction } from '../../../redux/Actions/ViTriActon';
-import { layDanhSachViTri } from '../../../redux/Types/ViTriType';
+import { capNhatThongTinViTriAction, layThongTinViTriAction } from '../../../redux/Actions/ViTriActon';
 
 const { Option } = Select;
 
-export default function AddLocation() {
+export default function Editlocation(props) {
     const [componentSize, setComponentSize] = useState('default');
+    const { thongTinViTri } = useSelector((state) => state.viTriReducer);
+    console.log(thongTinViTri);
 
     let dispatch = useDispatch();
 
+    useEffect(() => {
+        let { id } = props.match.params
+        dispatch(layThongTinViTriAction(id))
+    }, [])
+
     const formik = useFormik({
+        enableReinitialize: true,
+
         initialValues: {
-            name: "",
-            country: "",
-            province: "",
-            valueate: 0
+            name: thongTinViTri.name,
+            country: thongTinViTri.country,
+            province: thongTinViTri.province,
+            valueate: thongTinViTri.valueate
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Name không được để trống"),
@@ -28,7 +36,8 @@ export default function AddLocation() {
         }),
         onSubmit: (values) => {
             console.log(values);
-            dispatch(themViTriAction(values))
+            let { id } = props.match.params;
+            dispatch(capNhatThongTinViTriAction(id, values))
         }
     });
 
@@ -44,7 +53,7 @@ export default function AddLocation() {
 
     return (
         <Fragment>
-            <h2 className='my-3'>Add new location</h2>
+            <h2 className='my-3'>Edit location</h2>
             <Form onSubmitCapture={formik.handleSubmit}
                 labelCol={{
                     span: 4,
@@ -60,29 +69,29 @@ export default function AddLocation() {
                 size={componentSize}
             >
                 <Form.Item label="Name">
-                    <Input name='name' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                    <Input name='name' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name} />
                     {formik.touched.name && formik.errors.name ? (
                         <div className="alert alert-danger">{formik.errors.name}</div>
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Country">
-                    <Input name='country' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                    <Input name='country' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.country} />
                     {formik.touched.country && formik.errors.country ? (
                         <div className="alert alert-danger">{formik.errors.country}</div>
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Province">
-                    <Input name='province' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                    <Input name='province' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.province} />
                     {formik.touched.province && formik.errors.province ? (
                         <div className="alert alert-danger">{formik.errors.province}</div>
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Valueate">
-                    <InputNumber onChange={handleChangeInputNumber('valueate')}/>
+                    <InputNumber onChange={handleChangeInputNumber('valueate')} value={formik.values.valueate} />
                 </Form.Item>
 
                 <Form.Item label="Submit">
-                    <button type='submit' style={{ width: 175 }} className='btn btn-success' >Add new location</button>
+                    <button type='submit' style={{ width: 175 }} className='btn btn-success' >Edit location</button>
                 </Form.Item>
             </Form>
         </Fragment>

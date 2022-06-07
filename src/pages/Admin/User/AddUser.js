@@ -72,7 +72,7 @@ export default function AddUser() {
 
     return (
         <Fragment>
-            <h2 className='mb-4'>Add new user</h2>
+            <h2 className='my-3'>Add new user</h2>
             <Form onSubmitCapture={formik.handleSubmit}
                 labelCol={{
                     span: 4,

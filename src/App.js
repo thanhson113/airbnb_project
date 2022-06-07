@@ -25,6 +25,8 @@ import EditUser from './pages/Admin/User/EditUser';
 
 import Location from './pages/Admin/Location/Location';
 import AddLocation from './pages/Admin/Location/AddLocation';
+import Editlocation from './pages/Admin/Location/EditLocation';
+import Room from './pages/Admin/Room/Room';
 
 import "antd/dist/antd.css";
 import "./App.css";
@@ -56,11 +58,13 @@ function App() {
           <UserTemplate path="/login" component={Login}/>
           <UserTemplate path="/register" component={Register}/>
 
-          <AdminTemplate path="/admin/user/edit/:id" component={EditUser}/>
           <AdminTemplate path="/admin/user/add" component={AddUser}/>
+          <AdminTemplate path="/admin/user/edit/:id" component={EditUser}/>
           <AdminTemplate path="/admin/user" component={User}/>
           
           <AdminTemplate path="/admin/location/add" component={AddLocation}/>
+          <AdminTemplate path="/admin/location/edit/:id" component={Editlocation}/>
+          <AdminTemplate path="/admin/location/:id/room" component={Room}/>
           <AdminTemplate path="/admin/location" component={Location}/>
 
           

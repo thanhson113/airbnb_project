@@ -12,13 +12,7 @@ export default function EditUser(props) {
 
   const [componentSize, setComponentSize] = useState('default');
   const { thongTinNguoiDung } = useSelector((state) => state.nguoiDungReducer);
-  // console.log(thongTinNguoiDung);
   let dispatch = useDispatch();
-
-  // const mangEmail = dsNguoiDung?.map((user) => {
-  //   return user.email
-  // });
-
 
   useEffect(() => {
     let { id } = props.match.params

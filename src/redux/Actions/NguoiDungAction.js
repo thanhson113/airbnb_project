@@ -128,7 +128,7 @@ export const xoaNguoiDungAction = (id) => {
       let result = await quanLyNguoiDung.xoaNguoiDung(id);
       if (result.status === 200) {
         alert('xóa người dùng thành công');
-        // console.log(result.data);
+        dispatch(LayDSNguoiDungAction())
         history.push('/admin/user')
       }
     } catch (error) {
@@ -137,17 +137,5 @@ export const xoaNguoiDungAction = (id) => {
     }
   }
 }
-export const layDanhSachNguoiDungAction = () => {
-  return async (dispatch) => {
-    try {
-      let result = await quanLyNguoiDung.layDanhSachNguoiDung();
-      let action = {
-        type: layDanhSachNguoiDung,
-        mangNguoiDung: result.data,
-      };
-      dispatch(action);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+
+
