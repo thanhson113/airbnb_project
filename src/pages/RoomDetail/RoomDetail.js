@@ -159,7 +159,7 @@ export default function RoomDetail(props) {
           {idUser === danhGia?.userId?._id ? (
             <span
               onClick={() => {
-                dispatch(XoaDanhGiaAction(danhGia._id, props.match.params.id));
+                dispatch(XoaDanhGiaAction(danhGia?._id, props.match.params.id));
               }}
               className="DeleteOutlined"
             >
