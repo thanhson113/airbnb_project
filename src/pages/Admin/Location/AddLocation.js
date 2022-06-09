@@ -18,7 +18,7 @@ export default function AddLocation() {
             name: "",
             country: "",
             province: "",
-            valueate: 0
+            valueate: 1
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Name không được để trống"),
@@ -78,7 +78,7 @@ export default function AddLocation() {
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Valueate">
-                    <InputNumber onChange={handleChangeInputNumber('valueate')}/>
+                    <InputNumber defaultValue={1} min={1} max={10} onChange={handleChangeInputNumber('valueate')}/>
                 </Form.Item>
 
                 <Form.Item label="Submit">

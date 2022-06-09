@@ -41,20 +41,20 @@ export default function AdminTemplate(props) {
                         <Menu.Item key="1" icon={<UserOutlined />}>
                             <NavLink to='/admin'>Admin</NavLink>
                         </Menu.Item>
-                        <SubMenu key="2" icon={<FileOutlined />} title='Film'>
+                        <SubMenu key="2" icon={<FileOutlined />} title='User'>
                             <Menu.Item key="sub1" icon={<FileOutlined />}>
-                                <NavLink to='/admin/films'>Film</NavLink>
-                            </Menu.Item>
-                            <Menu.Item key="sub2" icon={<FileAddOutlined />}>
-                                <NavLink to='/admin/films/addnew'>Add new</NavLink>
-                            </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="3" icon={<FileOutlined />} title='User'>
-                            <Menu.Item key="sub3" icon={<FileOutlined />}>
                                 <NavLink to='/admin/user'>User</NavLink>
                             </Menu.Item>
+                            <Menu.Item key="sub2" icon={<FileAddOutlined />}>
+                                <NavLink to='/admin/user/add'>Add new user</NavLink>
+                            </Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="3" icon={<FileOutlined />} title='Location'>
+                            <Menu.Item key="sub3" icon={<FileOutlined />}>
+                                <NavLink to='/admin/location'>Location</NavLink>
+                            </Menu.Item>
                             <Menu.Item key="sub4" icon={<FileAddOutlined />}>
-                                <NavLink to='/admin/user/addnew'>Add new User</NavLink>
+                                <NavLink to='/admin/location/add'>Add new location</NavLink>
                             </Menu.Item>
                         </SubMenu>
                         <Menu.Item key="4" icon={<HomeOutlined />}>

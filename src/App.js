@@ -26,7 +26,14 @@ import EditUser from './pages/Admin/User/EditUser';
 import Location from './pages/Admin/Location/Location';
 import AddLocation from './pages/Admin/Location/AddLocation';
 import Editlocation from './pages/Admin/Location/EditLocation';
+
 import Room from './pages/Admin/Room/Room';
+import AddRoom from './pages/Admin/Room/AddRoom';
+import EditRoom from './pages/Admin/Room/EditRoom';
+
+import Feedback from './pages/Admin/Feedback/Feedback';
+import AddFeedback from './pages/Admin/Feedback/AddFeedback';
+import EditFeedback from './pages/Admin/Feedback/EditFeedback';
 
 import "antd/dist/antd.css";
 import "./App.css";
@@ -64,10 +71,16 @@ function App() {
           
           <AdminTemplate path="/admin/location/add" component={AddLocation}/>
           <AdminTemplate path="/admin/location/edit/:id" component={Editlocation}/>
-          <AdminTemplate path="/admin/location/:id/room" component={Room}/>
           <AdminTemplate path="/admin/location" component={Location}/>
 
+          <AdminTemplate path="/admin/room/add/:id" component={AddRoom}/>
+          <AdminTemplate path="/admin/room/edit/:id" component={EditRoom}/>
+          <AdminTemplate path="/admin/room/:id" component={Room}/>
           
+          <AdminTemplate path="/admin/feedback/add/:id" component={AddFeedback}/>
+          <AdminTemplate path="/admin/feedback/edit/:id" component={EditFeedback}/>
+          <AdminTemplate path="/admin/feedback/:id" component={Feedback}/>
+        
           <AdminTemplate path="/admin" component={Dashboard}/>
 
           

@@ -70,12 +70,27 @@ export const layThongTinViTriAction = (id) => {
 
 export const capNhatThongTinViTriAction = (id, location) => {
     return async (dispatch) => {
+        try {
+            let result = await quanLyViTri.capNhatThongTinViTri(id, location);
+            if (result.status === 200) {
+                alert('Cập nhật vị trí thành công');
+                console.log(result.data);
+                history.push('/admin/location')
+            }
+        } catch (error) {
+            console.log("error", error);
+            console.log("error", error.response?.data);
+        }
+    }
+}
+
+export const xoaViTriAction = (id) => {
+    return async (dispatch) => {
       try {
-        let result = await quanLyViTri.capNhatThongTinViTri(id, location);
+        let result = await quanLyViTri.xoaViTri(id);
         if (result.status === 200) {
-          alert('Cập nhật vị trí thành công');
-          console.log(result.data);
-          history.push('/admin/location')
+          alert('Xóa vị trí thành công');
+          dispatch(layDanhSachViTriAction())
         }
       } catch (error) {
         console.log("error", error);

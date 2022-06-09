@@ -5,6 +5,7 @@ import { LayDSNguoiDungType, layThongTinNguoiDungType,ChiTieTNguoiDungType } fro
 
 import { message } from "antd";
 import { layDanhSachNguoiDung } from "../Types/NguoiDungType";
+import { quanLyPhongChoThue } from "../../services/PhongThueServices";
 
 const success = (content) => {
   message.success(content,3);
@@ -127,9 +128,8 @@ export const xoaNguoiDungAction = (id) => {
     try {
       let result = await quanLyNguoiDung.xoaNguoiDung(id);
       if (result.status === 200) {
-        alert('xóa người dùng thành công');
+        alert('Xóa người dùng thành công');
         dispatch(LayDSNguoiDungAction())
-        history.push('/admin/user')
       }
     } catch (error) {
       console.log("error", error);

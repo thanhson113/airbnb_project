@@ -85,7 +85,7 @@ export default function User() {
             <h2 className='my-3'>Admin/User</h2>
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push('/admin/user/add')
-            }}>Add new</Button>
+            }}>Add new user</Button>
             <Search
                 className='mb-4'
                 placeholder="Search"
