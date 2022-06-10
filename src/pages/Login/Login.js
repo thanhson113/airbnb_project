@@ -6,22 +6,18 @@ import { NavLink } from "react-router-dom";
 import "../../asset/css/login.css";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
 
-export default function Login() {
-  const [width, setWidth] = useState(window.innerWidth);
+
+
+ function Login() {
+   
   let [user, setUserAccount] = useState({
     email: "",
     password: "",
   });
-  let wbg = "";
-  if (width < 600) wbg = "90%";
-  else wbg = "450px";
+  
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
+  
 
   const hanleInput = (event) => {
     let { value, name } = event.target;
@@ -45,8 +41,8 @@ export default function Login() {
   };
 
   return (
-    <div className="container-fluid">
-      <div className="login-box" style={{ width: wbg }}>
+   
+      <div className="login-box">
         <h2>SIGN IN</h2>
         <form
           onSubmit={(values) => {
@@ -96,6 +92,7 @@ export default function Login() {
           </div>
         </form>
       </div>
-    </div>
   );
 }
+
+export default Login
