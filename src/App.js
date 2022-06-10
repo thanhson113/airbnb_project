@@ -35,6 +35,11 @@ import Feedback from './pages/Admin/Feedback/Feedback';
 import AddFeedback from './pages/Admin/Feedback/AddFeedback';
 import EditFeedback from './pages/Admin/Feedback/EditFeedback';
 
+import LocationTicket from './pages/Admin/Ticket/VeTheoPhong/LocationTicket';
+import RoomTicket from './pages/Admin/Ticket/VeTheoPhong/RoomTicket';
+import Ticket from './pages/Admin/Ticket/VeTheoPhong/Ticket';
+import RoomAddTicket from './pages/Admin/Ticket/VeTheoPhong/RoomAddTicket';
+
 import "antd/dist/antd.css";
 import "./App.css";
 import { BackTop } from 'antd';
@@ -81,6 +86,11 @@ function App() {
           <AdminTemplate path="/admin/feedback/edit/:id" component={EditFeedback}/>
           <AdminTemplate path="/admin/feedback/:id" component={Feedback}/>
         
+          <AdminTemplate path="/admin/ticket/location" component={LocationTicket}/>
+          <AdminTemplate path="/admin/ticket/room/:id" component={RoomTicket}/>
+          <AdminTemplate path="/admin/ticket/roomadd/:id" component={RoomAddTicket}/>
+          <AdminTemplate path="/admin/ticket/:id" component={Ticket}/>
+
           <AdminTemplate path="/admin" component={Dashboard}/>
 
           

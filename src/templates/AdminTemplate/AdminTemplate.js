@@ -57,7 +57,15 @@ export default function AdminTemplate(props) {
                                 <NavLink to='/admin/location/add'>Add new location</NavLink>
                             </Menu.Item>
                         </SubMenu>
-                        <Menu.Item key="4" icon={<HomeOutlined />}>
+                        <SubMenu key="4" icon={<FileOutlined />} title='Ticket'>
+                            <Menu.Item key="sub5" icon={<FileOutlined />}>
+                                <NavLink to='/admin/ticket/location'>Location/Room</NavLink>
+                            </Menu.Item>
+                            <Menu.Item key="sub6" icon={<FileOutlined />}>
+                                <NavLink to='/admin/ticket/user'>User</NavLink>
+                            </Menu.Item>
+                        </SubMenu>
+                        <Menu.Item key="5" icon={<HomeOutlined />}>
                             <NavLink to='/home'>Home</NavLink>
                         </Menu.Item>
                     </Menu>
