@@ -12650,3 +12650,24 @@ span {
     7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
 }
 /**Nhat */
+
+
+
+/* Nam */
+
+.admin input{
+	height: 35px;
+    line-height: 35px;
+	margin: 0;
+}
+
+.admin .dashboard-content input{
+	height: 40px;
+}
+
+.admin .ant-picker-input input{
+	height: 30px;
+	border: 0;
+}
+
+/* Nam */
