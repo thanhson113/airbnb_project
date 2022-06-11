@@ -24,6 +24,10 @@ export default function Header() {
                         </span>
                     </a>
                     <div className="dropdown-menu" style={{ left: '20px' }}>
+                        <NavLink style={{fontSize: '15px', margin:'5px 0' }} className="dropdown-item" to="/profile">
+                        <i className="fa fa-info"></i>
+                            Thông tin
+                            </NavLink>
                         <button style={{ fontSize: '15px' }} className="dropdown-item" onClick={() => {
                             localStorage.removeItem('accessToken');
                             localStorage.removeItem('comment');
@@ -60,7 +64,7 @@ export default function Header() {
         }
     }
     return (
-        <div className="header py-3">
+        <div className="header">
             <div className="container">
                 <nav className="navbar navbar-expand-lg ">
                     <NavLink className="navbar-brand" to="/home">
@@ -79,9 +83,6 @@ export default function Header() {
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="#">Liên hệ</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" onClick={() => { history.push('/profile') }}>Thông tin</a>
                             </li>
                         </ul>
                         <div className="header__right">

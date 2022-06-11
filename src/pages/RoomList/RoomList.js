@@ -19,7 +19,11 @@ export default function RoomList(props) {
         setState({ value });
     };
     const renderRoomlist = () => {
+        if(dsPhongTheoViTri.length == 0) {
+           return <h5>Hiện tại không có khách sạn cho địa điểm này</h5>
+        }
         return dsPhongTheoViTri.map(phong => {
+            
             return (
                 <div className="col-lg-12 col-md-12" key={phong._id}>
                     <div className="listing-item-container list-layout" data-marker-id={1}>
@@ -66,13 +70,6 @@ export default function RoomList(props) {
                         <div className="row">
                             <div className="col-md-12">
                                 <h2 className='pb-5'>Chỗ ở tại khu vực bản đồ đã chọn</h2><span></span>
-                                {/* Breadcrumbs */}
-                                {/* <nav id="breadcrumbs">
-                                    <ul>
-                                        <li><a href="#">Home</a></li>
-                                        <li>Listings</li>
-                                    </ul>
-                                </nav> */}
                             </div>
                         </div>
                     </div>
@@ -87,24 +84,6 @@ export default function RoomList(props) {
                                 {renderRoomlist()}
 
                             </div>
-                            {/* Pagination */}
-                            <div className="clearfix" />
-                            <div className="row">
-                                <div className="col-md-12">
-                                    {/* Pagination */}
-                                    <div className="pagination-container margin-top-20 margin-bottom-40">
-                                        <nav className="pagination">
-                                            <ul>
-                                                <li><a href="#" className="current-page">1</a></li>
-                                                <li><a href="#">2</a></li>
-                                                <li><a href="#">3</a></li>
-                                                <li><a href="#"><i className="sl sl-icon-arrow-right" /></a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Pagination / End */}
                         </div>
                     </div></div></div>
 
