@@ -1,12 +1,10 @@
-import { GET_VITRI, layDanhSachViTri } from "../Types/ViTriType"
+import { GET_VITRI, layDanhSachViTri, layThongTinViTriType } from "../Types/ViTriType"
 
 const viTriState = {
+  mangViTri: [],
   danhSachViTri: [],
+  thongTinViTri: {},
   danhSachViTriSearch : [],
-  mangViTri: [
-    { id: 1, name: 'Đà Nẵng' },
-    { id: 2, name: 'Đà lạt' }
-  ],
 }
 
 export const viTriReducer = (state = viTriState, action) => {
@@ -18,6 +16,11 @@ export const viTriReducer = (state = viTriState, action) => {
     }
     case layDanhSachViTri:
       state.mangViTri = action.mangViTri
+      return { ...state }
+
+    case layThongTinViTriType:
+      state.thongTinViTri = action.thongTinViTri
+
       return { ...state }
     default:
       return state
