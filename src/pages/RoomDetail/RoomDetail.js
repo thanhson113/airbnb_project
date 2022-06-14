@@ -33,6 +33,7 @@ import Icon, {
   LikeOutlined,
   DislikeOutlined,
   DeleteOutlined,
+  UndoOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -82,11 +83,12 @@ export default function RoomDetail(props) {
 
   const [width, setWidth] = useState(window.innerWidth);
   // const [height, setHeight] = useState(window.innerHeight);
+  // const [scrollTop,setScrollTop] = useState(window.scroll)
+
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
-  const [container, setContainer] = useState(null);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -113,7 +115,7 @@ export default function RoomDetail(props) {
       setScrollTop(e.target.documentElement.scrollTop);
       setScrolling(
         e.target.documentElement.scrollTop > 830 &&
-          e.target.documentElement.scrollTop < 1125
+          e.target.documentElement.scrollTop < 1100
       );
     };
     window.addEventListener("scroll", onScroll);
@@ -155,6 +157,20 @@ export default function RoomDetail(props) {
         </Tooltip>,
         <span key="comment-basic-reply-to">Reply to</span>,
 
+        <Tooltip key="update-comment" title="Correct ">
+          {idUser === danhGia?.userId?._id ? (
+            <span
+              onClick={() => {
+                dispatch(XoaDanhGiaAction(danhGia?._id, props.match.params.id));
+              }}
+              className="ReloadOutlined"
+            >
+              <UndoOutlined />
+            </span>
+          ) : (
+            ""
+          )}
+        </Tooltip>,
         <Tooltip key="delete-comment" title="Delete">
           {idUser === danhGia?.userId?._id ? (
             <span
@@ -217,6 +233,7 @@ export default function RoomDetail(props) {
 
   const handleChange = (e) => {
     setValueComment(e.target.value);
+    console.log(valueComment);
   };
   //Form setting
 
@@ -241,9 +258,10 @@ export default function RoomDetail(props) {
   };
 
   const renderTienNghi = (add) => {
-    const tienNghi = [];
-    if (chiTietPhong.kitchen)
-      tienNghi.push(
+    const rdTienNghi = { tienNghi: [], countTienNghi: 0 };
+
+    if (chiTietPhong.kitchen) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={1}>
           <i className="m-2">
             <Restaurant />
@@ -251,8 +269,11 @@ export default function RoomDetail(props) {
           <p>Bếp</p>
         </div>
       );
-    if (chiTietPhong.cableTV)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.cableTV) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={2}>
           <i className="m-2">
             <TvOutlined />
@@ -260,9 +281,11 @@ export default function RoomDetail(props) {
           <p>TV với truyền hình cáp tiêu chuẩn</p>
         </div>
       );
+      rdTienNghi.countTienNghi++;
+    }
 
-    if (chiTietPhong.heating)
-      tienNghi.push(
+    if (chiTietPhong.heating) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={3}>
           <i className="m-2">
             <AcUnit />
@@ -270,8 +293,11 @@ export default function RoomDetail(props) {
           <p>Điều Hòa Nhiệt Độ</p>
         </div>
       );
-    if (chiTietPhong.indoorFireplace)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.indoorFireplace) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={4}>
           <i className="m-2">
             <Hvac />
@@ -279,9 +305,11 @@ export default function RoomDetail(props) {
           <p>Lò Sưởi trong nhà</p>
         </div>
       );
+      rdTienNghi.countTienNghi++;
+    }
 
-    if (chiTietPhong.wifi)
-      tienNghi.push(
+    if (chiTietPhong.wifi) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={5}>
           <i className="m-2">
             <WifiOutlined />
@@ -289,8 +317,11 @@ export default function RoomDetail(props) {
           <p>Wifi</p>
         </div>
       );
-    if (chiTietPhong.elevator)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.elevator) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={6}>
           <i className="m-2">
             <Elevator />
@@ -298,34 +329,48 @@ export default function RoomDetail(props) {
           <p>Thang máy</p>
         </div>
       );
-    if (chiTietPhong.pool)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.pool) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={7}>
           <i className="fa fa-swimming-pool m-2"></i> <p>Bể bơi sạch đẹp</p>
         </div>
       );
-    if (chiTietPhong.hotTub)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.hotTub) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={8}>
           <i className="fa fa-hot-tub m-2"></i>{" "}
           <p>Có bồn nước nóng để thư giản</p>
         </div>
       );
-    if (chiTietPhong.dryer)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.dryer) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={9}>
           <i className="fa fa-wind m-2"></i> <p>Có máy sấy để làm khô tóc</p>
         </div>
       );
-    if (chiTietPhong.gym)
-      tienNghi.push(
+      rdTienNghi.countTienNghi++;
+    }
+
+    if (chiTietPhong.gym) {
+      rdTienNghi.tienNghi.push(
         <div className="col-6 d-flex py-2" key={10}>
           <i className="fa fa-dumbbell m-2"></i>{" "}
           <p>Có phòng tập hoặc khu tập gym</p>
         </div>
       );
+      rdTienNghi.countTienNghi++;
+    }
 
-    return tienNghi.slice(0, add);
+    return rdTienNghi;
   };
 
   const renderReducer = () => {
@@ -378,7 +423,7 @@ export default function RoomDetail(props) {
   const warning = () => {
     message.warning(
       <p className="text text-danger py-2">
-        Bạn Chưa Thiết Lập Ngày Đi Và Đến
+        Bạn Chưa Thiết Lập Xong Ngày Đi Và Đến
       </p>,
       5
     );
@@ -438,7 +483,7 @@ export default function RoomDetail(props) {
 
       <div className="roomDetail_book row">
         <div className={width <= 1024 ? "col-12" : "col-6"}>
-          <div className="roomDetail_book_detail">
+          <div className="roomDetail_book_detail" id="roomDetail_book_detail">
             <div className="roomDetail_book_detail_head py-3 border-top">
               <h5 className="h_located cursor py-1" onClick={showModal}>
                 Chỗ Ở Đẹp Và Tiện Nghi Tại {locationId?.name},{" "}
@@ -496,9 +541,9 @@ export default function RoomDetail(props) {
             <div className="roomDetail_book_detail_last py-4 border-top border-bottom">
               <h5 className="mb-2">Tiện Nghi</h5>
               <div className="row">
-                {renderTienNghi(add)}
+                {renderTienNghi()?.tienNghi.slice(0, add)}
                 <div className="col-12 text-center p-2">
-                  {add < 7 ? (
+                  {renderTienNghi()?.countTienNghi > 6 && add !== 10 ? (
                     <button
                       onClick={() => {
                         setAdd(10);
@@ -507,7 +552,7 @@ export default function RoomDetail(props) {
                     >
                       Hiển Thị Tất Cả Tiện Ích
                     </button>
-                  ) : add > 6 ? (
+                  ) : add === 10 ? (
                     <button
                       onClick={() => {
                         setAdd(6);
@@ -573,13 +618,6 @@ export default function RoomDetail(props) {
                         onChange={(val) => setValue(val)}
                         onOpenChange={onOpenChange}
                       />
-                      {/* <RangePicker
-                    format="YYYY-MM-DD"
-                    disabledDate={disableDateRanges({
-                      endDate: checkOut,
-                      startDate: checkIn,
-                    })}
-                  /> */}
                     </Form.Item>
                     <Form.Item label="Bạn Đi Bao Nhiêu Người">
                       <Select
@@ -593,21 +631,19 @@ export default function RoomDetail(props) {
                       </Select>
                     </Form.Item>
                   </div>
-                  <div className="col-12 text-center  py-2">
+                  <div className="col-12 text-center  py-3">
                     <Button
-                      onClick={() => {
+                      onClick={ () => {
                         if (value?.length === 2) {
-                          localStorage.setItem("roomId", props.match.params.id);
                           localStorage.setItem(
-                            "checkIn",
-                            moment(value[0]).format()
-                          );
-                          localStorage.setItem(
-                            "checkOut",
-                            moment(value[1]).format()
+                            "datPhong",
+                            JSON.stringify({
+                              roomId: props.match.params.id,
+                              checkIn:  moment(value[0]).format(),
+                              checkOut: moment(value[1]).format(),
+                            })
                           );
 
-                          
                           // dispatch(add_component(<Login />, "Login"));
                           history.push(`/cart/login`);
                         } else warning();

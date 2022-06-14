@@ -1,7 +1,5 @@
 .register-box {
-    padding: 40px;
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
-    border-radius: 10px;
+    padding: 1.5em;
   }
   
   .register-box h2 {
@@ -15,7 +13,9 @@
     position: relative;
   }
   
-  .register-box .user-box input {
+  .register-box .user-box input,
+  .register-box .user-box .custom_select
+   {
     width: 100%;
     padding: 10px;
     font-size: 16px;
