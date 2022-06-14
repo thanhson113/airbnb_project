@@ -213,6 +213,9 @@
     position: relative;
     padding: 2em 0;
   }
+  .ant-image-mask{
+    border-radius: 50px;
+  }
   .roomDetail .roomDetail_head_photos_image {
     height: 600px;
     width: 100vw;

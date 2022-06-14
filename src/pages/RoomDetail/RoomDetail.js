@@ -83,11 +83,12 @@ export default function RoomDetail(props) {
 
   const [width, setWidth] = useState(window.innerWidth);
   // const [height, setHeight] = useState(window.innerHeight);
+  // const [scrollTop,setScrollTop] = useState(window.scroll)
+
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
-  const [container, setContainer] = useState(null);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -114,7 +115,7 @@ export default function RoomDetail(props) {
       setScrollTop(e.target.documentElement.scrollTop);
       setScrolling(
         e.target.documentElement.scrollTop > 830 &&
-          e.target.documentElement.scrollTop < 1125
+          e.target.documentElement.scrollTop < 1100
       );
     };
     window.addEventListener("scroll", onScroll);
@@ -482,7 +483,7 @@ export default function RoomDetail(props) {
 
       <div className="roomDetail_book row">
         <div className={width <= 1024 ? "col-12" : "col-6"}>
-          <div className="roomDetail_book_detail">
+          <div className="roomDetail_book_detail" id="roomDetail_book_detail">
             <div className="roomDetail_book_detail_head py-3 border-top">
               <h5 className="h_located cursor py-1" onClick={showModal}>
                 Chỗ Ở Đẹp Và Tiện Nghi Tại {locationId?.name},{" "}
@@ -632,16 +633,15 @@ export default function RoomDetail(props) {
                   </div>
                   <div className="col-12 text-center  py-3">
                     <Button
-                      onClick={() => {
+                      onClick={ () => {
                         if (value?.length === 2) {
-                          localStorage.setItem("roomId", props.match.params.id);
                           localStorage.setItem(
-                            "checkIn",
-                            moment(value[0]).format()
-                          );
-                          localStorage.setItem(
-                            "checkOut",
-                            moment(value[1]).format()
+                            "datPhong",
+                            JSON.stringify({
+                              roomId: props.match.params.id,
+                              checkIn:  moment(value[0]).format(),
+                              checkOut: moment(value[1]).format(),
+                            })
                           );
 
                           // dispatch(add_component(<Login />, "Login"));

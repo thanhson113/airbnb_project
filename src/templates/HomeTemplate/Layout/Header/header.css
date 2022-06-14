@@ -170,6 +170,10 @@
 #navigation ul ul li a:only-child:after {
 	content: '';
 }
+.ant-drawer-body{
+	padding: 2em 0;
+}
+
 @media screen and (max-width:992px){
     .header__right{
         justify-content: space-evenly;
