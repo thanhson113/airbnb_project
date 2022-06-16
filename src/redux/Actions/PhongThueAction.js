@@ -37,8 +37,6 @@ export const ThongTinChiTietPhongAction = (id) => {
     try {
       const result = await quanLyPhongChoThue.ThongTinChiTietPhong(id);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
         dispatch({
           type: ThongTinChiTietPhongType,
           chiTietPhong: result.data
@@ -57,9 +55,6 @@ export const DatPhongAction = (ve) => {
       const result = await quanLyPhongChoThue.DatVe(ve)
       if (result.status === 200) {
         success('Đặt phòng')
-        console.log(result);
-        console.log(result.data);
-        console.log(result.data.message);
       }
     } catch (error) {
       console.log("error", error);
@@ -93,7 +88,6 @@ export const capNhatPhongThueAction = (id, room, locationId) => {
       let result = await quanLyPhongChoThue.capNhatPhongThue(id, room);
       if (result.status === 200) {
         alert('Cập nhật phòng thành công');
-        console.log(result.data);
         history.push(`/admin/room/${locationId}`)
       }
     } catch (error) {

@@ -12,7 +12,7 @@ function HistoryBooking() {
   const { dsVeTheoND } = useSelector((state) => state.VeReducer);
   const [more, setMore] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
-
+  console.log(user,dsVeTheoND);
   const dispatch = useDispatch();
 
   const layDSVeNguoiDung = (user) => {
@@ -37,11 +37,10 @@ function HistoryBooking() {
     return dsVeTheoND?.slice(0, more).map((ve, index) => {
       return (
         <div key={index} className="historyBooking_content_item">
-          <Card cover={<Image alt={ve?.roomId.name} src={ve?.roomId.image} />}>
+          <Card cover={<Image className="historyBooking_content_item_img" alt={ve?.roomId.name} src={ve?.roomId.image} />}>
             <Meta
               title={ve?.roomId.name}
               style={{ textAlign: "center" }}
-              // description={dsVeTheoND[0]?.roomId.description}
             />
             <div className="">
               <div className="d-flex justify-content-between py-1">

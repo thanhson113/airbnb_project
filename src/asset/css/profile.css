@@ -2,8 +2,17 @@
 .ant-input[disabled],
 .ant-select-disabled.ant-select:not(.ant-select-customize-input)
   .ant-select-selector,
-.ant-picker-input > input[disabled] {
-  color: rgba(0, 0, 0, 0.795);
+.ant-picker-input > input[disabled],.ant-input-number-input {
+  color: rgb(0, 0, 0);
+}
+
+
+.profile input[type="text"]{
+  color: #000;
+}
+
+.btn_check button{
+  font-size: larger;
 }
 
 /** button custom*/
@@ -68,7 +77,6 @@
 
 .profile {
   width: 100%;
-  padding-bottom: 100px;
 }
 .profile .btn_avatar {
   height: 50px;
@@ -79,14 +87,17 @@
 .profile .profife_status_avatar:hover .btn_avatar_button {
   display: block;
 }
-
+.profile .profife_info,.profile .profile_booking{
+  background-color: #eee7e3;
+}
 .profile .profife_status_avatar {
-  padding: 50px 0 100px 0;
+  padding: 100px 0;
   background-color: #eee7e3;
 }
 .profile .profife_status_content {
   max-width: 1000px;
   margin: 0 auto;
+  
 }
 .profile label {
   cursor: pointer;
@@ -105,6 +116,14 @@
 .ant-modal-header {
   border-radius: 10px 10px 0 0;
 }
+.profile .historyBooking_head {
+  border-top: 3px dashed rgba(0, 0, 0, 0.188);
+  border-right: 5px dashed rgba(0, 0, 0, 0.188);
+  border-left: 5px dashed rgba(0, 0, 0, 0.188);
+  border-bottom: 3px dashed rgba(0, 0, 0, 0.188);
+}
+
+
 
 @media screen and (min-width: 375px) {
   .profile {
@@ -117,7 +136,13 @@
   .profile .historyBooking_content_item {
     max-width: 100%;
     padding: 10%;
+  } 
+  .profile .profife_info {
+    padding: 1.5em;
+  }.profile .profile_booking {
+    padding: 1.5em;
   }
+  
 }
 @media screen and (min-width: 768px) {
   .profile .historyBooking_content {

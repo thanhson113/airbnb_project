@@ -20,7 +20,7 @@ export default function Header() {
   const { user } = useSelector((state) => state.nguoiDungReducer);
   const dispatch = useDispatch();
   const { Component,id } = useSelector((state) => state.ComponentReducer);
-  console.log(Component);
+  
 
   const userID = localStorage.getItem("id");
 

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { createElement, useEffect, useState } from "react";
+import React, { createElement, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Map from "./Map";
 
@@ -34,6 +34,7 @@ import Icon, {
   DislikeOutlined,
   DeleteOutlined,
   UndoOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 import {
@@ -66,6 +67,9 @@ import { history } from "../../App";
 
 export default function RoomDetail(props) {
   const dispatch = useDispatch();
+  const container = useRef(null);
+  const divScroll = useRef(null);
+
   const { dsDanhGia } = useSelector((state) => state.danhGiaReducer);
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
   const { locationId } = chiTietPhong;
@@ -89,6 +93,7 @@ export default function RoomDetail(props) {
   const [scrollTop, setScrollTop] = useState(0);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
+  const [heightDiv, setHeightDiv] = useState(0);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -111,17 +116,22 @@ export default function RoomDetail(props) {
   }, []);
 
   useEffect(() => {
+    const heightContainer = container.current.clientHeight;
+    const heighDivScroll = divScroll.current.offsetHeight;
+    setHeightDiv(heightContainer - heighDivScroll);
+
     const onScroll = (e) => {
       setScrollTop(e.target.documentElement.scrollTop);
       setScrolling(
         e.target.documentElement.scrollTop > 830 &&
-          e.target.documentElement.scrollTop < 1100
+          e.target.documentElement.scrollTop < 830 + heightDiv
       );
     };
     window.addEventListener("scroll", onScroll);
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [scrollTop]);
+
   //comment
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
@@ -193,10 +203,12 @@ export default function RoomDetail(props) {
           actions={actions}
           author={<a>{danhGia.userId?.name}</a>}
           avatar={
-            <Avatar
+            danhGia.userId?.avatar?
+            <Avatar 
               src={<Image src={danhGia.userId?.avatar} />}
               alt={danhGia.userId?.name}
-            />
+            />:<Avatar icon={<UserOutlined />} />
+            
           }
           content={<p>{danhGia.content}</p>}
           datetime={
@@ -233,7 +245,6 @@ export default function RoomDetail(props) {
 
   const handleChange = (e) => {
     setValueComment(e.target.value);
-    console.log(valueComment);
   };
   //Form setting
 
@@ -481,13 +492,14 @@ export default function RoomDetail(props) {
         </div>
       </div>
 
-      <div className="roomDetail_book row">
+      <div className="roomDetail_book row" ref={container}>
         <div className={width <= 1024 ? "col-12" : "col-6"}>
           <div className="roomDetail_book_detail" id="roomDetail_book_detail">
             <div className="roomDetail_book_detail_head py-3 border-top">
               <h5 className="h_located cursor py-1" onClick={showModal}>
                 Chỗ Ở Đẹp Và Tiện Nghi Tại {locationId?.name},{" "}
                 {locationId?.province}, {locationId?.country}
+                {heightDiv}
               </h5>
               <p className="text-secondary pt-3">
                 {chiTietPhong.guests ? `${chiTietPhong.guests} khách` : ""}{" "}
@@ -513,7 +525,7 @@ export default function RoomDetail(props) {
                 </i>
                 <div>
                   <h6>Vệ Sinh Tăng Cường</h6>
-                  <span>Cam kêt vs sạch</span>
+                  <span>Cam kêt phòng sạch sẽ</span>
                 </div>
               </div>
               <div className="d-flex py-2">
@@ -521,7 +533,7 @@ export default function RoomDetail(props) {
                   <TrophyOutlined />
                 </i>
                 <div>
-                  <h6>Phong Là Chủ Nhà Siu cấp</h6>
+                  <h6>Đặc quyền tốt</h6>
                   <span>Bạn sẽ có chung cư cao cấp cho riêng mình</span>
                 </div>
               </div>
@@ -572,8 +584,9 @@ export default function RoomDetail(props) {
         <div className={width <= 1024 ? "col-12" : "col-6"}>
           <div className={"roomDetail_book_booking bg-white py-4"}>
             <div
+              ref={divScroll}
               className={
-                scrolling ? `fixed` : scrollTop > 1125 ? "absolute" : ""
+                scrolling ? `fixed` : scrollTop > 830 + heightDiv ? "absolute" : ""
               }
             >
               <Form
@@ -633,13 +646,13 @@ export default function RoomDetail(props) {
                   </div>
                   <div className="col-12 text-center  py-3">
                     <Button
-                      onClick={ () => {
+                      onClick={() => {
                         if (value?.length === 2) {
                           localStorage.setItem(
                             "datPhong",
                             JSON.stringify({
                               roomId: props.match.params.id,
-                              checkIn:  moment(value[0]).format(),
+                              checkIn: moment(value[0]).format(),
                               checkOut: moment(value[1]).format(),
                             })
                           );
@@ -660,6 +673,7 @@ export default function RoomDetail(props) {
           </div>
         </div>
       </div>
+
       <div className="roomdetail_map ">
         <h5 className="px-5 py-4">Vị Trí Của Bạn Là</h5>
         <Map
@@ -692,10 +706,10 @@ export default function RoomDetail(props) {
               <div className="d-flex justify-content-between">
                 <span className="w-50 p-1">Mức Độ Sạch Sẽ</span>
                 <Progress
-                  className="w-50"
+                  className="w-50"   
                   strokeColor={{
-                    from: "#E233FF",
-                    to: "#FF6B00",
+                     from: "#e8798e",
+                    to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
@@ -706,8 +720,8 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                    from: "#E233FF",
-                    to: "#FF6B00",
+                     from: "#e8798e",
+                    to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
@@ -718,8 +732,8 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                    from: "#E233FF",
-                    to: "#FF6B00",
+                     from: "#e8798e",
+                    to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
@@ -732,8 +746,8 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                    from: "#E233FF",
-                    to: "#FF6B00",
+                     from: "#e8798e",
+                    to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
@@ -744,8 +758,8 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                    from: "#E233FF",
-                    to: "#FF6B00",
+                     from: "#e8798e",
+                    to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
@@ -756,8 +770,8 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                    from: "#E233FF",
-                    to: "#FF6B00",
+                     from: "#e8798e",
+                    to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
                   status="active"
@@ -774,6 +788,7 @@ export default function RoomDetail(props) {
                 <>
                   <Form.Item>
                     <TextArea
+                      className="input_comment"
                       disabled={!idUser ? true : false}
                       showCount
                       placeholder={
@@ -794,7 +809,7 @@ export default function RoomDetail(props) {
                       disabled={!idUser ? true : false}
                       loading={submitting}
                       onClick={handleSubmit}
-                      type="primary"
+                      className="btn_comment"
                     >
                       Add Comment
                     </Button>

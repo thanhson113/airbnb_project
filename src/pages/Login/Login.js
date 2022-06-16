@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "../../asset/css/login.css";
+import { add_component } from "../../redux/Actions/ComponentAction";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
-
+import Register from "../Register/Register";
 
 
  function Login() {
@@ -85,9 +86,11 @@ import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
               </button>
             </div>
             <div className="register">
-              <NavLink className=" custom-btn btn-register" to={'register'} >
+              <a className=" custom-btn btn-register" onClick={()=>{
+                 dispatch(add_component(<Register />, "Đăng Ký"))
+              }} >
                 Register
-              </NavLink>
+              </a>
             </div>
           </div>
         </form>
