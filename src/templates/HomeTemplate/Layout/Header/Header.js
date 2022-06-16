@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../../assets/images/logo.png'
 import './header.css'
-import { Acces_stoken } from '../../../../util/setting'
 import { history } from '../../../../App'
 import { ChiTietNguoiDungAction } from '../../../../redux/Actions/NguoiDungAction'
 export default function Header() {
