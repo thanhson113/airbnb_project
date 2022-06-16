@@ -1,23 +1,29 @@
-import { layDSVeTheoPhongType,LayChiTietVeCuaNDType } from "../Types/VeType"
+/** @format */
+
+import { layDSVeTheoPhongType, LayChiTietVeCuaNDType } from "../Types/VeType";
 
 const VeState = {
-  dsVeIdroom:[],
-  dsVeTheoND:[]
-}
+  dsVeIdroom: [],
+  dsVeTheoND: [],
+};
 
 export const VeReducer = (state = VeState, action) => {
   switch (action.type) {
     case layDSVeTheoPhongType:
-    state.dsVeIdroom=[...action.dsVeIdroom]
+      state.dsVeIdroom = [...action.dsVeIdroom];
 
-    return {...state}
+      return { ...state };
 
     case LayChiTietVeCuaNDType:
-      let dsVeCapNhap = [...state.dsVeTheoND]
-      dsVeCapNhap.push(action.ve)
-      state.dsVeTheoND=[...dsVeCapNhap]
-    return {...state}
-  default:
-    return {...state}
+      let dsVeCapNhap = [...state.dsVeTheoND];
+
+      const check = dsVeCapNhap.some((ve)=> ve._id===action.ve._id)
+      if(!check) dsVeCapNhap.push(action.ve)
+      
+
+      state.dsVeTheoND = [...dsVeCapNhap];
+      return { ...state };
+    default:
+      return { ...state };
   }
-}
+};

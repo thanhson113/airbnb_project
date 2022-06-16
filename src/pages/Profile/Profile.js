@@ -83,8 +83,8 @@ export default function Profile() {
             }
           />
           <div className="profife_status_avatar_detail py-2 ">
-            <h3>{user?.name}</h3>
-            <div className="d-flex justify-content-center py-2">
+            <h3 className="py-2">{user?.name}</h3>
+            <div className="d-flex justify-content-center py-3">
               <div className="d-flex ">
                 <span className="text text-secondary">Hội Viên :</span>
                 <span className="ml-1"> Thân Thiết</span>
@@ -131,16 +131,14 @@ export default function Profile() {
         <div className="profife_status_content">
           <Tabs defaultActiveKey="1" centered>
             <TabPane tab="Thông tin " key="1">
-              <div className="profife_info px-2">{formUp(id)}</div>
+              <div className="profife_info">{formUp(id)}</div>
             </TabPane>
             <TabPane tab="Lịch Sử Booking" key="2">
-              <div className="profile_booking px-2">{Booking()}</div>
+              <div className="profile_booking">{Booking()}</div>
             </TabPane>
           </Tabs>
         </div>
       </div>
-
-      <div className="col-9"></div>
     </div>
   );
 }

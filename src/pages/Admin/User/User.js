@@ -1,21 +1,21 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react';
 import { Table, Button, Input, Tag, Space } from 'antd';
 import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
-import { layDanhSachNguoiDungAction } from '../../../redux/Actions/NguoiDungAction';
+import { LayDSNguoiDungAction, xoaNguoiDungAction } from '../../../redux/Actions/NguoiDungAction';
 import { NavLink } from 'react-router-dom';
 
 const { Search } = Input;
 
 export default function User() {
-    let { mangNguoiDung } = useSelector(state => state.nguoiDungReducer)
-    console.log(mangNguoiDung);
+    let { dsNguoiDung } = useSelector(state => state.nguoiDungReducer)
+    console.log(dsNguoiDung);
 
     let dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(layDanhSachNguoiDungAction())
+        dispatch(LayDSNguoiDungAction())
     }, [])
 
     const columns = [
@@ -57,15 +57,20 @@ export default function User() {
         {
             title: 'Action',
             dataIndex: 'action',
-            render:(text, user) => {
+            render: (text, user) => {
                 return <Fragment>
                     <NavLink key={1} to={`/admin/user/edit/${user._id}`} style={{ color: 'blue', fontSize: 25, paddingRight: 10 }}><EditOutlined /></NavLink>
+                    <span onClick={() => {
+                        if (window.confirm('Bạn có chắc muốn xóa tài khoản ' + user.name + ' không?')) {
+                            dispatch(xoaNguoiDungAction(user._id));
+                        }
+                    }} key={2} style={{ color: 'red', fontSize: 25, paddingRight: 10, cursor: 'pointer' }}><DeleteOutlined /></span>
                 </Fragment>
             }
         },
     ];
 
-    const data = mangNguoiDung;
+    const data = dsNguoiDung;
 
     const onSearch = () => {
 
@@ -77,10 +82,10 @@ export default function User() {
 
     return (
         <div className="dashboard-content">
-            <h2>Admin/User</h2>
+            <h2 className='my-3'>Admin/User</h2>
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
-                // history.push('/admin/films/addnew')
-            }}>Add new</Button>
+                history.push('/admin/user/add')
+            }}>Add new user</Button>
             <Search
                 className='mb-4'
                 placeholder="Search"

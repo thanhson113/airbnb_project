@@ -4,24 +4,21 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "../../asset/css/login.css";
+import { add_component } from "../../redux/Actions/ComponentAction";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
+import Register from "../Register/Register";
 
-export default function Login() {
-  const [width, setWidth] = useState(window.innerWidth);
+
+ function Login() {
+   
   let [user, setUserAccount] = useState({
     email: "",
     password: "",
   });
-  let wbg = "";
-  if (width < 600) wbg = "90%";
-  else wbg = "450px";
+  
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
+  
 
   const hanleInput = (event) => {
     let { value, name } = event.target;
@@ -45,8 +42,8 @@ export default function Login() {
   };
 
   return (
-    <div className="container-fluid">
-      <div className="login-box" style={{ width: wbg }}>
+   
+      <div className="login-box">
         <h2>SIGN IN</h2>
         <form
           onSubmit={(values) => {
@@ -89,13 +86,16 @@ export default function Login() {
               </button>
             </div>
             <div className="register">
-              <NavLink className=" custom-btn btn-register" to={'register'} >
+              <a className=" custom-btn btn-register" onClick={()=>{
+                 dispatch(add_component(<Register />, "Đăng Ký"))
+              }} >
                 Register
-              </NavLink>
+              </a>
             </div>
           </div>
         </form>
       </div>
-    </div>
   );
 }
+
+export default Login

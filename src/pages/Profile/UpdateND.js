@@ -43,9 +43,9 @@ function UpdateND(props) {
         .required("Email khong duoc de trong")
         .email("Email ko đúng định dạng email")
         .notOneOf(listDSEmailND, "Email đã được sử dụng"),
-      phone: Yup.string().required("Số điện thoai khong duoc de trong")
-      .matches(/^[0-9]+$/,"Đây là trường số bạn ơi !")
-      ,
+      phone: Yup.string()
+        .required("Số điện thoai khong duoc de trong")
+        .matches(/^[0-9]+$/, "Đây là trường số bạn ơi !"),
       //matches : kiểm tra biểu thức
 
       name: Yup.string()
@@ -88,12 +88,10 @@ function UpdateND(props) {
   };
 
   const handleChangeDatePicker = (value) => {
-    
-      console.log("value",value);
-      let birthday = moment(value);
-      formik.setFieldValue('birthday', birthday);
-      console.log(formik.values.birthday);
-   
+    console.log("value", value);
+    let birthday = moment(value);
+    formik.setFieldValue("birthday", birthday);
+    console.log(formik.values.birthday);
   };
   const handleChangeInputNumber = (name) => {
     return (value) => {
@@ -192,7 +190,7 @@ function UpdateND(props) {
           <Select
             disabled={turnOn}
             name="gender"
-            onChange={handleChangeSwitch('gender')}
+            onChange={handleChangeSwitch("gender")}
             onBlur={formik.handleBlur}
             value={formik.values.gender}
           >
@@ -205,14 +203,27 @@ function UpdateND(props) {
             </div>
           ) : null}
         </Form.Item>
-        <Form.Item>
-          <div className="w-100 text-center">
+        <Form.Item className="btn_check justify-content-center">
+          <div
+            className={`m-auto w-100% py-4   ${
+              turnOn ? "d-none" : "d-flex justify-content-around"
+            }`}
+          >
             <button
               disabled={turnOn}
               className="btn btn-outline-success w-25 py-3"
               type="submit"
             >
               Update
+            </button>
+            <button
+              disabled={turnOn}
+              className="btn btn-outline-danger w-25 py-3"
+              onClick={() => {
+                setTurnOn(!turnOn);
+              }}
+            >
+              Cancel
             </button>
           </div>
         </Form.Item>

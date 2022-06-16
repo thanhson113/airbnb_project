@@ -1,12 +1,11 @@
+import { history } from "../../App";
+import { quanLyNguoiDung } from "../../services/NguoiDungServices";
+import { LayDSNguoiDungType, layThongTinNguoiDungType,ChiTieTNguoiDungType } from "../Types/NguoiDungType";
 /** @format */
 
 import { message } from "antd";
-import { quanLyNguoiDung } from "../../services/NguoiDungServices";
-import {
-  ChiTieTNguoiDungType,
-  LayDSNguoiDungType,
-} from "../Types/NguoiDungType";
 import { layDanhSachNguoiDung } from "../Types/NguoiDungType";
+import { quanLyPhongChoThue } from "../../services/PhongThueServices";
 
 const success = (content) => {
   message.success(content,3);
@@ -21,7 +20,6 @@ export const LayDSNguoiDungAction = () => {
     try {
       const result = await quanLyNguoiDung.DSNguoiDung();
       if (result.status === 200) {
-        console.log(result.data);
         dispatch({
           type: LayDSNguoiDungType,
           dsNguoiDung: result.data,
@@ -31,7 +29,7 @@ export const LayDSNguoiDungAction = () => {
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
-      error(!error.response?.data?"error.response?.data":"Error !")
+      
     }
   };
 };
@@ -73,17 +71,70 @@ export const UploadAvaraNDAction = (formData, id) => {
 };
 //*** nhat
 
-export const layDanhSachNguoiDungAction = () => {
+
+export const themNguoiDungAction = (user) => {
   return async (dispatch) => {
     try {
-      let result = await quanLyNguoiDung.layDanhSachNguoiDung();
-      let action = {
-        type: layDanhSachNguoiDung,
-        mangNguoiDung: result.data,
-      };
-      dispatch(action);
+      let result = await quanLyNguoiDung.themNguoiDung(user);
+      if (result.status === 200) {
+        alert('Thêm người dùng thành công');
+        console.log(result.data);
+        history.push('/admin/user')
+      }
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
+      console.log("error", error.response?.data);
     }
   };
-};
+}
+
+export const layThongTinNguoiDungAction = (id) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.layThongTinNguoiDung(id);
+      if (result.status === 200) {
+        console.log(result.data);
+        dispatch({
+          type: layThongTinNguoiDungType,
+          thongTinNguoiDung: result.data,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+export const capNhatThongTinNguoiDungAction = (id, user) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.capNhatThongTinNguoiDung(id, user);
+      if (result.status === 200) {
+        alert('Thêm người dùng thành công');
+        console.log(result.data);
+        history.push('/admin/user')
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+export const xoaNguoiDungAction = (id) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyNguoiDung.xoaNguoiDung(id);
+      if (result.status === 200) {
+        alert('Xóa người dùng thành công');
+        dispatch(LayDSNguoiDungAction())
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+

@@ -11,5 +11,15 @@ class QuanLyPhongChoThue {
     return http.post(`/api/rooms/booking`, ve)
 
   }
+
+  themPhongThue = (room) => {
+    return http.post(`/api/rooms`, room)
+  }
+  capNhatPhongThue = (id, room) => {
+    return http.put(`/api/rooms/${id}`, room)
+  }
+  xoaPhongThue = (id) => {
+    return http.delete(`/api/rooms/${id}`)
+  }
 }
 export const quanLyPhongChoThue = new QuanLyPhongChoThue();

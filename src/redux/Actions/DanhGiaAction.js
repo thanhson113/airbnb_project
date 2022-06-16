@@ -1,7 +1,8 @@
 /** @format */
 
+import { history } from "../../App";
 import { quanLyDanhGia } from "../../services/DanhGiaServices";
-import { DanhSachDanhGiaPhongType } from "../Types/DanhGiaType";
+import { DanhSachDanhGiaPhongType, layDanhSachDanhGiaTheoPhongType, thongTinChiTietDanhGia } from "../Types/DanhGiaType";
 
 //nhat head
 export const DSDanhGiaTheoPhongAction = (id) => {
@@ -55,3 +56,91 @@ export const XoaDanhGiaAction = (idDanhGia, idPhong) => {
   };
 };
 //nhat final
+
+export const taoDanhGiaTheoPhongADAction = (idPhong, comment) => {
+  return async (dispatch) => {
+    try {
+      const result = await quanLyDanhGia.TaoDanhGiaTheoPhong(idPhong, comment);
+      if (result.status === 200) {
+        alert('Tạo đánh giá thành công');
+        dispatch(DSDanhGiaTheoPhongAction(idPhong));
+        history.push(`/admin/feedback/${idPhong}`)
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  };
+};
+
+export const layThongTinChiTietDanhGiaAction = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await quanLyDanhGia.layThongTinChiTietDanhGia(id);
+      if (result.status === 200) {
+        console.log(result);
+        console.log(result.data);
+        dispatch({
+          type: thongTinChiTietDanhGia,
+          thongTinChiTietDanhGia: result.data
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  };
+};
+
+export const capNhatThongTinChiTietDanhGiaAction = (id, review, roomId) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyDanhGia.capNhatThongTinChiTietDanhGia(id, review);
+      if (result.status === 200) {
+        alert('Cập nhật đánh giá thành công');
+        console.log(result.data);
+        layDanhGiaTheoPhongAction(roomId)
+        history.push(`/admin/feedback/${roomId}`)
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+
+export const xoaDanhGiaActionAD = (id, roomId) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyDanhGia.xoaDanhGia(id);
+      if (result.status === 200) {
+        alert('Xóa đánh giá thành công');
+        dispatch(layDanhGiaTheoPhongAction(roomId))
+        history.push(`/admin/feedback/${roomId}`)
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+export const layDanhGiaTheoPhongAction = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await quanLyDanhGia.layDanhGiaTheoPhong(id);
+      if (result.status === 200) {
+        console.log(result);
+        console.log(result.data);
+        dispatch({
+          type: layDanhSachDanhGiaTheoPhongType,
+          danhSachDanhGia: result.data,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  };
+};
