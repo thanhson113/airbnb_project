@@ -27,8 +27,6 @@ export const LayChiTietVeCuaNDAction = (idVe) => {
     try {
       const result = await quanLyDatVe.layChiTietVe(idVe);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
         dispatch({
           type: LayChiTietVeCuaNDType,
           ve: result.data,

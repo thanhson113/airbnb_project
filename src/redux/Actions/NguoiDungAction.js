@@ -29,7 +29,7 @@ export const LayDSNguoiDungAction = () => {
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
-      error(!error.response?.data?"error.response?.data":"Error !")
+      
     }
   };
 };
