@@ -39,12 +39,6 @@ export default function Footer() {
                                 Phone: <span>(123) 123-456 </span><br />
                                 E-Mail:<span> <a href="#">office@example.com</a> </span><br />
                             </div>
-                            <ul className="social-icons margin-top-20">
-                                <li><a className="facebook" href="#"><i className="icon-facebook" /></a></li>
-                                <li><a className="twitter" href="#"><i className="icon-twitter" /></a></li>
-                                <li><a className="gplus" href="#"><i className="icon-gplus" /></a></li>
-                                <li><a className="vimeo" href="#"><i className="icon-vimeo" /></a></li>
-                            </ul>
                         </div>
                     </div>
                     {/* Copyright */}
