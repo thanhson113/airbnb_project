@@ -115,7 +115,7 @@ export default function Header() {
     };
     return (
         <Fragment>
-            <div className="header py-3">
+            <div className="header">
                 <div className="container">
                     <nav className="navbar navbar-expand-lg ">
                         <NavLink className="navbar-brand" to="/home">
@@ -135,6 +135,7 @@ export default function Header() {
                         <div
                             className="collapse navbar-collapse"
                             id="navbarSupportedContent"
+                            style={{backgroundColor:'#fff'}}
                         >
                             <ul className="navbar-nav mr-auto header__list">
                                 <li className="nav-item active header__item">
