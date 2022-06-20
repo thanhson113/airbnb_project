@@ -3,7 +3,7 @@ import { message } from "antd";
 
 import { history } from "../../App";
 import { quanLyPhongChoThue } from "../../services/PhongThueServices"
-import { GET_DSPHONGTHUE_VITRI, ThongTinChiTietPhongType } from "../Types/PhongThueType";
+import { GET_DSPHONGTHUE_VITRI, ThongTinChiTietPhongType, GET_LIST_PHONG_THUE } from "../Types/PhongThueType";
 
 const success = (content) => {
   message.loading(`${content} đang thực hiện..`, 2.5).then(() =>
@@ -30,6 +30,19 @@ export const layDSPhongThueTheoViTri = (idViTri) => {
   }
 }
 
+export const layDSPhongThue = () => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyPhongChoThue.layDSPhongThue();
+      dispatch({
+        type: GET_LIST_PHONG_THUE,
+        dsPhongThue: result.data
+      })
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+}
 
 //Nhat head
 export const ThongTinChiTietPhongAction = (id) => {
