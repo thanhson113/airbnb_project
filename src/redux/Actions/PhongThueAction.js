@@ -8,7 +8,7 @@ import { GET_DSPHONGTHUE_VITRI, ThongTinChiTietPhongType, GET_LIST_PHONG_THUE } 
 const success = (content) => {
   message.loading(`${content} đang thực hiện..`, 2.5).then(() =>
     message.success(`${content} thành công`, 2.5, () => {  
-       history.push("/home");   
+       history.push("/profile");   
     })
   );
 };

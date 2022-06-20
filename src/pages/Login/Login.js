@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import "../../asset/css/login.css";
+
 import { add_component } from "../../redux/Actions/ComponentAction";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
 import Register from "../Register/Register";
 
+import "../../asset/css/login.css";
 
  function Login() {
    
@@ -61,7 +62,7 @@ import Register from "../Register/Register";
               name="email"
               required
             />
-            <label>Username</label>
+            <label>Email</label>
           </div>
           <div className="user-box">
             <input

@@ -4,13 +4,12 @@ import { LayDSNguoiDungType, layThongTinNguoiDungType,ChiTieTNguoiDungType } fro
 /** @format */
 
 import { message } from "antd";
-import { layDanhSachNguoiDung } from "../Types/NguoiDungType";
-import { quanLyPhongChoThue } from "../../services/PhongThueServices";
+
 
 const success = (content) => {
   message.success(content,3);
 };
-const error = (content) => {
+const err = (content) => {
   message.error(content,5);
 };
 
@@ -24,7 +23,7 @@ export const LayDSNguoiDungAction = () => {
           type: LayDSNguoiDungType,
           dsNguoiDung: result.data,
         });
-        success('Lấy danh sách người dùng thành công !')
+
       }
     } catch (error) {
       console.log("error", error);
@@ -65,7 +64,7 @@ export const UploadAvaraNDAction = (formData, id) => {
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
-      error(!error.response?.data?error.response?.data:"Upload avatar không thành công !")
+      err("Upload avatar không thành công !")
     }
   };
 };
@@ -77,13 +76,14 @@ export const themNguoiDungAction = (user) => {
     try {
       let result = await quanLyNguoiDung.themNguoiDung(user);
       if (result.status === 200) {
-        alert('Thêm người dùng thành công');
+        success('Thêm người dùng thành công');
         console.log(result.data);
         history.push('/admin/user')
       }
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
+      err('Thêm người dùng không thành công');
     }
   };
 }
@@ -111,13 +111,14 @@ export const capNhatThongTinNguoiDungAction = (id, user) => {
     try {
       let result = await quanLyNguoiDung.capNhatThongTinNguoiDung(id, user);
       if (result.status === 200) {
-        alert('Thêm người dùng thành công');
+        success('Thêm người dùng thành công');
         console.log(result.data);
         history.push('/admin/user')
       }
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
+      err('Thêm người dùng thành công');
     }
   }
 }
@@ -127,12 +128,13 @@ export const xoaNguoiDungAction = (id) => {
     try {
       let result = await quanLyNguoiDung.xoaNguoiDung(id);
       if (result.status === 200) {
-        alert('Xóa người dùng thành công');
+        success('Xóa người dùng thành công');
         dispatch(LayDSNguoiDungAction())
       }
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
+      err('Xóa người dùng thành công');
     }
   }
 }
