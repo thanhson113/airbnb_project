@@ -822,9 +822,7 @@ export default function RoomDetail(props) {
             {dsDanhGia?.length !== 0 ? (
               renderDanhGia(more)
             ) : (
-              <span className="col-12 py-3 text-center text-success">
-                Hiện Tại Chưa Có Đánh Giá
-              </span>
+              ""
             )}
           </div>
           {dsDanhGia?.length !== 0 && dsDanhGia.length > more ? (

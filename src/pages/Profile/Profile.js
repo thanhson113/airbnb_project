@@ -129,7 +129,7 @@ export default function Profile() {
         </div>
 
         <div className="profife_status_content">
-          <Tabs defaultActiveKey="1" centered>
+          <Tabs defaultActiveKey="2" centered>
             <TabPane tab="Thông tin " key="1">
               <div className="profife_info">{formUp(id)}</div>
             </TabPane>
