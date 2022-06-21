@@ -1,7 +1,7 @@
 /** @format */
-.scrollable-container{
+.scrollable-container {
   height: 100px;
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 .cursor {
   cursor: pointer;
@@ -9,34 +9,57 @@
 .roomDetail {
   width: 100%;
   /* overflow: hidden; */
- 
+}
+.roomDetail .btn_comment{
+  font-weight:400;
+  color: white ;
+  background-color: #e8798e;
+  border: 1px solid #f91942;
+}
+.roomDetail .btn_comment:hover,
+.roomDetail .btn_comment:focus{
+  font-weight: 700;
+  color: #f91942;
+  background-color: white;
+  border: 2px dashed #f91942;
+}
+.roomDetail .input_comment textarea{
+  color: #e75872;
+  border: 1px dashed #e75872 ;
+}
+.roomDetail .input_comment textarea:hover,
+.roomDetail .input_comment textarea:focus{
+  color: #000;
+  border: 2px solid #ef4363;
 }
 
 /* ROOMDETAIL HEAD*/
-.roomDetail button{
+.roomDetail button {
   transition: all 1s;
 }
 .roomDetail .btn_submit {
-  background-image: linear-gradient(to right, #e233ff, #ff6b00);
+  background-image: linear-gradient(to right,#f91942,#e8798e);
   border-radius: 5px;
   color: white;
   width: 200px;
+  height: 40px;
   transition: all 0.5s;
 }
- 
-.roomDetail .btn_submit:hover,.roomDetail .btn_submit:focus {
-  background-image: linear-gradient(to right, #f14658, #dc2537);
+
+.roomDetail .btn_submit:hover,
+.roomDetail .btn_submit:focus {
+  border: none;
   color: #fff;
   width: 250px;
-  /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.381); */
+  box-shadow: 0px 0px 5px 5px #f2083390;
 }
-.roomDetail .btn_head{
+.roomDetail .btn_head {
   color: #000;
   border: 1px solid #000;
   transition: all 0.25s;
 }
 .roomDetail .btn_head:hover,
-.roomDetail .btn_head:focus{
+.roomDetail .btn_head:focus {
   color: white;
   background-color: #f91942;
   border: none;
@@ -44,7 +67,6 @@
 
 /* Button thêm chi tiet  */
 .roomDetail .custom-btn {
-  
   color: #fff;
   border-radius: 5px;
   padding: 5px 15px;
@@ -110,12 +132,18 @@
   width: 50%;
   height: 40px;
 }
+.ant-picker-cell .ant-picker-cell-inner{
+  transition: all 0.5;
+}
+.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner {
+  transform: scale(1.2);
+  border: 1px solid;
+}
 
 /* ROOMDETAIL END*/
 
 /* Responsive */
 /* Iphone*/
-
 
 @media screen and (min-width: 375px) {
   .roomDetail .col-12 {
@@ -144,16 +172,21 @@
   .roomDetail .roomDetail_head_photos_image {
     height: 400px;
     width: 100vw;
-
-    
   }
   .ant-picker-panel-container .ant-picker-panels {
     display: inline-flex;
     flex-wrap: wrap;
     direction: ltr;
-    width: 300px;
+    width: 350px;
   }
-  .roomDetail .roomdetail_map{
+  .ant-picker-panel-container .ant-picker-date-panel {
+    width: 100%;
+  }
+  .ant-picker-panel-container .ant-picker-content {
+    width: 100%;
+    font-size: 18px;
+  }
+  .roomDetail .roomdetail_map {
     padding-bottom: 50px;
     border-top: 1px solid rgba(0, 0, 0, 0.189);
     border-bottom: 1px solid rgba(0, 0, 0, 0.189);
@@ -168,12 +201,27 @@
     height: 500px;
     width: 100vw;
   }
-
+  .ant-picker-panel-container {
+    width: 90%;
+    max-width: 1000px;
+  }
   .ant-picker-panel-container .ant-picker-panels {
     display: inline-flex;
     flex-wrap: nowrap;
     direction: ltr;
     width: 100%;
+  }
+  .ant-picker-panel-container .ant-picker-date-panel {
+    width: 100%;
+    max-width: 500px;
+  }
+  .ant-picker-panel-container .ant-picker-content {
+    width: 100%;
+    max-width: 500px;
+    font-size: 18px;
+  }
+  .ant-picker-range-wrapper{
+    justify-content: center;
   }
 }
 
@@ -187,6 +235,9 @@
     position: relative;
     padding: 2em 0;
   }
+  .ant-image-mask{
+    border-radius: 50px;
+  }
   .roomDetail .roomDetail_head_photos_image {
     height: 600px;
     width: 100vw;
@@ -198,21 +249,24 @@
     box-shadow: 0px 0px 5px 2px rgba(161, 156, 156, 0.596);
     border-radius: 10px;
   }
-  .roomDetail .roomDetail_book_booking{
+  .roomDetail .roomDetail_book{
+    margin-bottom: 50px;
+  }
+  .roomDetail .roomDetail_book_booking {
     position: relative;
     width: 450px;
+    height: 100%;
   }
-  .roomDetail .roomDetail_book_booking .fixed{
+  .roomDetail .roomDetail_book_booking .fixed {
     position: fixed;
     top: 105px;
     width: 450px;
   }
-  .roomDetail .roomDetail_book_booking .absolute{
+  .roomDetail .roomDetail_book_booking .absolute {
     position: absolute;
-    top: 325px;
+    bottom: 0;
     width: 450px;
   }
-
 }
 /*destop*/
 @media screen and (min-width: 1199px) {

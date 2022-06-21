@@ -1,6 +1,20 @@
+
+import { message } from "antd";
+
 import { history } from "../../App";
 import { quanLyPhongChoThue } from "../../services/PhongThueServices"
-import { GET_DSPHONGTHUE_VITRI, ThongTinChiTietPhongType } from "../Types/PhongThueType";
+import { GET_DSPHONGTHUE_VITRI, ThongTinChiTietPhongType, GET_LIST_PHONG_THUE } from "../Types/PhongThueType";
+
+const success = (content) => {
+  message.loading(`${content} đang thực hiện..`, 2.5).then(() =>
+    message.success(`${content} thành công`, 2.5, () => {  
+       history.push("/profile");   
+    })
+  );
+};
+const errorS = (content) => {
+  message.error(`${content} không thành công !`, 3);
+};
 
 export const layDSPhongThueTheoViTri = (idViTri) => {
   return async (dispatch) => {
@@ -16,6 +30,19 @@ export const layDSPhongThueTheoViTri = (idViTri) => {
   }
 }
 
+export const layDSPhongThue = () => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyPhongChoThue.layDSPhongThue();
+      dispatch({
+        type: GET_LIST_PHONG_THUE,
+        dsPhongThue: result.data
+      })
+    } catch (err) {
+      console.log(err.response.data)
+    }
+  }
+}
 
 //Nhat head
 export const ThongTinChiTietPhongAction = (id) => {
@@ -23,8 +50,6 @@ export const ThongTinChiTietPhongAction = (id) => {
     try {
       const result = await quanLyPhongChoThue.ThongTinChiTietPhong(id);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
         dispatch({
           type: ThongTinChiTietPhongType,
           chiTietPhong: result.data
@@ -42,14 +67,12 @@ export const DatPhongAction = (ve) => {
     try {
       const result = await quanLyPhongChoThue.DatVe(ve)
       if (result.status === 200) {
-        console.log("dat ve thanh cong");
-        console.log(result);
-        console.log(result.data);
-        console.log(result.data.message);
+        success('Đặt phòng')
       }
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
+      errorS("Đặt phòng")
     }
   }
 }
@@ -78,7 +101,6 @@ export const capNhatPhongThueAction = (id, room, locationId) => {
       let result = await quanLyPhongChoThue.capNhatPhongThue(id, room);
       if (result.status === 200) {
         alert('Cập nhật phòng thành công');
-        console.log(result.data);
         history.push(`/admin/room/${locationId}`)
       }
     } catch (error) {

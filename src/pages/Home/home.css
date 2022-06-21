@@ -25,3 +25,33 @@
 .main-search-input-result  i{
     padding-right: 10px;
 }
+.listing__content h3{
+    transition: all .3s;
+}
+.listing__content:hover h3{
+    color: #f91942;
+}
+
+@media screen and (max-width: 1200px){
+    .listing__img img{
+        height: 100%;
+    }
+}
+@media screen and (max-width: 992px){
+    .header{
+        height: 60px;
+    }
+}
+@media screen and (max-width: 768px){
+    .listing__img img{
+        width: 100%;
+    }
+    .listing__container .listing__img{
+        padding-right: 0;
+    }
+}
+@media screen and (max-width: 576px){
+    .listing__content {
+        padding-left: 30px;
+    }
+}

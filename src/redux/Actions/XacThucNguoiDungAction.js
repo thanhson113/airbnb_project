@@ -7,10 +7,10 @@ import { xacThucNguoiDung } from "../../services/XacThucNguoiDungService";
 //nhat code
 const success = (content) => {
   message.loading(`${content} in progress..`, 2.5).then(() =>
-    message.success(`${content} Success`, 2.5, () => {
-      const type = localStorage.getItem("type");
-      if (type === "ADMIN") history.push("/admin");
-      else history.goBack();
+    message.success(`${content} Success`, 2.5, async () => {
+      const type = await localStorage.getItem("type");
+      if (type === "ADMIN") await history.push("/admin");
+      else await window.location.reload();;
     })
   );
 };

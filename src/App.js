@@ -49,16 +49,7 @@ import "./App.css";
 import { BackTop } from 'antd';
 import CartTemplate from "./templates/CartTemplate/CartTemplate";
 
-const style = {
-  height: 40,
-  width: 40,
-  lineHeight: "40px",
-  borderRadius: "5px",
-  backgroundColor: "#eee7e3",
-  color: "black",
-  textAlign: "center",
-  fontSize: 14,
-};
+
 const type = localStorage.getItem('type')
 
 export const history = createBrowserHistory();
@@ -109,7 +100,7 @@ function App() {
         <HomeTemplate path="/" component={Home} />
       </Switch>
       <BackTop>
-        <div style={style}>UP</div>
+        <div className='btnUp'>UP</div>
       </BackTop>
     </Router>
   );

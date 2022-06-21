@@ -1,34 +1,63 @@
 /** @format */
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
-import { DatPhongAction, ThongTinChiTietPhongAction } from "../../../redux/Actions/PhongThueAction";
+import {
+  DatPhongAction,
+  ThongTinChiTietPhongAction,
+} from "../../../redux/Actions/PhongThueAction";
 import { Affix, Image, Popconfirm } from "antd";
 
 import "../../../asset/css/cart.css";
 import moment from "moment";
 
 export default function Cart(props) {
+  const ref1 = useRef();
+  const ref2 = useRef();
   const dispatch = useDispatch();
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
-  const { Component, id } = useSelector((state) => state.ComponentReducer);
 
-  const roomId = localStorage.getItem("roomId");
+  const datPhong = JSON.parse(localStorage.getItem("datPhong"));
+  const { roomId } = datPhong;
   const token = localStorage.getItem("accessToken");
   const { item } = props;
 
   const [width, setWidth] = useState(window.innerWidth);
-  const [checkIn, setCheckIn] = useState(localStorage.getItem("checkIn"));
-  const [checkOut, setCheckOut] = useState(localStorage.getItem("checkOut"));
-
+  const [height, setHeight] = useState(window.innerHeight);
+  const [checkIn, setCheckIn] = useState(datPhong?.checkIn);
+  const [checkOut, setCheckOut] = useState(datPhong?.checkOut);
   const [exchange, setExchange] = useState(1);
+  const [add, setAdd] = useState(false);
+  const [scroll, setCroll] = useState();
+  const [heightScroll, setHeightScroll] = useState();
+  const [heightScroll2, setHeightScroll2] = useState();
+  console.log(width, height, scroll, heightScroll, heightScroll2);
 
   useEffect(() => {
-    dispatch(ThongTinChiTietPhongAction(roomId));
-    const handleWindowResize = () => setWidth(window.innerWidth);
+    const handleWindowResize = () => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+      setHeightScroll(ref1.current.offsetHeight);
+      setHeightScroll2(ref2.current.offsetHeight);
+      setCroll(
+        (height - (ref1.current.offsetHeight + ref2.current.offsetHeight)) / 2
+      );
+    };
+    const handleWindowScroll = ()=>{
+      setHeightScroll(ref1.current.offsetHeight);
+      setHeightScroll2(ref2.current.offsetHeight);
+      setCroll(
+        (height - (ref1.current.offsetHeight + ref2.current.offsetHeight)) / 2
+      );
+    }
     window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
+    window.addEventListener("scroll", handleWindowScroll);
+    dispatch(ThongTinChiTietPhongAction(roomId));
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener("scroll", handleWindowResize);
+    };
   }, []);
 
   const countDate = () => {
@@ -47,21 +76,17 @@ export default function Cart(props) {
   };
 
   const confirm = () => {
-    let ve = {
-      roomId: roomId,
-      checkIn: checkIn,
-      checkOut: checkOut,
-    };
-    console.log(ve);
-    // dispatch(DatPhongAction(ve))
+    dispatch(DatPhongAction(datPhong));
   };
 
   return (
     <Fragment>
       <div className="cart">
-        <div className="cart_head">
-          {width >= 1024 ? (
-            <Affix offsetTop={100}>
+        <div className="cart_head" ref={ref1}>
+          {width >= 1024 &&
+          height >= heightScroll + heightScroll2 &&
+          height <= 1000 ? (
+            <Affix offsetTop={scroll}>
               <div className="cart_head_fit">
                 <div className="row py-4">
                   <div className="col-5">
@@ -141,9 +166,11 @@ export default function Cart(props) {
             <a className="btn_setting  ">Chỉnh Sửa</a>
           </div>
         </div>
-        <div className="cart_detail">
-          {width >= 1024 ? (
-            <Affix offsetTop={400}>
+        <div className="cart_detail" ref={ref2}>
+          {width >= 1024 &&
+          height >= heightScroll + heightScroll2 &&
+          height <= 1000 ? (
+            <Affix offsetTop={scroll + heightScroll}>
               <div className="cart_detail_fit">
                 <h5 className="text text-black py-2">Chi tiết giá</h5>
                 <div className="d-flex justify-content-between py-2">
@@ -160,10 +187,12 @@ export default function Cart(props) {
                   <h6>Phí dịch vụ</h6>
                   <span>${(chiTietPhong.price * countDate() * 5) / 100}</span>
                 </div>
-                <div className="d-flex justify-content-between py-3">
-                  <h5 className="pr-4">
-                    Tổng Chi Phí là {exchange === 1 ? "" : "(Discount 50%)"} :{" "}
-                  </h5>
+                <div className="d-flex justify-content-between py-3 ">
+                  <div className="py-2">
+                    <h5>Tổng Chi Phí là :</h5>
+                    {exchange == 1 / 2 ? <h5>Discount 50%</h5> : ""}
+                  </div>
+
                   <span className="text-danger">
                     $
                     {(chiTietPhong.price * countDate() +
@@ -181,9 +210,7 @@ export default function Cart(props) {
             <div className="cart_detail_fit">
               <h5 className="text text-black py-2">Chi tiết giá</h5>
               <div className="d-flex justify-content-between py-2">
-                <h6>
-                  ${chiTietPhong.price} x {countDate()}
-                </h6>
+                <h6>Giá phòng {` ( ${countDate()} Ngày ) `}</h6>
                 <span>${chiTietPhong.price * countDate()}</span>
               </div>
               <div className="d-flex justify-content-between py-2">
@@ -195,9 +222,10 @@ export default function Cart(props) {
                 <span>${(chiTietPhong.price * countDate() * 5) / 100}</span>
               </div>
               <div className="d-flex justify-content-between py-3">
-                <h5 className="pr-4">
-                  Tổng Chi Phí là {exchange === 1 ? "" : "(Discount 50%)"} :{" "}
-                </h5>
+                <div className="py-2">
+                  <h5>Tổng Chi Phí là :</h5>
+                  {exchange == 1 / 2 ? <h5>Discount 50%</h5> : ""}
+                </div>
                 <span className="text-danger">
                   $
                   {(chiTietPhong.price * countDate() +
@@ -244,8 +272,16 @@ export default function Cart(props) {
                 Trả trước 50% chi phí, phần còn lại trả sau
               </label>
               <div className="p-2">
-                <a className="btn_setting ">Thông tin thêm</a>
-                <p className="py-2">
+                {/* TODO: */}
+                <a
+                  className="btn_setting "
+                  onClick={() => {
+                    setAdd(!add);
+                  }}
+                >
+                  Thông tin thêm
+                </a>
+                <p className={`${add ? "" : "d-none"} py-2`}>
                   Bạn phải thanh toán trước 50% giá trị phòng thuê, phần còn lại
                   bạn có thể trả sau khi nhận phòng, nhưng đi kèm thêm phụ phí
                   từ 2-5% giá trị còn lại của phòng thuê
@@ -265,18 +301,19 @@ export default function Cart(props) {
           </div>
         ) : (
           <div className="cart_submit">
-            <div className="d-flex justify-content-center py-3">
-                <h5 className="pr-4">
-                  Tổng Chi Phí là {exchange === 1 ? "" : "(Discount 50%)"} :{" "}
-                </h5>
-                <h5 className="text-danger">
-                  $
-                  {(chiTietPhong.price * countDate() +
-                    (chiTietPhong.price * countDate() * 5) / 100 +
-                    (chiTietPhong.price * countDate() * 2) / 100) *
-                    exchange}
-                </h5>
+            <div className="d-flex justify-content-around py-3">
+              <div className="py-2">
+                <h5>Tổng Chi Phí là :</h5>
+                {exchange == 1 / 2 ? <h5>Discount 50%</h5> : ""}
               </div>
+              <span className="text-danger ">
+                $
+                {(chiTietPhong.price * countDate() +
+                  (chiTietPhong.price * countDate() * 5) / 100 +
+                  (chiTietPhong.price * countDate() * 2) / 100) *
+                  exchange}
+              </span>
+            </div>
             <h5 className="text text-success text-center py-2">
               Bạn Muốn Thanh Toán Chứ
             </h5>
@@ -284,9 +321,13 @@ export default function Cart(props) {
             <div className="cart_sudmit_btn w-100 text-center py-4">
               <Popconfirm
                 className="w-50"
-                title={<div className="pb-2"><h5>Bạn Chắn Chắn Chứ</h5></div>}
+                title={
+                  <div className="pb-2">
+                    <h5>Bạn Chắn Chắn Chứ</h5>
+                  </div>
+                }
                 okText={<p>Vâng</p>}
-                cancelText='Để Khi Khác'
+                cancelText="Để Khi Khác"
                 onConfirm={confirm}
               >
                 <button className="btn btn-success">Vâng</button>

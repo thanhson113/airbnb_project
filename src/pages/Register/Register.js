@@ -5,16 +5,15 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
 
-import "../../asset/css/register.css";
 import { LayDSNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
 import { RegisterAction } from "../../redux/Actions/XacThucNguoiDungAction";
 
+import "../../asset/css/register.css";
+
 export default function Register() {
   let dispatch = useDispatch();
-  const [width, setWidth] = useState(window.innerWidth);
-  let wbg = "";
-  if (width < 600) wbg = "100%";
-  else wbg = "450px";
+
+ 
 
   const { dsNguoiDung } = useSelector((state) => state.nguoiDungReducer);
   console.log(dsNguoiDung);
@@ -26,10 +25,6 @@ export default function Register() {
 
   useEffect(() => {
     dispatch(LayDSNguoiDungAction());
-
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
   const formik = useFormik({
@@ -73,7 +68,7 @@ export default function Register() {
 
   return (
     <div>
-      <div className="register-box m-auto " style={{ width: wbg }}>
+      <div className="register-box m-auto ">
         <h2>SIGN UP</h2>
         <form id="myForm" onSubmit={formik.handleSubmit}>
           <div className="mb-3">
@@ -134,7 +129,7 @@ export default function Register() {
               name="gender"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="custom-select"
+              className="custom_select"
             >
               <option value="true">Boy</option>
               <option value="false">Girl</option>

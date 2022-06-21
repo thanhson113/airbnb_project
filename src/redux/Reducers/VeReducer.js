@@ -14,12 +14,6 @@ export const VeReducer = (state = VeState, action) => {
 
       return { ...state }
 
-    case LayChiTietVeCuaNDType:
-      let dsVeCapNhap = [...state.dsVeTheoND]
-      dsVeCapNhap.push(action.ve)
-      state.dsVeTheoND = [...dsVeCapNhap]
-      return { ...state }
-
     case layChiTietVeAdminType:
       state.chiTietVeAdmin = action.chiTietVeAdmin
 
@@ -30,7 +24,14 @@ export const VeReducer = (state = VeState, action) => {
 
       return { ...state }
 
+    case LayChiTietVeCuaNDType:
+      let dsVeCapNhap = [...state.dsVeTheoND];
+      const check = dsVeCapNhap.some((ve) => ve._id === action.ve._id)
+      if (!check) dsVeCapNhap.push(action.ve)
+      state.dsVeTheoND = [...dsVeCapNhap];
+      return { ...state };
+
     default:
-      return { ...state }
+      return { ...state };
   }
-}
+};

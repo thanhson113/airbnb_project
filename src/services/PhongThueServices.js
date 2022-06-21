@@ -4,6 +4,9 @@ class QuanLyPhongChoThue {
   layDSPhongThueTheoViTri = (idViTri) => {
     return http.get(`/api/rooms?locationId=${idViTri}`)
   }
+  layDSPhongThue = () => {
+    return http.get(`/api/rooms`)
+  }
   ThongTinChiTietPhong = (id) => {
     return http.get(`/api/rooms/${id}`);
   };

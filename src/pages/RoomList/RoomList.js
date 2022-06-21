@@ -19,20 +19,23 @@ export default function RoomList(props) {
         setState({ value });
     };
     const renderRoomlist = () => {
+        if(dsPhongTheoViTri.length == 0) {
+           return <h5>Hiện tại không có khách sạn cho địa điểm này</h5>
+        }
         return dsPhongTheoViTri.map(phong => {
+            
             return (
-                <div className="col-lg-12 col-md-12" key={phong._id}>
-                    <div className="listing-item-container list-layout" data-marker-id={1}>
-                        <div onClick={() => { history.push(`/roomdetail/${phong._id}`) }} className="listing-item">
+                <div className="col-lg-12 col-md-12 pl-0" key={phong._id}>
+                    <div className="listing__container" data-marker-id={1}>
+                        <div onClick={() => { history.push(`/roomdetail/${phong._id}`) }} className="listing__item row mb-3 " style={{cursor:'pointer',backgroundColor:'#f6f6f6'  }}>
                             {/* Image */}
-                            <div className="listing-item-image">
+                            <div className="listing__img col-12 col-md-3  pl-0">
                                 <img src={phong.image} />
                             </div>
                             {/* Content */}
-                            <div className="listing-item-content">
-                                {/* <div className="listing-badge now-open">Now Open</div> */}
-                                <div className="listing-item-inner">
-                                    <h3>{phong.name}</h3>
+                            <div className="listing__content col-12 col-md-9 py-3">
+                                <div className="listing__inner" style={{}}>
+                                    <h3 className="pb-3">{phong.name}</h3>
                                     <span>{phong.locationId.province}, {phong.locationId.country}</span>
                                     <p>{phong.price.toLocaleString()} VND / Ngày</p>
                                     <p> {phong.guests} khách , {phong.bedRoom} phòng ngủ, {phong.bath} phòng tắm</p>
@@ -47,10 +50,6 @@ export default function RoomList(props) {
                                     {phong.valueate}
 
                                 </div>
-                                <div className="listing-rate">
-
-                                </div>
-                                <span className="like-icon" />
                             </div>
                         </div>
                     </div>
@@ -66,13 +65,6 @@ export default function RoomList(props) {
                         <div className="row">
                             <div className="col-md-12">
                                 <h2 className='pb-5'>Chỗ ở tại khu vực bản đồ đã chọn</h2><span></span>
-                                {/* Breadcrumbs */}
-                                {/* <nav id="breadcrumbs">
-                                    <ul>
-                                        <li><a href="#">Home</a></li>
-                                        <li>Listings</li>
-                                    </ul>
-                                </nav> */}
                             </div>
                         </div>
                     </div>
@@ -87,24 +79,6 @@ export default function RoomList(props) {
                                 {renderRoomlist()}
 
                             </div>
-                            {/* Pagination */}
-                            <div className="clearfix" />
-                            <div className="row">
-                                <div className="col-md-12">
-                                    {/* Pagination */}
-                                    <div className="pagination-container margin-top-20 margin-bottom-40">
-                                        <nav className="pagination">
-                                            <ul>
-                                                <li><a href="#" className="current-page">1</a></li>
-                                                <li><a href="#">2</a></li>
-                                                <li><a href="#">3</a></li>
-                                                <li><a href="#"><i className="sl sl-icon-arrow-right" /></a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Pagination / End */}
                         </div>
                     </div></div></div>
 
