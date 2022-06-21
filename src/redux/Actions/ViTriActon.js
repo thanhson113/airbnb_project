@@ -86,15 +86,15 @@ export const capNhatThongTinViTriAction = (id, location) => {
 
 export const xoaViTriAction = (id) => {
     return async (dispatch) => {
-      try {
-        let result = await quanLyViTri.xoaViTri(id);
-        if (result.status === 200) {
-          alert('Xóa vị trí thành công');
-          dispatch(layDanhSachViTriAction())
+        try {
+            let result = await quanLyViTri.xoaViTri(id);
+            if (result.status === 200) {
+                alert('Xóa vị trí thành công');
+                dispatch(layDanhSachViTriAction())
+            }
+        } catch (error) {
+            console.log("error", error);
+            console.log("error", error.response?.data);
         }
-      } catch (error) {
-        console.log("error", error);
-        console.log("error", error.response?.data);
-      }
     }
-  }
+}

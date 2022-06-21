@@ -38,6 +38,11 @@ import LocationTicket from './pages/Admin/Ticket/VeTheoPhong/LocationTicket';
 import RoomTicket from './pages/Admin/Ticket/VeTheoPhong/RoomTicket';
 import Ticket from './pages/Admin/Ticket/VeTheoPhong/Ticket';
 import RoomAddTicket from './pages/Admin/Ticket/VeTheoPhong/RoomAddTicket';
+import RoomEditTicket from './pages/Admin/Ticket/VeTheoPhong/RoomEditTicket';
+
+import UserTicket from './pages/Admin/Ticket/VeTheoNguoiDung/UserTicket';
+import UserTicketChild from './pages/Admin/Ticket/VeTheoNguoiDung/UserTicketChild';
+import UserAddTicket from './pages/Admin/Ticket/VeTheoNguoiDung/UserAddTicket';
 
 import "antd/dist/antd.css";
 import "./App.css";
@@ -91,6 +96,11 @@ function App() {
         <AdminTemplate path="/admin/ticket/location" component={LocationTicket} />
         <AdminTemplate path="/admin/ticket/room/:id" component={RoomTicket} />
         <AdminTemplate path="/admin/ticket/roomadd/:id" component={RoomAddTicket} />
+        <AdminTemplate path="/admin/ticket/roomedit/:id" component={RoomEditTicket} />
+
+        <AdminTemplate path="/admin/ticket/useradd/:id" component={UserAddTicket} />
+        <AdminTemplate path="/admin/ticket/user/:id" component={UserTicketChild} />
+        <AdminTemplate path="/admin/ticket/user" component={UserTicket} />
         <AdminTemplate path="/admin/ticket/:id" component={Ticket} />
 
         <AdminTemplate path="/admin" component={Dashboard} />
