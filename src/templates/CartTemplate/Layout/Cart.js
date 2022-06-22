@@ -2,7 +2,7 @@
 
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
+
 import {
   DatPhongAction,
   ThongTinChiTietPhongAction,
@@ -11,8 +11,10 @@ import { Affix, Image, Popconfirm } from "antd";
 
 import "../../../asset/css/cart.css";
 import moment from "moment";
+import Login from "../../../pages/Login/Login";
+import { add_component } from "../../../redux/Actions/ComponentAction";
 
-export default function Cart(props) {
+export default function Cart() {
   const ref1 = useRef();
   const ref2 = useRef();
   const dispatch = useDispatch();
@@ -21,7 +23,8 @@ export default function Cart(props) {
   const datPhong = JSON.parse(localStorage.getItem("datPhong"));
   const { roomId } = datPhong;
   const token = localStorage.getItem("accessToken");
-  const { item } = props;
+
+  const { Component } = useSelector((state) => state.ComponentReducer);
 
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
@@ -32,9 +35,11 @@ export default function Cart(props) {
   const [scroll, setCroll] = useState();
   const [heightScroll, setHeightScroll] = useState();
   const [heightScroll2, setHeightScroll2] = useState();
-  console.log(width, height, scroll, heightScroll, heightScroll2);
+ 
 
   useEffect(() => {
+    if(!token) { dispatch(add_component(<Login />, "Đăng Nhập"));}
+
     const handleWindowResize = () => {
       setWidth(window.innerWidth);
       setHeight(window.innerHeight);
@@ -56,7 +61,7 @@ export default function Cart(props) {
     dispatch(ThongTinChiTietPhongAction(roomId));
     return () => {
       window.removeEventListener("resize", handleWindowResize);
-      window.removeEventListener("scroll", handleWindowResize);
+      window.removeEventListener("scroll", handleWindowScroll);
     };
   }, []);
 
@@ -272,8 +277,8 @@ export default function Cart(props) {
                 Trả trước 50% chi phí, phần còn lại trả sau
               </label>
               <div className="p-2">
-                {/* TODO: */}
-                <a
+             
+                <a 
                   className="btn_setting "
                   onClick={() => {
                     setAdd(!add);
@@ -297,7 +302,7 @@ export default function Cart(props) {
             <h5 className="text text-black pt-4 text-center">
               Đăng nhập hoặc đăng ký để đặt phòng/ đặt chỗ
             </h5>
-            <div className="cart_login_or_register_content">{item}</div>
+            <div className="cart_login_or_register_content">{Component}</div>
           </div>
         ) : (
           <div className="cart_submit">
