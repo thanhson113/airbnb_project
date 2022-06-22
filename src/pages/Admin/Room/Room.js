@@ -103,8 +103,8 @@ export default function Room(props) {
     }
 
     let location = {}
-    if (localStorage.getItem('locationParams')) {
-        location = JSON.parse(localStorage.getItem('locationParams'))
+    if (localStorage.getItem('locationParams1')) {
+        location = JSON.parse(localStorage.getItem('locationParams1'))
     }
 
 

@@ -92,15 +92,15 @@ export const layThongTinChiTietDanhGiaAction = (id) => {
   };
 };
 
-export const capNhatThongTinChiTietDanhGiaAction = (id, review, roomId) => {
+export const capNhatThongTinChiTietDanhGiaAction = (id, review, feedbackRoomId) => {
   return async (dispatch) => {
     try {
       let result = await quanLyDanhGia.capNhatThongTinChiTietDanhGia(id, review);
       if (result.status === 200) {
         alert('Cập nhật đánh giá thành công');
         console.log(result.data);
-        layDanhGiaTheoPhongAction(roomId)
-        history.push(`/admin/feedback/${roomId}`)
+       await layDanhGiaTheoPhongAction(feedbackRoomId)
+        history.push(`/admin/feedback/${feedbackRoomId}`)
       }
     } catch (error) {
       console.log("error", error);
