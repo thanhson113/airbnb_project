@@ -10,7 +10,7 @@ const success = (content) => {
     message.success(`${content} Success`, 2.5, async () => {
       const type = await localStorage.getItem("type");
       if (type === "ADMIN") await history.push("/admin");
-      else await window.location.reload();;
+      else await window.location.reload();
     })
   );
 };
@@ -32,7 +32,6 @@ export const LoginAction = (nd) => {
         await localStorage.setItem("type", result.data.user.type);
         await localStorage.setItem("id", result.data.user._id);
         await success("SignIn");
-        
       }
     } catch (error) {
       console.log("error", error);
