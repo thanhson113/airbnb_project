@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Map from "./Map";
 
 import {
-  Affix,
   Avatar,
   Button,
   Comment,
@@ -49,16 +48,11 @@ import {
   DSDanhGiaTheoPhongAction,
   TaoDanhGiaTheoPhongAction,
   XoaDanhGiaAction,
+  XuaDanhGiaAction,
 } from "../../redux/Actions/DanhGiaAction";
-import {
-  DatPhongAction,
-  ThongTinChiTietPhongAction,
-} from "../../redux/Actions/PhongThueAction";
+import { ThongTinChiTietPhongAction } from "../../redux/Actions/PhongThueAction";
 import { ChiTietNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
 import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
-import { add_component } from "../../redux/Actions/ComponentAction";
-
-import Login from "../Login/Login";
 
 import moment from "moment";
 
@@ -81,16 +75,13 @@ export default function RoomDetail(props) {
   const [dates, setDates] = useState([]);
   const [hackValue, setHackValue] = useState();
   const [value, setValue] = useState();
+  const [value2, setValue2] = useState();
   let countDate = 0;
 
   const key = "AIzaSyA3HUkpN5-tSw68taF-syOrFnDp2rhDKZY"; //map
 
   const [width, setWidth] = useState(window.innerWidth);
-  // const [height, setHeight] = useState(window.innerHeight);
-  // const [scrollTop,setScrollTop] = useState(window.scroll)
 
-  const [scrolling, setScrolling] = useState(false);
-  const [scrollTop, setScrollTop] = useState(0);
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
   const [heightDiv, setHeightDiv] = useState(0);
@@ -115,27 +106,12 @@ export default function RoomDetail(props) {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  useEffect(() => {
-    const heightContainer = container.current.clientHeight;
-    const heighDivScroll = divScroll.current.offsetHeight;
-    setHeightDiv(heightContainer - heighDivScroll);
-
-    const onScroll = (e) => {
-      setScrollTop(e.target.documentElement.scrollTop);
-      setScrolling(
-        e.target.documentElement.scrollTop > 830 &&
-          e.target.documentElement.scrollTop < 830 + heightDiv
-      );
-    };
-    window.addEventListener("scroll", onScroll);
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [scrollTop]);
-
   //comment
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [commentID, setCommentId] = useState("");
   const like = () => {
     setLikes(1);
     setDislikes(0);
@@ -171,7 +147,9 @@ export default function RoomDetail(props) {
           {idUser === danhGia?.userId?._id ? (
             <span
               onClick={() => {
-                dispatch(XoaDanhGiaAction(danhGia?._id, props.match.params.id));
+                setValue2(danhGia.content);
+                setVisible(!isModalVisible);
+                setCommentId(danhGia?.userId?._id);
               }}
               className="ReloadOutlined"
             >
@@ -203,12 +181,14 @@ export default function RoomDetail(props) {
           actions={actions}
           author={<a>{danhGia.userId?.name}</a>}
           avatar={
-            danhGia.userId?.avatar?
-            <Avatar 
-              src={<Image src={danhGia.userId?.avatar} />}
-              alt={danhGia.userId?.name}
-            />:<Avatar icon={<UserOutlined />} />
-            
+            danhGia.userId?.avatar ? (
+              <Avatar
+                src={<Image src={danhGia.userId?.avatar} />}
+                alt={danhGia.userId?.name}
+              />
+            ) : (
+              <Avatar icon={<UserOutlined />} />
+            )
           }
           content={<p>{danhGia.content}</p>}
           datetime={
@@ -227,6 +207,7 @@ export default function RoomDetail(props) {
 
   const [submitting, setSubmitting] = useState(false);
   let [valueComment, setValueComment] = useState("");
+  let [valueComment2, setValueComment2] = useState("");
 
   const { TextArea } = Input;
 
@@ -242,9 +223,21 @@ export default function RoomDetail(props) {
       );
     }, 1125);
   };
+  const handleSubmit2 = () => {
+    if (!valueComment2) return;
+    dispatch(
+      XuaDanhGiaAction(commentID, props.match.params.id, {
+        content: valueComment2,
+      })
+    );
+  };
 
   const handleChange = (e) => {
     setValueComment(e.target.value);
+  };
+
+  const handleChange2 = (e) => {
+    setValueComment2(e.target.value);
   };
   //Form setting
 
@@ -583,12 +576,7 @@ export default function RoomDetail(props) {
         </div>
         <div className={width <= 1024 ? "col-12" : "col-6"}>
           <div className={"roomDetail_book_booking bg-white py-4"}>
-            <div
-              ref={divScroll}
-              className={
-                scrolling ? `fixed` : scrollTop > 830 + heightDiv ? "absolute" : ""
-              }
-            >
+            <div ref={divScroll} className="sticky">
               <Form
                 className="m-auto form_book"
                 layout="vertical"
@@ -706,9 +694,9 @@ export default function RoomDetail(props) {
               <div className="d-flex justify-content-between">
                 <span className="w-50 p-1">Mức Độ Sạch Sẽ</span>
                 <Progress
-                  className="w-50"   
+                  className="w-50"
                   strokeColor={{
-                     from: "#e8798e",
+                    from: "#e8798e",
                     to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
@@ -720,7 +708,7 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                     from: "#e8798e",
+                    from: "#e8798e",
                     to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
@@ -732,7 +720,7 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                     from: "#e8798e",
+                    from: "#e8798e",
                     to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
@@ -746,7 +734,7 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                     from: "#e8798e",
+                    from: "#e8798e",
                     to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
@@ -758,7 +746,7 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                     from: "#e8798e",
+                    from: "#e8798e",
                     to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
@@ -770,7 +758,7 @@ export default function RoomDetail(props) {
                 <Progress
                   className="w-50"
                   strokeColor={{
-                     from: "#e8798e",
+                    from: "#e8798e",
                     to: " #f91942",
                   }}
                   percent={`${locationId ? locationId.valueate : 10}0`}
@@ -801,7 +789,6 @@ export default function RoomDetail(props) {
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      value={value}
                     />
                   </Form.Item>
                   <Form.Item>
@@ -819,11 +806,7 @@ export default function RoomDetail(props) {
             />
           </div>
           <div className="row">
-            {dsDanhGia?.length !== 0 ? (
-              renderDanhGia(more)
-            ) : (
-              ""
-            )}
+            {dsDanhGia?.length !== 0 ? renderDanhGia(more) : ""}
           </div>
           {dsDanhGia?.length !== 0 && dsDanhGia.length > more ? (
             <div className="w-100 text-center p-2">
@@ -866,6 +849,41 @@ export default function RoomDetail(props) {
           className={`img-fluid`}
           style={{ height: "100%", width: "100vw" }}
           alt="photos vitri"
+        />
+      </Modal>
+      <Modal
+        title="Nội dung bạn muốn sửa"
+        centered
+        visible={visible}
+        onOk={async () => {
+          await handleSubmit2();
+          await setVisible(false);
+        }}
+        onCancel={() => setVisible(false)}
+        okText="Comment !"
+        cancelText="cancel !"
+        width={width}
+      >
+        <Comment
+          avatar={<Avatar src={user.avatar} alt={user.name} />}
+          content={
+            <>
+              <Form.Item>
+                <TextArea
+                  className="input_comment"
+                  disabled={!idUser ? true : false}
+                  showCount
+                  placeholder="Nhập nội dung bạn muốn sửa vào đây !"
+                  maxLength={100}
+                  rows={4}
+                  onChange={(e) => {
+                    handleChange2(e);
+                  }}
+                  defaultValue={value2}
+                />
+              </Form.Item>
+            </>
+          }
         />
       </Modal>
     </div>

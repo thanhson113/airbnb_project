@@ -55,6 +55,21 @@ export const XoaDanhGiaAction = (idDanhGia, idPhong) => {
     }
   };
 };
+export const XuaDanhGiaAction = (idDanhGia, idPhong, content) => {
+  return async (dispatch) => {
+    try {
+      const result = await quanLyDanhGia.xuaDanhGia(idDanhGia,content);
+      if (result.status === 200) {
+        console.log(result);
+        console.log(result.data);
+        dispatch(DSDanhGiaTheoPhongAction(idPhong));
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  };
+};
 //nhat final
 
 export const taoDanhGiaTheoPhongADAction = (idPhong, comment) => {

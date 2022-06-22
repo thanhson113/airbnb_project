@@ -6,6 +6,9 @@
   color: rgb(0, 0, 0);
 }
 
+.profile .profife_status{
+  padding-bottom: 4em;
+}
 
 .profile input[type="text"]{
   color: #000;
@@ -122,6 +125,8 @@
   border-left: 5px dashed rgba(0, 0, 0, 0.188);
   border-bottom: 3px dashed rgba(0, 0, 0, 0.188);
 }
+
+
 
 
 

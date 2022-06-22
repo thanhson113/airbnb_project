@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Drawer } from "antd";
 
-import logo from "../../../../assets/images/logo.png";
+import logo from "../../../../asset/imgs/logo/AirBNb.png";
 import { Acces_stoken } from "../../../../util/setting";
 import { history } from "../../../../App";
 import { ChiTietNguoiDungAction } from "../../../../redux/Actions/NguoiDungAction";
@@ -119,7 +119,7 @@ export default function Header() {
                 <div className="container">
                     <nav className="navbar navbar-expand-lg ">
                         <NavLink className="navbar-brand" to="/home">
-                            <img className="w-75" src={logo} alt="" />
+                            <span style={{color:'#f91942',fontSize:24,fontWeight:'700'}}>AIR</span><span  style={{color:'black',fontSize:20}}>BnB</span>
                         </NavLink>
                         <button
                             className="navbar-toggler"

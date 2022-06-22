@@ -257,16 +257,13 @@
     width: 450px;
     height: 100%;
   }
-  .roomDetail .roomDetail_book_booking .fixed {
-    position: fixed;
+  .roomDetail .roomDetail_book_booking .sticky {
+    position: -webkit-sticky;
+    position: sticky;
     top: 105px;
     width: 450px;
   }
-  .roomDetail .roomDetail_book_booking .absolute {
-    position: absolute;
-    bottom: 0;
-    width: 450px;
-  }
+  
 }
 /*destop*/
 @media screen and (min-width: 1199px) {

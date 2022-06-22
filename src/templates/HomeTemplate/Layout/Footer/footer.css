@@ -3,9 +3,14 @@
 ------------------------------------- */
 #footer {
 	padding: 70px 0 0 0;
-	background-color: #fff;
+	background-color: #fff1f1;
 	border-top: 1px solid rgba(0, 0, 0, 0.09);
 	font-size: 16px;
+}
+.footer-logo{
+	height: 150px;
+	padding: 10px;
+	width: auto;
 }
 
 #footer.sticky-footer {
@@ -44,7 +49,11 @@
 
 #footer a {
 	color: #66676b;
+}#footer a:hover {
+	color: #f91942;
+	font-weight: 700;
 }
+
 
 /*  Links  */
 #footer ul.footer-links {
@@ -75,7 +84,10 @@
 
 #footer .footer-links li a:hover {
 	padding-left: 22px;
-	color: #66676b;
+	color: #f91942;
+}
+#footer .footer-links li:hover::before{
+	color: #f91942;
 }
 
 #footer .footer-links li:before {
@@ -200,4 +212,13 @@ body #backtotop a {
 	top: 50%;
 	-webkit-transform: translateY(-55%);
 	transform: translateY(-55%);
+}
+@media screen and (min-width: 375px) {
+	#footer{
+		padding: 50px 0 0 0;
+	}
+}@media screen and (min-width: 768) {
+	#footer{
+		padding: 70px 0 0 0;
+	}
 }

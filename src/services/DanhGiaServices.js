@@ -29,6 +29,9 @@ class QuanLyDanhGia {
     xoaDanhGia = (id) => {
         return http.delete(`/api/reviews/${id}`)
     }
+    xuaDanhGia = (id,content) => {
+        return http.put(`/api/reviews/${id}`,content)
+    }
 
     layDanhGiaTheoPhong = (id) => {
         return http.get(`/api/reviews/byRoom?roomId=${id}`)

@@ -1,6 +1,6 @@
 /** @format */
 
-import logo from './logo.svg';
+
 import 'antd/dist/antd.css';
 import './App.css';
 // import './assets/css/main-color.css'
