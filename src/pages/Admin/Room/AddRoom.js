@@ -59,12 +59,6 @@ export default function AddRoom(props) {
         }
     }
 
-    const handleChangeTextArea = (name) => {
-        return (value) => {
-            formik.setFieldValue(name, value)
-        }
-    }
-
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
