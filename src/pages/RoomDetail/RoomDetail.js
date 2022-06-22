@@ -646,7 +646,7 @@ export default function RoomDetail(props) {
                           );
 
                           // dispatch(add_component(<Login />, "Login"));
-                          history.push(`/cart/login`);
+                          history.push(`/cart`);
                         } else warning();
                       }}
                       className=" btn_submit"

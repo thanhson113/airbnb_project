@@ -88,10 +88,9 @@ function UpdateND(props) {
   };
 
   const handleChangeDatePicker = (value) => {
-    console.log("value", value);
     let birthday = moment(value);
     formik.setFieldValue("birthday", birthday);
-    console.log(formik.values.birthday);
+
   };
   const handleChangeInputNumber = (name) => {
     return (value) => {

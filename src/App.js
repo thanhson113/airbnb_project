@@ -60,8 +60,8 @@ function App() {
         <RoomDetailTemplate path="/roomlist/:id" component={RoomList} />
         <RoomDetailTemplate path="/roomlist" component={RoomList} />
         <Route path="/login" component={Login} />
-        <CartTemplate path="/cart/login" component={Login} />
-        <Route path="/register" component={Register} />
+        <CartTemplate path="/cart" />
+        
 
         <AdminTemplate path="/admin/user/add" component={AddUser} />
         <AdminTemplate path="/admin/user/edit/:id" component={EditUser} />

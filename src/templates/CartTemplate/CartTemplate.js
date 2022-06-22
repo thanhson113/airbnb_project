@@ -13,7 +13,7 @@ export default function CartTemplate(props) {
     <Route
       exact
       path={props.path}
-      render={(propsRouter) => {
+      render={() => {
         return (
           <>
             <PageHeader
@@ -22,7 +22,7 @@ export default function CartTemplate(props) {
               title="Xác Nhận Đặt Phòng"
               
             />
-            <Cart item={<props.component />} />
+            <Cart />
             {/* <props.component {...propsRouter} /> */}
           </>
         );

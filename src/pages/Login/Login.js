@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+
 
 import { add_component } from "../../redux/Actions/ComponentAction";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";

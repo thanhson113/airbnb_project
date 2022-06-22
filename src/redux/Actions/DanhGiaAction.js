@@ -10,8 +10,6 @@ export const DSDanhGiaTheoPhongAction = (id) => {
     try {
       const result = await quanLyDanhGia.DSDanhGiaTheoPhong(id);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
         dispatch({
           type: DanhSachDanhGiaPhongType,
           dsDanhGia: result.data,
@@ -29,8 +27,6 @@ export const TaoDanhGiaTheoPhongAction = (idPhong, comment) => {
     try {
       const result = await quanLyDanhGia.TaoDanhGiaTheoPhong(idPhong, comment);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
         dispatch(DSDanhGiaTheoPhongAction(idPhong));
       }
     } catch (error) {
@@ -45,8 +41,7 @@ export const XoaDanhGiaAction = (idDanhGia, idPhong) => {
     try {
       const result = await quanLyDanhGia.XoaDanhGiaTheoPhong(idDanhGia);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
+
         dispatch(DSDanhGiaTheoPhongAction(idPhong));
       }
     } catch (error) {
@@ -60,8 +55,7 @@ export const XuaDanhGiaAction = (idDanhGia, idPhong, content) => {
     try {
       const result = await quanLyDanhGia.xuaDanhGia(idDanhGia,content);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
+
         dispatch(DSDanhGiaTheoPhongAction(idPhong));
       }
     } catch (error) {
@@ -93,8 +87,7 @@ export const layThongTinChiTietDanhGiaAction = (id) => {
     try {
       const result = await quanLyDanhGia.layThongTinChiTietDanhGia(id);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
+
         dispatch({
           type: thongTinChiTietDanhGia,
           thongTinChiTietDanhGia: result.data
@@ -146,8 +139,6 @@ export const layDanhGiaTheoPhongAction = (id) => {
     try {
       const result = await quanLyDanhGia.layDanhGiaTheoPhong(id);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
         dispatch({
           type: layDanhSachDanhGiaTheoPhongType,
           danhSachDanhGia: result.data,

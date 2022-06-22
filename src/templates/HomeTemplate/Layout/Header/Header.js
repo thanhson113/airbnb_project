@@ -5,9 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Drawer } from "antd";
 
-import logo from "../../../../asset/imgs/logo/AirBNb.png";
-import { Acces_stoken } from "../../../../util/setting";
-import { history } from "../../../../App";
+
 import { ChiTietNguoiDungAction } from "../../../../redux/Actions/NguoiDungAction";
 import { add_component } from "../../../../redux/Actions/ComponentAction";
 
