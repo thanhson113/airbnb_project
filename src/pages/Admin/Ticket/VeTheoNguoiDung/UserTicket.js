@@ -16,6 +16,14 @@ export default function UserTicket() {
 
     const columns = [
         {
+            title: 'Serial',
+            render: (text, stt, index) => {
+                return <Fragment>
+                    <p className='mt-3'>{index + 1}</p>
+                </Fragment>
+            }
+        },
+        {
             title: 'ID',
             dataIndex: '_id',
             key: 'id',
@@ -52,10 +60,6 @@ export default function UserTicket() {
     ];
 
     const data = dsNguoiDung;
-
-    const onSearch = () => {
-
-    }
 
     function onChange(pagination, filters, sorter, extra) {
         console.log("params", pagination, filters, sorter, extra);

@@ -9,11 +9,8 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 export default function AddRoom(props) {
-
     const [componentSize, setComponentSize] = useState('default');
-
     let { id } = props.match.params
-
     let dispatch = useDispatch();
 
     const formik = useFormik({
@@ -43,7 +40,7 @@ export default function AddRoom(props) {
         }),
         onSubmit: (values) => {
             console.log(values);
-            dispatch(themPhongThueAction(values,id))
+            dispatch(themPhongThueAction(values, id))
         }
     });
 

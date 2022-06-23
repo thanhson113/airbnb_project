@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Table, Button, Input, Tag, Space } from 'antd';
-import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined, FileImageOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDSNguoiDungAction, xoaNguoiDungAction } from '../../../redux/Actions/NguoiDungAction';
@@ -19,6 +19,14 @@ export default function User() {
     }, [])
 
     const columns = [
+        {
+            title: 'Serial',
+            render: (text, stt, index) => {
+                return <Fragment>
+                    <p className='mt-3'>{index + 1}</p>
+                </Fragment>
+            }
+        },
         {
             title: 'ID',
             dataIndex: '_id',
@@ -72,10 +80,6 @@ export default function User() {
 
     const data = dsNguoiDung;
 
-    const onSearch = () => {
-
-    }
-
     function onChange(pagination, filters, sorter, extra) {
         console.log("params", pagination, filters, sorter, extra);
     }
@@ -86,13 +90,6 @@ export default function User() {
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push('/admin/user/add')
             }}>Add new user</Button>
-            <Search
-                className='mb-4'
-                placeholder="Search"
-                enterButton={<SearchOutlined />}
-                size="large"
-                onSearch={onSearch}
-            />
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )

@@ -1,8 +1,9 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Table } from 'antd';
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { history } from '../../../../App';
-import { layDSVeTheoNguoiDungAction } from '../../../../redux/Actions/VeAction';
+import { NavLink } from 'react-router-dom';
+import { layDSVeTheoNguoiDungAction, xoaVeUserAdminAction } from '../../../../redux/Actions/VeAction';
 
 export default function UserTicketChild(props) {
     const { dsVeTheoNguoiDungAdmin } = useSelector(state => state.VeReducer)
@@ -45,14 +46,13 @@ export default function UserTicketChild(props) {
             dataIndex: 'action',
             render: (text, ticket) => {
                 return <Fragment>
-                    <p>Hành động</p>
-                    {/* <NavLink key={1} to={`/admin/ticket/roomedit/${ticket._id}`} style={{ color: 'blue', fontSize: 25, paddingRight: 10 }}><EditOutlined /></NavLink>
+                    <NavLink key={1} to={`/admin/ticket/useredit/${ticket._id}`} style={{ color: 'blue', fontSize: 25, paddingRight: 10 }}><EditOutlined /></NavLink>
 
                     <span onClick={() => {
                         if (window.confirm('Bạn có chắc muốn xóa vé ' + ticket._id + ' không?')) {
-                            dispatch(xoaVeAction(ticket._id, id));
+                            dispatch(xoaVeUserAdminAction(ticket._id, id));
                         }
-                    }} key={2} style={{ color: 'red', fontSize: 25, paddingRight: 10, cursor: 'pointer' }}><DeleteOutlined /></span> */}
+                    }} key={2} style={{ color: 'red', fontSize: 25, paddingRight: 10, cursor: 'pointer' }}><DeleteOutlined /></span>
                 </Fragment>
             }
         },
@@ -67,9 +67,6 @@ export default function UserTicketChild(props) {
     return (
         <div className="dashboard-content">
             <h2 className='my-3'>Ticket</h2>
-            <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
-                history.push(`/admin/ticket/useradd/${id}`)
-            }}>Add new ticket</Button>
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )

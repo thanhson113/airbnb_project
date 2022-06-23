@@ -1,6 +1,6 @@
 import { history } from "../../App";
 import { quanLyViTri } from "../../services/ViTriServices"
-import { GET_VITRI, layDanhSachViTri, layThongTinViTriType } from "../Types/ViTriType";
+import { GET_VITRI, layDanhSachViTri, layThongTinViTriType, themHinhLocation } from "../Types/ViTriType";
 
 export const layDanhSachViTri_1 = (keyWord = '') => {
     return async (dispatch) => {
@@ -98,3 +98,19 @@ export const xoaViTriAction = (id) => {
         }
     }
 }
+
+export const UploadAvatarLocationAction = (locationId, formData) => {
+    return async (dispatch) => {
+        try {
+            const result = await quanLyViTri.UploadAvatarLocation(locationId, formData);
+            if (result.status === 200) {
+                console.log(result.data);
+                alert('Thêm avatar location thành công !');
+                history.push('/admin/location')
+            }
+        } catch (error) {
+            console.log("error", error);
+            console.log("error", error.response?.data);
+        }
+    };
+};

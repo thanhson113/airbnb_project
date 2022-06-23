@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { themViTriAction } from '../../../redux/Actions/ViTriActon';
-import { layDanhSachViTri } from '../../../redux/Types/ViTriType';
 
 const { Option } = Select;
 
@@ -24,7 +23,6 @@ export default function AddLocation() {
             name: Yup.string().required("Name không được để trống"),
             country: Yup.string().required("Country không được để trống"),
             province: Yup.string().required("Province không được để trống"),
-            // valueate: Yup.string().required("Valueate không được để trống"),
         }),
         onSubmit: (values) => {
             console.log(values);

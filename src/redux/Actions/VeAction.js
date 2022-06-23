@@ -126,3 +126,34 @@ export const layDSVeTheoNguoiDungAction = (userId) => {
     }
   };
 };
+
+export const capNhatVeUserAdminAction = (idVe, ticket, userId) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyDatVe.capNhatVeAdmin(idVe, ticket);
+      if (result.status === 200) {
+        alert('Cập nhật vé thành công');
+        console.log(result.data);
+        history.push(`/admin/ticket/user/${userId}`)
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}
+
+export const xoaVeUserAdminAction = (idVe, userId) => {
+  return async (dispatch) => {
+    try {
+      let result = await quanLyDatVe.xoaVe(idVe);
+      if (result.status === 200) {
+        alert('Xóa vé thành công');
+        dispatch(layDSVeTheoNguoiDungAction(userId))
+      }
+    } catch (error) {
+      console.log("error", error);
+      console.log("error", error.response?.data);
+    }
+  }
+}

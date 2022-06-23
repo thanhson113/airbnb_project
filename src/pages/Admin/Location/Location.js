@@ -1,6 +1,6 @@
-import React, {Fragment, useEffect } from 'react';
-import { Table, Button, Input, Tag, Space } from 'antd';
-import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined } from '@ant-design/icons';
+import React, { Fragment, useEffect } from 'react';
+import { Table, Button, Input } from 'antd';
+import { DeleteOutlined, EditOutlined, FileImageOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import { layDanhSachViTriAction, xoaViTriAction } from '../../../redux/Actions/ViTriActon';
@@ -19,6 +19,14 @@ export default function Location() {
     }, [])
 
     const columns = [
+        {
+            title: 'Serial',
+            render: (text, stt, index) => {
+                return <Fragment>
+                    <p className='mt-3'>{index + 1}</p>
+                </Fragment>
+            }
+        },
         {
             title: 'Name',
             dataIndex: 'name',
@@ -39,7 +47,7 @@ export default function Location() {
         {
             title: 'Image',
             dataIndex: 'image',
-            key:'image',
+            key: 'image',
             render: (text, location) => {
                 return <Fragment>
                     <img src={location.image} alt={location.name} width={50} height={50} onError={(e) => { e.target.onError = null; e.target.src = 'https://picsum.photos/50' }} />
@@ -73,16 +81,14 @@ export default function Location() {
                             dispatch(xoaViTriAction(location._id));
                         }
                     }} key={2} style={{ color: 'red', fontSize: 25, paddingRight: 10, cursor: 'pointer' }}><DeleteOutlined /></span>
+
+                    <NavLink key={3} to={`/admin/location/avatar/${location._id}`} style={{ color: 'green', fontSize: 25, paddingRight: 10 }}><FileImageOutlined /></NavLink>
                 </Fragment>
             }
         },
     ];
 
     const data = mangViTri;
-
-    const onSearch = () => {
-
-    }
 
     function onChange(pagination, filters, sorter, extra) {
         console.log("params", pagination, filters, sorter, extra);
@@ -94,13 +100,6 @@ export default function Location() {
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push('/admin/location/add')
             }}>Add new location</Button>
-            <Search
-                className='mb-4'
-                placeholder="Search"
-                enterButton={<SearchOutlined />}
-                size="large"
-                onSearch={onSearch}
-            />
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )

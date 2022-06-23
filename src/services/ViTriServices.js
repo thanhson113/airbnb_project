@@ -23,5 +23,9 @@ class QuanLyViTri {
     xoaViTri = (id) => {
         return http.delete(`/api/locations/${id}`)
     }
+
+    UploadAvatarLocation = (locationId, formData) => {
+        return http.post(`/api/locations/upload-images/${locationId}`, formData);
+    };
 }
 export const quanLyViTri = new QuanLyViTri()
