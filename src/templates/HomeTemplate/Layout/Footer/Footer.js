@@ -1,6 +1,6 @@
 import React from 'react'
 import './footer.css'
-import logo from '../../../../assets/images/logo.png'
+import logo from '../../../../asset/imgs/logo/AirBNb.png'
 export default function Footer() {
     return (
         <>
@@ -8,10 +8,10 @@ export default function Footer() {
                 {/* Main */}
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-5 col-sm-6">
-                            <img className="footer-logo" src={logo}  />
-                            <br /><br />
-                            <p>Là một thị trường cộng đồng cho việc đặt và cho thuê phòng, căn hộ, có trụ sở tại Silicon Valley, California được thành lập trong năm 2008, tương tự như một hệ thống đặt hàng trực tuyến</p>
+                        <div className="col-md-4 col-sm-6 pb-5">
+                            <a href="#" > <img className="footer-logo" src={logo}   /></a>
+                           
+                            <p style={{color:'#66676b',padding:10}}>Là một cộng đồng trực tuyến cho việc đặt và cho thuê phòng, căn hộ, có trụ sở tại Đà Nẵng, Việt Nam được thành lập trong năm 2008.</p>
                         </div>
                         <div className="col-md-4 col-sm-6 ">
                             <h4>Helpful Links</h4>
@@ -32,12 +32,12 @@ export default function Footer() {
                             </ul>
                             <div className="clearfix" />
                         </div>
-                        <div className="col-md-3  col-sm-12">
+                        <div className="col-md-4  col-sm-12">
                             <h4>Liên hệ với chúng tôi</h4>
                             <div className="text-widget">
-                                <span>12345 Little Lonsdale St, Melbourne</span> <br />
+                                Địa chỉ:   <span>12345 TP.Đà Nẵng</span> <br />
                                 Phone: <span>(123) 123-456 </span><br />
-                                E-Mail:<span> <a href="#">office@example.com</a> </span><br />
+                                E-Mail:<span> <a href="#" className='px-1 textMail' > airBNB@example.com</a> </span><br />
                             </div>
                         </div>
                     </div>

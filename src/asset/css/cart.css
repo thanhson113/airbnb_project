@@ -77,13 +77,13 @@
   }
 }
 @media screen and (min-width: 1024px) {
-  .cart p,.cart span{
+  .cart p,.cart span, .cart h5{
     font-size: 18px;
   }
   .cart {
     font-size:medium;
-    padding: 1em 0;
-    padding: 3em;
+
+    padding: 3em 4em 6em;
     max-width: 1200px;
     margin: auto;
   }

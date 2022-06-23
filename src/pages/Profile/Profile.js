@@ -11,6 +11,7 @@ import { formUp } from "../Profile/UpdateND";
 import { Booking } from "../Profile/HistoryBooking";
 
 import "../../asset/css/profile.css";
+import { UserOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 
@@ -76,12 +77,13 @@ export default function Profile() {
               accept="image/jpeg, image/png, image/gif,image/jpg"
             />
           </div>
-          <Avatar
+          {user.avatar?<Avatar
             size={100}
             src={
               <Image src={user?.avatar} style={{ height: 100, width: 100 }} />
             }
-          />
+          />:<Avatar  size={100} icon={<UserOutlined />} />}
+          
           <div className="profife_status_avatar_detail py-2 ">
             <h3 className="py-2">{user?.name}</h3>
             <div className="d-flex justify-content-center py-3">

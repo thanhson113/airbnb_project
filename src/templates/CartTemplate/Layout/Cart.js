@@ -2,17 +2,20 @@
 
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
+
 import {
   DatPhongAction,
   ThongTinChiTietPhongAction,
 } from "../../../redux/Actions/PhongThueAction";
-import { Affix, Image, Popconfirm } from "antd";
+import { Affix, Avatar, Image, Popconfirm } from "antd";
 
 import "../../../asset/css/cart.css";
 import moment from "moment";
+import Login from "../../../pages/Login/Login";
+import { add_component } from "../../../redux/Actions/ComponentAction";
+import { ChiTietNguoiDungAction } from "../../../redux/Actions/NguoiDungAction";
 
-export default function Cart(props) {
+export default function Cart() {
   const ref1 = useRef();
   const ref2 = useRef();
   const dispatch = useDispatch();
@@ -21,8 +24,10 @@ export default function Cart(props) {
   const datPhong = JSON.parse(localStorage.getItem("datPhong"));
   const { roomId } = datPhong;
   const token = localStorage.getItem("accessToken");
-  const { item } = props;
 
+  const { Component } = useSelector((state) => state.ComponentReducer);
+  const {user} = useSelector((state)=>state.nguoiDungReducer)
+  const id = localStorage.getItem('id')
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
   const [checkIn, setCheckIn] = useState(datPhong?.checkIn);
@@ -32,9 +37,12 @@ export default function Cart(props) {
   const [scroll, setCroll] = useState();
   const [heightScroll, setHeightScroll] = useState();
   const [heightScroll2, setHeightScroll2] = useState();
-  console.log(width, height, scroll, heightScroll, heightScroll2);
+ 
 
   useEffect(() => {
+    if(!token) { dispatch(add_component(<Login />, "Đăng Nhập"));}
+    dispatch(ThongTinChiTietPhongAction(roomId));
+    dispatch(ChiTietNguoiDungAction(id))
     const handleWindowResize = () => {
       setWidth(window.innerWidth);
       setHeight(window.innerHeight);
@@ -53,10 +61,10 @@ export default function Cart(props) {
     }
     window.addEventListener("resize", handleWindowResize);
     window.addEventListener("scroll", handleWindowScroll);
-    dispatch(ThongTinChiTietPhongAction(roomId));
+    
     return () => {
       window.removeEventListener("resize", handleWindowResize);
-      window.removeEventListener("scroll", handleWindowResize);
+      window.removeEventListener("scroll", handleWindowScroll);
     };
   }, []);
 
@@ -100,12 +108,10 @@ export default function Cart(props) {
                     />
                   </div>
                   <div className="col-7">
-                    <h6 className="text text-black py-1">
+                    <h5 className="text text-black py-1">
                       {chiTietPhong?.name}
-                    </h6>
-                    <p className="pb-1 text text-black-50">
-                      {chiTietPhong?.description}
-                    </p>
+                    </h5>
+                   
                   </div>
                 </div>
                 <div className="cart_certification py-4">
@@ -131,10 +137,8 @@ export default function Cart(props) {
                   />
                 </div>
                 <div className="col-7">
-                  <h6 className="text text-black py-2">{chiTietPhong?.name}</h6>
-                  <p className="pb-2 text text-black-50">
-                    {chiTietPhong?.description}
-                  </p>
+                  <h5 className="text text-black py-2">{chiTietPhong?.name}</h5>
+                 
                 </div>
               </div>
               <div className="cart_certification py-4">
@@ -153,15 +157,15 @@ export default function Cart(props) {
           </h5>
           <div className="d-flex justify-content-between py-4">
             <div>
-              <h6>Ngày đến : </h6>
-              <h6 className="py-2">{moment(checkIn).format("DD/MM/YYYY")}</h6>
+              <h5>Ngày đến : </h5>
+              <h5 className="py-2">{moment(checkIn).format("DD/MM/YYYY")}</h5>
             </div>
             <a className="btn_setting  ">Chỉnh Sửa</a>
           </div>
           <div className="d-flex justify-content-between py-2">
             <div>
-              <h6>Ngày Đi</h6>
-              <h6 className="py-2">{moment(checkOut).format("DD/MM/YYYY")}</h6>
+              <h5>Ngày Đi</h5>
+              <h5 className="py-2">{moment(checkOut).format("DD/MM/YYYY")}</h5>
             </div>
             <a className="btn_setting  ">Chỉnh Sửa</a>
           </div>
@@ -174,17 +178,17 @@ export default function Cart(props) {
               <div className="cart_detail_fit">
                 <h5 className="text text-black py-2">Chi tiết giá</h5>
                 <div className="d-flex justify-content-between py-2">
-                  <h6>
+                  <h5>
                     ${chiTietPhong.price} x {countDate()}
-                  </h6>
+                  </h5>
                   <span>${chiTietPhong.price * countDate()}</span>
                 </div>
                 <div className="d-flex justify-content-between py-2">
-                  <h6>Phí Vệ Sinh</h6>
+                  <h5>Phí Vệ Sinh</h5>
                   <span>${(chiTietPhong.price * countDate() * 2) / 100}</span>
                 </div>
                 <div className="d-flex justify-content-between py-2">
-                  <h6>Phí dịch vụ</h6>
+                  <h5>Phí dịch vụ</h5>
                   <span>${(chiTietPhong.price * countDate() * 5) / 100}</span>
                 </div>
                 <div className="d-flex justify-content-between py-3 ">
@@ -210,15 +214,15 @@ export default function Cart(props) {
             <div className="cart_detail_fit">
               <h5 className="text text-black py-2">Chi tiết giá</h5>
               <div className="d-flex justify-content-between py-2">
-                <h6>Giá phòng {` ( ${countDate()} Ngày ) `}</h6>
+                <h5>Giá phòng {` ( ${countDate()} Ngày ) `}</h5>
                 <span>${chiTietPhong.price * countDate()}</span>
               </div>
               <div className="d-flex justify-content-between py-2">
-                <h6>Phí Vệ Sinh</h6>
+                <h5>Phí Vệ Sinh</h5>
                 <span>${(chiTietPhong.price * countDate() * 2) / 100}</span>
               </div>
               <div className="d-flex justify-content-between py-2">
-                <h6>Phí dịch vụ</h6>
+                <h5>Phí dịch vụ</h5>
                 <span>${(chiTietPhong.price * countDate() * 5) / 100}</span>
               </div>
               <div className="d-flex justify-content-between py-3">
@@ -272,8 +276,8 @@ export default function Cart(props) {
                 Trả trước 50% chi phí, phần còn lại trả sau
               </label>
               <div className="p-2">
-                {/* TODO: */}
-                <a
+             
+                <a 
                   className="btn_setting "
                   onClick={() => {
                     setAdd(!add);
@@ -297,11 +301,21 @@ export default function Cart(props) {
             <h5 className="text text-black pt-4 text-center">
               Đăng nhập hoặc đăng ký để đặt phòng/ đặt chỗ
             </h5>
-            <div className="cart_login_or_register_content">{item}</div>
+            <div className="cart_login_or_register_content">{Component}</div>
           </div>
         ) : (
           <div className="cart_submit">
-            <div className="d-flex justify-content-around py-3">
+           <div className="d-flex justify-content-center pb-5 border-bottom">
+           <h5 >Chào </h5> <h5 className="px-3">{user?.name}</h5>
+            <Avatar style={{border:"2px solid wheat"}}
+            shape="square"
+            size={100}
+            src={
+              <Image src={user?.avatar} style={{ height: 100, width: 100 }} />
+            }
+          />
+           </div>
+            <div className="d-flex justify-content-around py-5">
               <div className="py-2">
                 <h5>Tổng Chi Phí là :</h5>
                 {exchange == 1 / 2 ? <h5>Discount 50%</h5> : ""}

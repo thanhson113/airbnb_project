@@ -9,19 +9,17 @@ import { LayDSNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
 import { RegisterAction } from "../../redux/Actions/XacThucNguoiDungAction";
 
 import "../../asset/css/register.css";
+import { add_component } from "../../redux/Actions/ComponentAction";
+import Login from "../Login/Login";
 
 export default function Register() {
   let dispatch = useDispatch();
 
- 
-
   const { dsNguoiDung } = useSelector((state) => state.nguoiDungReducer);
-  console.log(dsNguoiDung);
 
   const taoDSNDEmail = dsNguoiDung?.map((nd) => {
     return nd.email;
   });
-  console.log(taoDSNDEmail);
 
   useEffect(() => {
     dispatch(LayDSNguoiDungAction());
@@ -61,8 +59,7 @@ export default function Register() {
       gender: Yup.boolean(),
     }),
     onSubmit: (values) => {
-      console.log(values);
-       dispatch(RegisterAction(values));
+      dispatch(RegisterAction(values));
     },
   });
 
@@ -164,9 +161,17 @@ export default function Register() {
               <div className="alert alert-danger">{formik.errors.address}</div>
             ) : null}
           </div>
-          <button type="submit" className="btn btn-primary">
-            Đăng Ký
-          </button>
+          <div className="d-flex justify-content-between">
+            <button type="submit" className="btn btn-primary">
+              Đăng Ký
+            </button>
+            <button className="btn btn-outline-success"
+              onClick={() => {
+                dispatch(add_component(<Login />, "Đăng Nhập"))
+              }}>
+              Đăng Nhập
+            </button>
+          </div>
         </form>
       </div>
     </div>

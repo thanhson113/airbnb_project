@@ -12,7 +12,7 @@ function HistoryBooking() {
   const { dsVeTheoND } = useSelector((state) => state.VeReducer);
   const [more, setMore] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
-  console.log(user,dsVeTheoND);
+
   const dispatch = useDispatch();
 
   const layDSVeNguoiDung = (user) => {

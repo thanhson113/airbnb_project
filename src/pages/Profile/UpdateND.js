@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import {
+  capNhatThongTinNguoiDungUserAction,
   ChiTietNguoiDungAction,
   LayDSNguoiDungAction,
 } from "../../redux/Actions/NguoiDungAction";
@@ -61,6 +62,7 @@ function UpdateND(props) {
     }),
     onSubmit: (values) => {
       console.log("values", values);
+      dispatch(capNhatThongTinNguoiDungUserAction(idUser,values))
     },
   });
   const formItemLayout = {
@@ -88,10 +90,9 @@ function UpdateND(props) {
   };
 
   const handleChangeDatePicker = (value) => {
-    console.log("value", value);
     let birthday = moment(value);
     formik.setFieldValue("birthday", birthday);
-    console.log(formik.values.birthday);
+
   };
   const handleChangeInputNumber = (name) => {
     return (value) => {

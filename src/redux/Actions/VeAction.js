@@ -10,8 +10,7 @@ export const layDSVeTheoPhongAction = (idRoom) => {
     try {
       const result = await quanLyDatVe.layDSVeTheoPhong(idRoom);
       if (result.status === 200) {
-        console.log(result);
-        console.log(result.data);
+
         dispatch({
           type: layDSVeTheoPhongType,
           dsVeIdroom: result.data,
