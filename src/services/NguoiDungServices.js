@@ -31,5 +31,7 @@ class QuanLyNguoiDung {
   xoaNguoiDung = (id) => {
     return http.delete(`/api/users/${id}`)
   }
+
+  
 }
 export const quanLyNguoiDung = new QuanLyNguoiDung();

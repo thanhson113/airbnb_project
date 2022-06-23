@@ -27,8 +27,7 @@ export default function EditFeedback(props) {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            content: thongTinChiTietDanhGia.content,
-            // userId: thongTinChiTietDanhGia.userId?._id
+            content: thongTinChiTietDanhGia.content
         },
         validationSchema: Yup.object({
             content: Yup.string().required("Content không được để trống"),

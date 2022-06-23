@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import moment from 'moment';
-import { capNhatVeAdminAction, LayChiTietVeAdminAction } from '../../../../redux/Actions/VeAction';
+import { capNhatVeUserAdminAction, LayChiTietVeAdminAction } from '../../../../redux/Actions/VeAction';
 
-export default function RoomEditTicket(props) {
+export default function UserEditTicket(props) {
     const [componentSize, setComponentSize] = useState('default');
     const { chiTietVeAdmin } = useSelector((state) => state.VeReducer);
     console.log(chiTietVeAdmin);
@@ -34,7 +34,7 @@ export default function RoomEditTicket(props) {
         }),
         onSubmit: (values) => {
             console.log(values);
-            dispatch(capNhatVeAdminAction(id, values, chiTietVeAdmin.roomId?._id))
+            dispatch(capNhatVeUserAdminAction(id, values, chiTietVeAdmin.userId?._id))
         }
     });
 

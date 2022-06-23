@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Table, Button, Input, Tag, Space } from 'antd';
-import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined, FileImageOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import { layDSPhongThueTheoViTri, xoaPhongThueAction } from '../../../redux/Actions/PhongThueAction';
@@ -22,6 +22,14 @@ export default function Room(props) {
     }, [])
 
     const columns = [
+        {
+            title: 'Serial',
+            render: (text, stt, index) => {
+                return <Fragment>
+                    <p className='mt-3'>{index + 1}</p>
+                </Fragment>
+            }
+        },
         {
             title: 'Name',
             dataIndex: 'name',
@@ -68,9 +76,9 @@ export default function Room(props) {
             key: 'feedback',
             render: (text, room) => {
                 return <Fragment>
-                    <NavLink to={`/admin/feedback/${room._id}`} onClick={() => { 
+                    <NavLink to={`/admin/feedback/${room._id}`} onClick={() => {
                         localStorage.setItem('roomParams1', JSON.stringify(room))
-                     }}>Feedback</NavLink>
+                    }}>Feedback</NavLink>
                 </Fragment>
             },
         },
@@ -87,16 +95,14 @@ export default function Room(props) {
                             dispatch(xoaPhongThueAction(room._id, id));
                         }
                     }} key={2} style={{ color: 'red', fontSize: 25, paddingRight: 10, cursor: 'pointer' }}><DeleteOutlined /></span>
+
+                    <NavLink key={3} to={`/admin/room/avatar/${room._id}`} style={{ color: 'green', fontSize: 25, paddingRight: 10 }}><FileImageOutlined /></NavLink>
                 </Fragment>
             }
         },
     ];
 
     const data = dsPhongTheoViTri;
-
-    const onSearch = () => {
-
-    }
 
     function onChange(pagination, filters, sorter, extra) {
         console.log("params", pagination, filters, sorter, extra);
@@ -114,13 +120,6 @@ export default function Room(props) {
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push(`/admin/room/add/${location._id}`)
             }}>Add new room</Button>
-            <Search
-                className='mb-4'
-                placeholder="Search"
-                enterButton={<SearchOutlined />}
-                size="large"
-                onSearch={onSearch}
-            />
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )

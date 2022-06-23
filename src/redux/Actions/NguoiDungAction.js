@@ -129,14 +129,13 @@ export const capNhatThongTinNguoiDungAction = (id, user) => {
     try {
       let result = await quanLyNguoiDung.capNhatThongTinNguoiDung(id, user);
       if (result.status === 200) {
-        success("Thêm người dùng thành công");
+        success('Cập nhật người dùng thành công');
         console.log(result.data);
         history.push("/admin/user");
       }
     } catch (error) {
       console.log("error", error);
       console.log("error", error.response?.data);
-      err("Thêm người dùng thành công");
     }
   };
 };

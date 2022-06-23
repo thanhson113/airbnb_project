@@ -1,10 +1,10 @@
-import { GET_VITRI, layDanhSachViTri, layThongTinViTriType } from "../Types/ViTriType"
+import { GET_VITRI, layDanhSachViTri, layThongTinViTriType, themHinhLocation } from "../Types/ViTriType"
 
 const viTriState = {
   mangViTri: [],
   danhSachViTri: [],
   thongTinViTri: {},
-  danhSachViTriSearch : [],
+  danhSachViTriSearch: [],
 }
 
 export const viTriReducer = (state = viTriState, action) => {

@@ -16,7 +16,7 @@ export default function Register() {
   let dispatch = useDispatch();
 
   const { dsNguoiDung } = useSelector((state) => state.nguoiDungReducer);
-  
+
   const taoDSNDEmail = dsNguoiDung?.map((nd) => {
     return nd.email;
   });
@@ -59,7 +59,7 @@ export default function Register() {
       gender: Yup.boolean(),
     }),
     onSubmit: (values) => {
-       dispatch(RegisterAction(values));
+      dispatch(RegisterAction(values));
     },
   });
 
@@ -161,17 +161,17 @@ export default function Register() {
               <div className="alert alert-danger">{formik.errors.address}</div>
             ) : null}
           </div>
-        <div className="d-flex justify-content-between">
-        <button type="submit" className="btn btn-primary">
-            Dăng Ký
-          </button>
-          <button  className="btn btn-outline-success"
-          onClick={()=>{
-            dispatch(add_component(<Login/>,"Đăng Nhập"))
-          }}>
-            Đăng Nhập
-          </button>
-        </div>
+          <div className="d-flex justify-content-between">
+            <button type="submit" className="btn btn-primary">
+              Đăng Ký
+            </button>
+            <button className="btn btn-outline-success"
+              onClick={() => {
+                dispatch(add_component(<Login />, "Đăng Nhập"))
+              }}>
+              Đăng Nhập
+            </button>
+          </div>
         </form>
       </div>
     </div>

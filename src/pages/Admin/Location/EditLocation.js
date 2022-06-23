@@ -32,7 +32,6 @@ export default function Editlocation(props) {
             name: Yup.string().required("Name không được để trống"),
             country: Yup.string().required("Country không được để trống"),
             province: Yup.string().required("Province không được để trống"),
-            // valueate: Yup.string().required("Valueate không được để trống"),
         }),
         onSubmit: (values) => {
             console.log(values);
