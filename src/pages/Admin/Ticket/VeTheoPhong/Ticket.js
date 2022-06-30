@@ -1,13 +1,10 @@
-import { SearchOutlined } from '@ant-design/icons';
 import { Login } from '@mui/icons-material';
-import { Button, Table,Input } from 'antd';
+import { Button, Table } from 'antd';
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { history } from '../../../../App';
 import { layDSVeTheoPhongAction } from '../../../../redux/Actions/VeAction';
 import { LoginAction } from '../../../../redux/Actions/XacThucNguoiDungAction';
-
-const {Search} = Input
 
 export default function Ticket(props) {
     const { dsVeIdroom } = useSelector(state => state.VeReducer)
@@ -65,7 +62,6 @@ export default function Ticket(props) {
     ];
 
     const data = dsVeIdroom;
-    
 
     function onChange(pagination, filters, sorter, extra) {
         console.log("params", pagination, filters, sorter, extra);
@@ -77,7 +73,6 @@ export default function Ticket(props) {
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push(`/admin/ticket/roomadd/${id}`)
             }}>Add new ticket</Button>
-            
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )
