@@ -3,12 +3,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { LayDSNguoiDungAction } from "../../redux/Actions/NguoiDungAction";
 import { RegisterAction } from "../../redux/Actions/XacThucNguoiDungAction";
 
-import "../../asset/css/register.css";
+import "../../assets/css/register.css";
 import { add_component } from "../../redux/Actions/ComponentAction";
 import Login from "../Login/Login";
 

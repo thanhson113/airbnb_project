@@ -1,6 +1,6 @@
 import React from 'react'
 import './footer.css'
-import logo from '../../../../asset/imgs/logo/AirBNb.png'
+import logo from '../../../../assets/images/logo/AirBNb.png'
 export default function Footer() {
     return (
         <>
@@ -8,7 +8,7 @@ export default function Footer() {
                 {/* Main */}
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-4 col-sm-6 pb-5">
+                        <div className="col-md-4 col-sm-6 pb-5 div_logo">
                             <a href="#" > <img className="footer-logo" src={logo}   /></a>
                            
                             <p style={{color:'#66676b',padding:10}}>Là một cộng đồng trực tuyến cho việc đặt và cho thuê phòng, căn hộ, có trụ sở tại Đà Nẵng, Việt Nam được thành lập trong năm 2008.</p>

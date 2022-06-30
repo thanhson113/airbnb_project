@@ -10,7 +10,7 @@ import {
 import { formUp } from "../Profile/UpdateND";
 import { Booking } from "../Profile/HistoryBooking";
 
-import "../../asset/css/profile.css";
+import "../../assets/css/profile.css";
 import { UserOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;

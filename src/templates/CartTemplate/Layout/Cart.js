@@ -7,14 +7,15 @@ import {
   DatPhongAction,
   ThongTinChiTietPhongAction,
 } from "../../../redux/Actions/PhongThueAction";
-import { Affix, Avatar, Image, Popconfirm } from "antd";
+import { Affix, Avatar, DatePicker, Image, Modal, Popconfirm } from "antd";
+import { UserOutlined } from '@ant-design/icons';
 
-import "../../../asset/css/cart.css";
+
 import moment from "moment";
 import Login from "../../../pages/Login/Login";
 import { add_component } from "../../../redux/Actions/ComponentAction";
 import { ChiTietNguoiDungAction } from "../../../redux/Actions/NguoiDungAction";
-
+import "../../../assets/css/cart.css";
 export default function Cart() {
   const ref1 = useRef();
   const ref2 = useRef();
@@ -22,27 +23,58 @@ export default function Cart() {
   const { chiTietPhong } = useSelector((state) => state.phongThueReducer);
 
   const datPhong = JSON.parse(localStorage.getItem("datPhong"));
-  const { roomId } = datPhong;
+  const { roomId,checkIn,checkOut } = datPhong;
+
   const token = localStorage.getItem("accessToken");
 
   const { Component } = useSelector((state) => state.ComponentReducer);
-  const {user} = useSelector((state)=>state.nguoiDungReducer)
-  const id = localStorage.getItem('id')
+  const { user } = useSelector((state) => state.nguoiDungReducer);
+  const id = localStorage.getItem("id");
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
-  const [checkIn, setCheckIn] = useState(datPhong?.checkIn);
-  const [checkOut, setCheckOut] = useState(datPhong?.checkOut);
+ 
   const [exchange, setExchange] = useState(1);
   const [add, setAdd] = useState(false);
   const [scroll, setCroll] = useState();
   const [heightScroll, setHeightScroll] = useState();
   const [heightScroll2, setHeightScroll2] = useState();
- 
+
+
+
+  const { RangePicker } = DatePicker;
+  const [value, setValue] = useState();
+  const [hackValue, setHackValue] = useState();
+  const [dates, setDates] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+
+  const disableDate = (current) => {
+    if (!dates || dates.length === 0) {
+      return current && current < moment().endOf("day");
+    }
+    //Số ngày đat it nhat 3 ngay
+    const tooLate = dates[0] && current.diff(dates[0], "days") < 3;
+    const tooEarly =
+      (current && current < moment().endOf("day")) ||
+      (dates[1] && dates[1].diff(current, "days") < 3);
+    return tooEarly || tooLate;
+  };
+  const onOpenChange = (open) => {
+
+    if (open) {
+      setHackValue([]);
+      setDates([]);
+    } else {
+      setHackValue(undefined);
+    }
+  };
 
   useEffect(() => {
-    if(!token) { dispatch(add_component(<Login />, "Đăng Nhập"));}
-    dispatch(ThongTinChiTietPhongAction(roomId));
-    dispatch(ChiTietNguoiDungAction(id))
+    if (!token) {
+      dispatch(add_component(<Login />, "Đăng Nhập"));
+    }
+    if (roomId) dispatch(ThongTinChiTietPhongAction(roomId));
+    if (id) dispatch(ChiTietNguoiDungAction(id));
     const handleWindowResize = () => {
       setWidth(window.innerWidth);
       setHeight(window.innerHeight);
@@ -52,16 +84,16 @@ export default function Cart() {
         (height - (ref1.current.offsetHeight + ref2.current.offsetHeight)) / 2
       );
     };
-    const handleWindowScroll = ()=>{
+    const handleWindowScroll = () => {
       setHeightScroll(ref1.current.offsetHeight);
       setHeightScroll2(ref2.current.offsetHeight);
       setCroll(
         (height - (ref1.current.offsetHeight + ref2.current.offsetHeight)) / 2
       );
-    }
+    };
     window.addEventListener("resize", handleWindowResize);
     window.addEventListener("scroll", handleWindowScroll);
-    
+
     return () => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("scroll", handleWindowScroll);
@@ -85,6 +117,34 @@ export default function Cart() {
 
   const confirm = () => {
     dispatch(DatPhongAction(datPhong));
+  };
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    if (value?.length === 2) {
+
+      localStorage.setItem(
+        "datPhong",
+        JSON.stringify({
+          roomId: roomId,
+          checkIn: moment(value[0]).format(),
+          checkOut: moment(value[1]).format(),
+        })
+      );
+
+    }
+
+    setHackValue([]);
+    setDates([]);
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setHackValue([]);
+    setDates([]);
+    setIsModalVisible(false);
   };
 
   return (
@@ -111,7 +171,6 @@ export default function Cart() {
                     <h5 className="text text-black py-1">
                       {chiTietPhong?.name}
                     </h5>
-                   
                   </div>
                 </div>
                 <div className="cart_certification py-4">
@@ -138,7 +197,6 @@ export default function Cart() {
                 </div>
                 <div className="col-7">
                   <h5 className="text text-black py-2">{chiTietPhong?.name}</h5>
-                 
                 </div>
               </div>
               <div className="cart_certification py-4">
@@ -160,14 +218,28 @@ export default function Cart() {
               <h5>Ngày đến : </h5>
               <h5 className="py-2">{moment(checkIn).format("DD/MM/YYYY")}</h5>
             </div>
-            <a className="btn_setting  ">Chỉnh Sửa</a>
+            <a
+              className="btn_setting  "
+              onClick={() => {
+                showModal();
+              }}
+            >
+              Chỉnh Sửa
+            </a>
           </div>
           <div className="d-flex justify-content-between py-2">
             <div>
               <h5>Ngày Đi</h5>
               <h5 className="py-2">{moment(checkOut).format("DD/MM/YYYY")}</h5>
             </div>
-            <a className="btn_setting  ">Chỉnh Sửa</a>
+            <a
+              className="btn_setting  "
+              onClick={() => {
+                showModal();
+              }}
+            >
+              Chỉnh Sửa
+            </a>
           </div>
         </div>
         <div className="cart_detail" ref={ref2}>
@@ -276,8 +348,7 @@ export default function Cart() {
                 Trả trước 50% chi phí, phần còn lại trả sau
               </label>
               <div className="p-2">
-             
-                <a 
+                <a
                   className="btn_setting "
                   onClick={() => {
                     setAdd(!add);
@@ -305,16 +376,21 @@ export default function Cart() {
           </div>
         ) : (
           <div className="cart_submit">
-           <div className="d-flex justify-content-center pb-5 border-bottom">
-           <h5 >Chào </h5> <h5 className="px-3">{user?.name}</h5>
-            <Avatar style={{border:"2px solid wheat"}}
-            shape="square"
-            size={100}
-            src={
-              <Image src={user?.avatar} style={{ height: 100, width: 100 }} />
-            }
-          />
-           </div>
+            <div className="d-flex justify-content-center pb-5 border-bottom">
+              <h5>Chào </h5> <h5 className="px-3">{user?.name}</h5>
+              {user.avatar? <Avatar
+                style={{ border: "2px solid wheat" }}
+                shape="square"
+                size={100}
+                src={
+                  <Image
+                    src={user?.avatar}
+                    style={{ height: 100, width: 100 }}
+                  />
+                }
+              />:<Avatar shape="square"  size={100} style={{ height: 100, width: 100 }} icon={<UserOutlined />} />}
+             
+            </div>
             <div className="d-flex justify-content-around py-5">
               <div className="py-2">
                 <h5>Tổng Chi Phí là :</h5>
@@ -350,6 +426,25 @@ export default function Cart() {
           </div>
         )}
       </div>
+      <Modal
+        title="Bạn muốn đổi lịch trình chứ"
+        visible={isModalVisible}
+        onOk={handleOk}
+        okText="Vâng"
+        onCancel={handleCancel}
+        cancelText="Giữ Nguyên"
+      >
+        <RangePicker
+          className="w-100 text-center p2"
+          value={hackValue || value}
+          format="YYYY-MM-DD"
+          placement="bottomRight"
+          disabledDate={disableDate}
+          onCalendarChange={(val) => setDates(val)}
+          onChange={(val) => setValue(val)}
+          onOpenChange={onOpenChange}
+        />
+      </Modal>
     </Fragment>
   );
 }
