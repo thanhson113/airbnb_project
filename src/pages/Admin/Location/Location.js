@@ -3,7 +3,7 @@ import { Table, Button, Input } from 'antd';
 import { DeleteOutlined, EditOutlined, FileImageOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
-import { layDanhSachViTriAction, xoaViTriAction } from '../../../redux/Actions/ViTriActon';
+import { layDanhSachViTriAction, SearchViTriAction, xoaViTriAction } from '../../../redux/Actions/ViTriActon';
 import { NavLink } from 'react-router-dom';
 
 const { Search } = Input;
@@ -90,6 +90,14 @@ export default function Location() {
 
     const data = mangViTri;
 
+
+    const onSearch = (value) => {
+        console.log(value);
+        if(value) dispatch(layDanhSachViTriAction(value))
+        else dispatch(layDanhSachViTriAction())
+    }
+
+
     function onChange(pagination, filters, sorter, extra) {
         console.log("params", pagination, filters, sorter, extra);
     }
@@ -100,6 +108,16 @@ export default function Location() {
             <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
                 history.push('/admin/location/add')
             }}>Add new location</Button>
+
+            <Search
+                className='mb-4'
+                placeholder="Nhập vị trí bạn muốn để tìm kiếm chính xác !"
+                allowClear
+                enterButton={<SearchOutlined />}
+                size="large"
+                onSearch={onSearch}
+            />
+
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )

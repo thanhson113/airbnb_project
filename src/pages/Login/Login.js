@@ -8,7 +8,7 @@ import { add_component } from "../../redux/Actions/ComponentAction";
 import { LoginAction } from "../../redux/Actions/XacThucNguoiDungAction";
 import Register from "../Register/Register";
 
-import "../../asset/css/login.css";
+import "../../assets/css/login.css";
 
  function Login() {
    

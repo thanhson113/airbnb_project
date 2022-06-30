@@ -56,7 +56,7 @@ import { layDSVeTheoPhongAction } from "../../redux/Actions/VeAction";
 
 import moment from "moment";
 
-import "../../asset/css/roomdetail.css";
+import "../../assets/css/roomdetail.css";
 import { history } from "../../App";
 
 export default function RoomDetail(props) {
@@ -75,6 +75,7 @@ export default function RoomDetail(props) {
   const [dates, setDates] = useState([]);
   const [hackValue, setHackValue] = useState();
   const [value, setValue] = useState();
+  
   const [value2, setValue2] = useState();
   let countDate = 0;
 
@@ -84,7 +85,7 @@ export default function RoomDetail(props) {
 
   const [more, setMore] = useState(6);
   const [add, setAdd] = useState(6);
-  const [heightDiv, setHeightDiv] = useState(0);
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -99,7 +100,7 @@ export default function RoomDetail(props) {
 
     const handleWindowResize = () => {
       setWidth(window.innerWidth);
-      // setHeight(window.innerHeight);
+      
     };
 
     window.addEventListener("resize", handleWindowResize);
@@ -492,7 +493,7 @@ export default function RoomDetail(props) {
               <h5 className="h_located cursor py-1" onClick={showModal}>
                 Chỗ Ở Đẹp Và Tiện Nghi Tại {locationId?.name},{" "}
                 {locationId?.province}, {locationId?.country}
-                {heightDiv}
+                
               </h5>
               <p className="text-secondary pt-3">
                 {chiTietPhong.guests ? `${chiTietPhong.guests} khách` : ""}{" "}

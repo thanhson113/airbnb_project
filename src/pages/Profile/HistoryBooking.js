@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LayChiTietVeCuaNDAction } from "../../redux/Actions/VeAction";
-import { Card, Image } from "antd";
+import { Card, Empty, Image } from "antd";
 import moment from "moment";
 const { Meta } = Card;
 
@@ -34,6 +34,7 @@ function HistoryBooking() {
   }, [width]);
 
   const rederDanhSachVe = () => {
+    if(dsVeTheoND.length>0)
     return dsVeTheoND?.slice(0, more).map((ve, index) => {
       return (
         <div key={index} className="historyBooking_content_item">
@@ -56,6 +57,10 @@ function HistoryBooking() {
         </div>
       );
     });
+    else 
+    return (<div className="text-center w-100 py-5" >
+      <Empty/>
+    </div>)
   };
 
   return (
@@ -75,7 +80,7 @@ function HistoryBooking() {
             Hiển Thị Thêm Đánh Giá
           </button>
         </div>
-      ) : more > dsVeTheoND.length&&dsVeTheoND.length >8 ? (
+      ) : more > dsVeTheoND.length && dsVeTheoND.length !=0 ? (
         <div className="w-100 text-center p-3">
           <button
             onClick={() => {

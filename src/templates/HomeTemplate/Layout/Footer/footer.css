@@ -217,8 +217,15 @@ body #backtotop a {
 	#footer{
 		padding: 50px 0 0 0;
 	}
-}@media screen and (min-width: 768) {
+	.div_logo{
+		text-align: center;
+	}
+	
+}@media screen and (min-width: 768px) {
 	#footer{
 		padding: 70px 0 0 0;
+	}
+	.div_logo{
+		text-align: left;
 	}
 }
