@@ -1,3 +1,4 @@
+
 /** @format */
 
 import React, { Fragment, useEffect } from "react";
@@ -17,6 +18,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
+
 const { Search } = Input;
 
 export default function User() {
@@ -30,9 +32,11 @@ export default function User() {
     dispatch(LayDSNguoiDungAction());
   }, []);
 
+
   useEffect(()=>{
     getData(dsNguoiDung)
   },[dsNguoiDung])
+
 
   const columns = [
     {
@@ -120,6 +124,7 @@ export default function User() {
     },
   ];
 
+
   const onSearch = (value) => {
     const keyW = value.toLowerCase();
 
@@ -168,4 +173,5 @@ export default function User() {
       />
     </div>
   );
+
 }

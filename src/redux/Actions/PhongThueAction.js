@@ -124,3 +124,19 @@ export const xoaPhongThueAction = (id, locationId) => {
     }
   }
 }
+
+export const UploadAvatarRoomAction = (roomId, formData, locationId) => {
+  return async (dispatch) => {
+      try {
+          const result = await quanLyPhongChoThue.UploadAvatarRoom(roomId, formData);
+          if (result.status === 200) {
+              console.log(result.data);
+              alert('Thêm avatar room thành công !');
+              history.push(`/admin/room/${locationId}`)
+          }
+      } catch (error) {
+          console.log("error", error);
+          console.log("error", error.response?.data);
+      }
+  };
+};

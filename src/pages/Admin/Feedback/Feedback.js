@@ -72,13 +72,6 @@ export default function Feedback(props) {
       <Button type='primary' style={{ width: 150 }} className='mb-4' onClick={() => {
         history.push(`/admin/feedback/add/${feedback._id}`)
       }}>Add new feedback</Button>
-      <Search
-        className='mb-4'
-        placeholder="Search"
-        enterButton={<SearchOutlined />}
-        size="large"
-        onSearch={onSearch}
-      />
       <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
     </div>
   )

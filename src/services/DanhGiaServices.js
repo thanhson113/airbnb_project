@@ -15,7 +15,7 @@ class QuanLyDanhGia {
     //nhat final
 
     taoDanhGiaTheoPhongAD = (idPhong, comment) => {
-        return http.post(`https://airbnb.cybersoft.edu.vn/api/reviews?roomId=${idPhong}`, comment)
+        return http.post(`/api/reviews?roomId=${idPhong}`, comment)
     }
 
     layThongTinChiTietDanhGia = (id) => {

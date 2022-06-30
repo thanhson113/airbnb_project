@@ -9,14 +9,13 @@ import { capNhatThongTinNguoiDungAction, layThongTinNguoiDungAction } from '../.
 const { Option } = Select;
 
 export default function EditUser(props) {
-
   const [componentSize, setComponentSize] = useState('default');
   const { thongTinNguoiDung } = useSelector((state) => state.nguoiDungReducer);
   let dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(async () => {
     let { id } = props.match.params
-    dispatch(layThongTinNguoiDungAction(id))
+    await dispatch(layThongTinNguoiDungAction(id))
   }, [])
 
   const formik = useFormik({
@@ -93,7 +92,7 @@ export default function EditUser(props) {
           ) : null}
         </Form.Item>
         <Form.Item label="Gender">
-          <Select defaultValue='' style={{ width: 120 }} onChange={handleChangeGender} >
+          <Select defaultValue={formik.values.gender === true ? 'MALE' : 'FEMALE'} style={{ width: 120 }} onChange={handleChangeGender} >
             <Option value="MALE">MALE</Option>
             <Option value="FEMALE">FEMALE</Option>
           </Select>
@@ -123,7 +122,7 @@ export default function EditUser(props) {
           ) : null}
         </Form.Item>
         <Form.Item label="Type">
-          <Select defaultValue='' style={{ width: 120 }} onChange={handleChangeType} onBlur={formik.handleBlur}>
+          <Select defaultValue={formik.values.type === 'CLIENT' ? 'CLIENT' : 'ADMIN'} style={{ width: 120 }} onChange={handleChangeType} onBlur={formik.handleBlur}>
             <Option value="CLIENT">CLIENT</Option>
             <Option value="ADMIN">ADMIN</Option>
           </Select>
