@@ -12,13 +12,13 @@ export default function EditFeedback(props) {
     const { thongTinChiTietDanhGia } = useSelector((state) => state.danhGiaReducer);
     console.log(thongTinChiTietDanhGia);
 
-    let feedback = {}
+    let feedbackRoom = {}
     if (localStorage.getItem('roomParams1')) {
-        feedback = JSON.parse(localStorage.getItem('roomParams1'))
+        feedbackRoom = JSON.parse(localStorage.getItem('roomParams1'))
     }
 
     let dispatch = useDispatch();
-
+         
     let { id } = props.match.params
     useEffect(() => {
         dispatch(layThongTinChiTietDanhGiaAction(id))
@@ -27,20 +27,16 @@ export default function EditFeedback(props) {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            content: thongTinChiTietDanhGia.content,
+            content: thongTinChiTietDanhGia.content
         },
         validationSchema: Yup.object({
             content: Yup.string().required("Content không được để trống"),
         }),
         onSubmit: (values) => {
             console.log(values);
-            dispatch(capNhatThongTinChiTietDanhGiaAction(id, values, feedback._id))
+            dispatch(capNhatThongTinChiTietDanhGiaAction(id, values, feedbackRoom._id))
         }
     });
-
-    // const handleChangeDatePicker = (value) => {
-    //     let birthday = moment(value).format('YYYY-MM-DD');
-    // }
 
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);

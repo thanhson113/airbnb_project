@@ -1,12 +1,12 @@
+
 /** @format */
 
 import React, { Fragment, useEffect } from "react";
-import { Table, Button, Input, Tag, Space } from "antd";
+import { Table, Button, Input, } from "antd";
 import {
   DeleteOutlined,
   SearchOutlined,
   EditOutlined,
-  CalendarOutlined,
 } from "@ant-design/icons";
 import { history } from "../../../App";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import {
 } from "../../../redux/Actions/NguoiDungAction";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+
 
 const { Search } = Input;
 
@@ -30,9 +31,11 @@ export default function User() {
     dispatch(LayDSNguoiDungAction());
   }, []);
 
+
   useEffect(()=>{
     getData(dsNguoiDung)
   },[dsNguoiDung])
+
 
   const columns = [
     {
@@ -120,6 +123,7 @@ export default function User() {
     },
   ];
 
+
   const onSearch = (value) => {
     const keyW = value.toLowerCase();
 
@@ -168,4 +172,5 @@ export default function User() {
       />
     </div>
   );
+
 }

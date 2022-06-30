@@ -2,7 +2,6 @@ import { LayDSNguoiDungType, layThongTinNguoiDungType, ChiTieTNguoiDungType } fr
 
 const nguoiDungState = {
   dsNguoiDung: [],
-  mangNguoiDung: [1, 2, 3],
   //nhat***
   user: {},
   thongTinNguoiDung: {}

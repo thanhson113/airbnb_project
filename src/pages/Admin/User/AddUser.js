@@ -88,7 +88,7 @@ export default function AddUser() {
                 size={componentSize}
             >
                 <Form.Item label="Name">
-                    <Input name='name' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                    <Input name='name' onChange={formik.handleChange} onBlur={formik.handleBlur} />
                     {formik.touched.name && formik.errors.name ? (
                         <div className="alert alert-danger">{formik.errors.name}</div>
                     ) : null}
@@ -100,19 +100,19 @@ export default function AddUser() {
                     </Select>
                 </Form.Item>
                 <Form.Item label="Email">
-                    <Input name='email' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                    <Input name='email' onChange={formik.handleChange} onBlur={formik.handleBlur} />
                     {formik.touched.email && formik.errors.email ? (
                         <div className="alert alert-danger">{formik.errors.email}</div>
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Password">
-                    <Input name='password' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                    <Input name='password' onChange={formik.handleChange} onBlur={formik.handleBlur} />
                     {formik.touched.password && formik.errors.password ? (
                         <div className="alert alert-danger">{formik.errors.password}</div>
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Phone">
-                    <Input name='phone' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                    <Input name='phone' onChange={formik.handleChange} onBlur={formik.handleBlur} />
                     {formik.touched.phone && formik.errors.phone ? (
                         <div className="alert alert-danger">{formik.errors.phone}</div>
                     ) : null}
@@ -133,7 +133,7 @@ export default function AddUser() {
                     ) : null}
                 </Form.Item>
                 <Form.Item label="Address">
-                    <Input name='address' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                    <Input name='address' onChange={formik.handleChange} onBlur={formik.handleBlur} />
                     {formik.touched.address && formik.errors.address ? (
                         <div className="alert alert-danger">{formik.errors.address}</div>
                     ) : null}

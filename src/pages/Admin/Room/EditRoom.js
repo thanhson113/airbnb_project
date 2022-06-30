@@ -18,8 +18,8 @@ export default function AddRoom(props) {
     console.log(id)
 
     let location = {}
-    if (localStorage.getItem('locationParams')) {
-        location = JSON.parse(localStorage.getItem('locationParams'))
+    if (localStorage.getItem('locationParams1')) {
+        location = JSON.parse(localStorage.getItem('locationParams1'))
     }
 
     let dispatch = useDispatch();

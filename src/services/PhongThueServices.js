@@ -24,5 +24,9 @@ class QuanLyPhongChoThue {
   xoaPhongThue = (id) => {
     return http.delete(`/api/rooms/${id}`)
   }
+
+  UploadAvatarRoom = (roomId, formData) => {
+    return http.post(`/api/rooms/upload-image/${roomId}`, formData);
+  };
 }
 export const quanLyPhongChoThue = new QuanLyPhongChoThue();

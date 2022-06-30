@@ -25,10 +25,12 @@ import EditUser from './pages/Admin/User/EditUser';
 import Location from './pages/Admin/Location/Location';
 import AddLocation from './pages/Admin/Location/AddLocation';
 import Editlocation from './pages/Admin/Location/EditLocation';
+import AvatarLocation from './pages/Admin/Location/AvatarLocation';
 
 import Room from './pages/Admin/Room/Room';
 import AddRoom from './pages/Admin/Room/AddRoom';
 import EditRoom from './pages/Admin/Room/EditRoom';
+import AvatarRoom from './pages/Admin/Room/AvatarRoom';
 
 import Feedback from './pages/Admin/Feedback/Feedback';
 import AddFeedback from './pages/Admin/Feedback/AddFeedback';
@@ -38,6 +40,11 @@ import LocationTicket from './pages/Admin/Ticket/VeTheoPhong/LocationTicket';
 import RoomTicket from './pages/Admin/Ticket/VeTheoPhong/RoomTicket';
 import Ticket from './pages/Admin/Ticket/VeTheoPhong/Ticket';
 import RoomAddTicket from './pages/Admin/Ticket/VeTheoPhong/RoomAddTicket';
+import RoomEditTicket from './pages/Admin/Ticket/VeTheoPhong/RoomEditTicket';
+
+import UserTicket from './pages/Admin/Ticket/VeTheoNguoiDung/UserTicket';
+import UserTicketChild from './pages/Admin/Ticket/VeTheoNguoiDung/UserTicketChild';
+import UserEditTicket from './pages/Admin/Ticket/VeTheoNguoiDung/UserEditTicket';
 
 import "antd/dist/antd.css";
 import "./App.css";
@@ -69,10 +76,12 @@ function App() {
 
         <AdminTemplate path="/admin/location/add" component={AddLocation} />
         <AdminTemplate path="/admin/location/edit/:id" component={Editlocation} />
+        <AdminTemplate path="/admin/location/avatar/:id" component={AvatarLocation} />
         <AdminTemplate path="/admin/location" component={Location} />
 
         <AdminTemplate path="/admin/room/add/:id" component={AddRoom} />
         <AdminTemplate path="/admin/room/edit/:id" component={EditRoom} />
+        <AdminTemplate path="/admin/room/avatar/:id" component={AvatarRoom} />
         <AdminTemplate path="/admin/room/:id" component={Room} />
 
         <AdminTemplate path="/admin/feedback/add/:id" component={AddFeedback} />
@@ -82,6 +91,11 @@ function App() {
         <AdminTemplate path="/admin/ticket/location" component={LocationTicket} />
         <AdminTemplate path="/admin/ticket/room/:id" component={RoomTicket} />
         <AdminTemplate path="/admin/ticket/roomadd/:id" component={RoomAddTicket} />
+        <AdminTemplate path="/admin/ticket/roomedit/:id" component={RoomEditTicket} />
+
+        <AdminTemplate path="/admin/ticket/useredit/:id" component={UserEditTicket} />
+        <AdminTemplate path="/admin/ticket/user/:id" component={UserTicketChild} />
+        <AdminTemplate path="/admin/ticket/user" component={UserTicket} />
         <AdminTemplate path="/admin/ticket/:id" component={Ticket} />
 
         <AdminTemplate path="/admin" component={Dashboard} />
