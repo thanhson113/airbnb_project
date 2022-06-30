@@ -99,6 +99,7 @@ export default function Location() {
             <Search
                 className='mb-4'
                 placeholder="Nhập vị trí bạn muốn để tìm kiếm chính xác !"
+                allowClear
                 enterButton={<SearchOutlined />}
                 size="large"
                 onSearch={onSearch}

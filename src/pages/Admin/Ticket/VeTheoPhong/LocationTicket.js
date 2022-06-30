@@ -3,6 +3,7 @@ import { Table, Input  } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { layDanhSachViTriAction } from '../../../../redux/Actions/ViTriActon';
+import { SearchOutlined } from '@ant-design/icons';
 
 const { Search } = Input;
 
@@ -51,7 +52,11 @@ export default function LocationTicket() {
             },
         },
     ];
-
+    const onSearch = (value) => {
+        if(value)  dispatch(layDanhSachViTriAction(value))
+        else dispatch(layDanhSachViTriAction())
+       
+    }
     const data = mangViTri;
 
     function onChange(pagination, filters, sorter, extra) {
@@ -61,6 +66,14 @@ export default function LocationTicket() {
     return (
         <div className="dashboard-content">
             <h2 className='my-3'>Ticket - Location</h2>
+            <Search
+                className='mb-4'
+                placeholder="Nhập vị trí bạn muốn để tìm kiếm chính xác !"
+                allowClear
+                enterButton={<SearchOutlined />}
+                size="large"
+                onSearch={onSearch}
+            />
             <Table columns={columns} dataSource={data} onChange={onChange} rowKey={'_id'} />
         </div>
     )
