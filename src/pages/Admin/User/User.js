@@ -2,12 +2,11 @@
 /** @format */
 
 import React, { Fragment, useEffect } from "react";
-import { Table, Button, Input, Tag, Space } from "antd";
+import { Table, Button, Input, } from "antd";
 import {
   DeleteOutlined,
   SearchOutlined,
   EditOutlined,
-  CalendarOutlined,
 } from "@ant-design/icons";
 import { history } from "../../../App";
 import { useDispatch, useSelector } from "react-redux";
