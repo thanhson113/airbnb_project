@@ -3,7 +3,7 @@ import { Table, Button, Input, Tag, Space } from 'antd';
 import { DeleteOutlined, SearchOutlined, EditOutlined, CalendarOutlined } from '@ant-design/icons';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
-import { layDanhSachViTriAction, xoaViTriAction } from '../../../redux/Actions/ViTriActon';
+import { layDanhSachViTriAction, SearchViTriAction, xoaViTriAction } from '../../../redux/Actions/ViTriActon';
 import { NavLink } from 'react-router-dom';
 
 const { Search } = Input;
@@ -80,8 +80,10 @@ export default function Location() {
 
     const data = mangViTri;
 
-    const onSearch = () => {
-
+    const onSearch = (value) => {
+        console.log(value);
+        if(value) dispatch(layDanhSachViTriAction(value))
+        else dispatch(layDanhSachViTriAction())
     }
 
     function onChange(pagination, filters, sorter, extra) {
@@ -96,7 +98,7 @@ export default function Location() {
             }}>Add new location</Button>
             <Search
                 className='mb-4'
-                placeholder="Search"
+                placeholder="Nhập vị trí bạn muốn để tìm kiếm chính xác !"
                 enterButton={<SearchOutlined />}
                 size="large"
                 onSearch={onSearch}
